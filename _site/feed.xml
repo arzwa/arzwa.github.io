@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-03-01T23:40:32+01:00</updated><id>/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Coalescent theory</title><link href="/popgen/2018/03/01/coal.html" rel="alternate" type="text/html" title="Coalescent theory" /><published>2018-03-01T00:00:00+01:00</published><updated>2018-03-01T00:00:00+01:00</updated><id>/popgen/2018/03/01/coal</id><content type="html" xml:base="/popgen/2018/03/01/coal.html">&lt;p&gt;Until a month or three ago, I had barely heard anything about coalescent theory, and I have been reading about it with great interest since then. Here I try to give some overview for myself about what I am yet comfortable with. It will probably be nothing more than a summary of the following wonderful book:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hein, Jotun; Schierup, Mikkel H.; Wiuf, C. (2003).
+Gene Genealogies, Variation and Evolution A primer in coalescent theory.
+https://doi.org/10.1086/501263
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;the-wright-fisher-model&quot;&gt;The Wright-Fisher model&lt;/h2&gt;
+
+&lt;p&gt;The Wright-Fisher population genetics model assumes a constant (finite) population size ($N$) that evolves under random mating with discrete non-overlapping generations and no selection. It is further assumed that there is no recombination within genes. Under this model it is easy to see that a gene $g_i$ will leave $k$ descendant genes in the next generation is given by the binomial probability&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=k) = \binom{2N}{k} \Big(\frac{1}{2N}\Big)^k \Big(1-\frac{1}{2N}\Big)^{2N-k}&lt;/script&gt;
+
+&lt;p&gt;&lt;em&gt;i.e.&lt;/em&gt; $X \sim Binom(m=2N, p=\frac{1}{2N})$ with $E(X) = mp = 1$ and variance $Var(X) = mp(1-p) =$ $1 - \frac{1}{2N}$. This means also that is $2N$ is very large, $X \sim Poisson(1)$ &lt;em&gt;i.e.&lt;/em&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x=k) = \frac{1}{k!}e^{-1}&lt;/script&gt;
+
+&lt;p&gt;This is a result to remember: &lt;em&gt;in a large Wright-Fisher population, a gene leaves a Poisson number of descendants with expected value of 1&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is quite cool since it allows us to get some ideas of interesting values. For example, about $\frac{1}{1!}e^{-1} \approx 0.37$ genes do not leave descendants, or conversely about 0.63 percent of the genes do leave descendants. So the proportion of genes $t$ generations ago from which a large population descents is about $0.63^t$.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-discrete-time-coalescent&quot;&gt;The discrete time coalescent&lt;/h2&gt;
+
+&lt;p&gt;We’re interested in finding the expected waiting time ($j$) until two genes find their common ancestor (&lt;em&gt;i.e.&lt;/em&gt; their lineages coalesce) when traversing the genealogy of a Wright-Fisher population back in time. This is of course given by a geometric distribution (what is the probability of having no coalescence $j-1$ generations and coalescence the $j^{th}$ generation?)&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=j) = \Big(1-\frac{1}{2N}\Big)^{j-1}\frac{1}{2N}&lt;/script&gt;
+
+&lt;p&gt;Note that the probability that two genes coalesce in any generation is $\frac{1}{2N}$. This shows that $X \sim Geom(\frac{1}{2N})$ and as such has expected value $2N$ (if success probability is $\frac{1}{2N}$, it takes on average $2N$ trials to attain success) and variance $2N(2N-1)$.&lt;/p&gt;
+
+&lt;p&gt;Similarly, we can reason what the expected waiting time is for a sample of $n$ genes. The probability that $k$ genes have $k$ different ancestor will come in handy to approximate this. This is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\frac{2N}{2N}\frac{(2N-1)}{2N}\frac{2N-2}{2N}\cdots\frac{2N-k+1}{2N} &amp;=&amp; \prod_{i=1}^{k-1} \Big(1-\frac{i}{2N}\Big) \\
+ &amp;\approx&amp; 1 - \sum_{i=1}^{k-1} \frac{i}{2N}  = 1-\binom{k}{2}\frac{1}{2N}
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The last approximation drops terms in $O(\frac{1}{N^2})$ and higher powers of $N$. The probability that any of the $k$ genes coalesces in a given generation is thus approximately given by $\binom{k}{2}\frac{1}{2N}$ so the expected waiting time for 2 out of $k$ genes to coalesce is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=j) \approx \Bigg(1-\binom{k}{2}\frac{1}{2N}\Bigg)^{j-1}\binom{k}{2}\frac{1}{2N}&lt;/script&gt;
+
+&lt;h2 id=&quot;the-continuous-time-coalescent&quot;&gt;The continuous time coalescent&lt;/h2&gt;
+
+&lt;p&gt;Just like the binomial distribution is related to the Poisson distribution, the geometric distribution is related to the exponential distribution. The coalescent can be scaled such that one time unit on the continuous scale corresponds to $2N$, the expected time for two genes to find a common ancestor. This means $t = \frac{j}{2N}$&lt;/p&gt;</content><author><name></name></author><summary type="html">Until a month or three ago, I had barely heard anything about coalescent theory, and I have been reading about it with great interest since then. Here I try to give some overview for myself about what I am yet comfortable with. It will probably be nothing more than a summary of the following wonderful book:</summary></entry><entry><title type="html">The infinitesimal model</title><link href="/qgen/popgen/evolution/2018/02/24/infmodel.html" rel="alternate" type="text/html" title="The infinitesimal model" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/qgen/popgen/evolution/2018/02/24/infmodel</id><content type="html" xml:base="/qgen/popgen/evolution/2018/02/24/infmodel.html">&lt;p&gt;Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-basic-infinitesimal-model&quot;&gt;The basic infinitesimal model&lt;/h2&gt;
+
+&lt;p&gt;We assume a large outcrossing population, and a purely additive quantitative trait with phenotype $z$, determined only by a genetic component for now. Denote $z_{ij}$ as the phenotype of offspring of a cross of parents $i$ and $j$ then&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z_{ij} \sim N(\bar{z}_{i,j}, V_0)&lt;/script&gt;
+
+&lt;p&gt;&lt;em&gt;i.e.&lt;/em&gt; the offspring phenotype follows a Normal distribution around the mean of the parents phenotypes with fixed variance $V_0$ independent of the parental phenotypes.&lt;/p&gt;
+
+&lt;p&gt;Under random mating, this implies that the distribution of trait values of population as a whole converges to a Normal distribution with variance $2V_0$. If we denote the variance of $z$ in the parental population as $V_1$, the variance of the offspring is given by $\frac{V_1}{2}$. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables&quot;&gt;Bienaymé formula&lt;/a&gt; states that the variance of the sum of $n$ uncorrelated random variables is just the sum of the variances. Under random mating the parental phenotypes are just two uncorrelated random variables with variance $V_1$, the variance of the offspring trait value (which is just the mean of the parental values) is thus given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Var(\bar{z}_{i,j}) = Var\Big(\frac{1}{2}(z_i + z_j)\Big) = \frac{1}{4}Var(z_i + z_j) = \frac{1}{4}2V_1 = \frac{V_1}{2}&lt;/script&gt;
+
+&lt;p&gt;The variance in the offspring generation is thus&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_1' = \frac{V_1}{2} + V_0&lt;/script&gt;
+
+&lt;p&gt;Where the first term cn be seen as the within family ariance, and the second as the between family variance. At equilibrium, where $V_1’ = V_1$, $V_1$ is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\frac{V_1}{2} + V_0 &amp;=&amp; V_1  \\
+                V_1 &amp;=&amp; 2V_0 \\
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;This means that half of the variance is &lt;em&gt;between&lt;/em&gt; families and half &lt;em&gt;within&lt;/em&gt; families (this can be seen when substituting $V_1$ for $2V_0$ in the expression for $V_1’$ above).&lt;/p&gt;
+
+&lt;p&gt;So in summary, under the basic, phenotypically defined, infinitesimal model the phenotypic value of offspring is distributed around the parental midpoint with fixed variance independent of the parental phenotypes. The model converges to a state where the total variance is distributed equally over between and within family variance.&lt;/p&gt;
+
+&lt;h2 id=&quot;selection&quot;&gt;Selection&lt;/h2&gt;
+
+&lt;p&gt;When selection is operating on the trait value (&lt;em&gt;i.e.&lt;/em&gt; the trait is correlated with relative fitness), arbitrary distributions of trait values can form. However the within-family trait value distributions will remain Gaussian! This seems to be a key property of the infinitesimal model, which Barton &lt;em&gt;et al.&lt;/em&gt; like to stress.&lt;/p&gt;
+
+&lt;h2 id=&quot;inbreeding&quot;&gt;Inbreeding&lt;/h2&gt;
+
+&lt;p&gt;Barton &lt;em&gt;et al.&lt;/em&gt; next discuss how to incorporate inbreeding in what is now a purely phenotypically defined model. They stress that this still does not require any modern insights in ‘genes’, and that in theory only inbreeding coefficients ($F_{i,j}$) are required which can be estimated from pedigrees. However, for ease of explanation they proceed using modern terminology.&lt;/p&gt;
+
+&lt;p&gt;In the current model, the expected value of the offspring is the midpoint of the parental trait values. Variation between siblings is induced by random segregation during meiosis. The variance induced by segregation is obviously reduced when the parental genomes are similar, this is of course to say that there is inbreeding if parents are not unrelated.&lt;/p&gt;
+
+&lt;p&gt;For haploid individuals $i$ and $j$, the relationship, derived from a pedigree is described by $F_{i,j}$, which is the probability of identity by descent (IBD) of two genes from these individuals. The variance among offspring of these two parental haploid individuals is just $V_0(1-F_{i,j})$.&lt;/p&gt;
+
+&lt;p&gt;In a diploid individual, meiosis induces segregation variance among gametes proportional to $(1-F_{i,i})$, with $F_{i,i}$ the probability that two genes of a diploid pair are IBD. To form a gamete in individual $i$, we start with two independently sampled ancestral genes within the diploid individual, with variance among these $2V_0$ (since the variance of the sum of two uncorrelated random variables is just the sum of their variances) and probability of IBD $F_{i,i}$. &lt;em&gt;I am not fully sure about the following derivation&lt;/em&gt; (and also not if the notation is sound), but when meisosis forms 4 gametes, with mean phenotype $\bar{z}_{i,i}$ the corresponding variance should be something like this&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+Var(\bar{z_{i,i}}) &amp;=&amp; Var\Big(\frac{1}{4}\sum_{j=1}^{4}z_{i,i,j}\Big) \\
+                   &amp;=&amp; \frac{\sum_{j=1}^{4}Var(z_{i,i})}{4^2} \\
+                   &amp;=&amp; \frac{4Var(z_{i,i})}{4^2} \\
+                   &amp;=&amp; \frac{1}{4}2V_0 \\
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;conditioning on the genes sampled not being IBD. This gives an overall segregational variance for a mating of diploid parent $i$ and $j$ described by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{4}(1-F_{i,i})2V_0 + \frac{1}{4}(1-F_{j,j})2V_0 =
+V_0\Bigg(1 - \frac{(F_{i,i} + F_{j,j})}{2}\Bigg)&lt;/script&gt;
+
+&lt;p&gt;Where the possibility of IBD has been incorporated. At this moment, Barton &lt;em&gt;et al.&lt;/em&gt; note that the infinitesimal is now defined in terms of a constant genetic variance $V_0$ and a matrix of giving the probability of IBD for every individual. The probability of IBD is given by a set of recursion equations driven by a &lt;em&gt;pedigree matrix&lt;/em&gt; $P_{i,k}(t)$ which gives the probability that a gene $i$ came from parent $k$ in generation $t$.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;Barton, N. H., Etheridge, A. M., &amp;amp; Véber, A. (2017). The infinitesimal model: Definition, derivation, and implications. Theoretical Population Biology, 118, 50–73. https://doi.org/10.1016/j.tpb.2017.06.001&lt;/p&gt;</content><author><name></name></author><summary type="html">Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.</summary></entry><entry><title type="html">Selection on a single diallelic locus</title><link href="/notes/popgen/evolution/2018/02/24/single_locus_selection.html" rel="alternate" type="text/html" title="Selection on a single diallelic locus" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/notes/popgen/evolution/2018/02/24/single_locus_selection</id><content type="html" xml:base="/notes/popgen/evolution/2018/02/24/single_locus_selection.html">&lt;p&gt;We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p' = \frac{p^2 w_{AA} + p(1-p) w_{Aa}}{p^2 w_{AA} + 2p(1-p)w_{Aa} + (1-p)^2w_{aa}}&lt;/script&gt;
+
+&lt;p&gt;with $w$ the relative fitness for the genotype in subscript and $p$ the allele frequency of $A$. $p’$ denotes the allele frequency of $A$ in the next generation. The denominator ensures scaling to the novel population size obtained after selection. we further refer to it as the average fitness of the population $\bar{w}$. It is also useful to express the mean relative fitness of the allele $A$ as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bar{w_{A}} = p w_{AA} + (1-p) w_{Aa}&lt;/script&gt;
+
+&lt;p&gt;This can be interpreted as the average relative fitness of an individual, given that it received one $A$ allele from one parent (note the analogy with average effect in quantitative genetics).&lt;/p&gt;
+
+&lt;p&gt;We can find the change in allele frequency due to selection as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\Delta p &amp;=&amp; p' - p  \\
+         &amp;=&amp; \frac{p^2 w_{AA} + p(1-p) w_{Aa} - p\bar{w}}{\bar{w}}
+         &amp;=&amp; \frac{p(\bar{w_A} - \bar{w})}{\bar{w}}
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;We can use the above formulae to determine for example the change in allele frequency of a fully recessive allele $A$ with frequency $p$ and selection coefficient $s$. The average fitness of the allele is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\bar{w_A} &amp;=&amp; p(1+s) + (1-p) \\
+          &amp;=&amp; 1 + sp
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The average fitness of the population by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\bar{w} &amp;=&amp; p^2(1+s) + 2p(1-p) + (1-p)^2 \\
+        &amp;=&amp; 1 + sp^2 \\
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The new allele frequency after one generation with selection is than given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+p' &amp;=&amp; \frac{p\bar{w_A}}{\bar{w}} \\
+   &amp;=&amp; \frac{p(1+sp^2)}{1 + sp^2} \\
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Resulting in a per generation change in allele frequency of&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta p = \frac{sp^2(1-p)}{1+sp^2}&lt;/script&gt;
+
+&lt;p&gt;The expressions for different forms of selection (dominance, recessiveness, additivity, &lt;em&gt;etc.&lt;/em&gt;) can be readily worked out in this way.&lt;/p&gt;</content><author><name></name></author><summary type="html">We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:</summary></entry><entry><title type="html">Jürg Frey - Grizzana &amp;amp; Other Pieces</title><link href="/music/classical/wandelweiser/2018/02/24/jfgriz.html" rel="alternate" type="text/html" title="Jürg Frey - Grizzana &amp; Other Pieces" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/music/classical/wandelweiser/2018/02/24/jfgriz</id><content type="html" xml:base="/music/classical/wandelweiser/2018/02/24/jfgriz.html">&lt;p&gt;Jürg Frey is al even een fascinatie voor mij (zie &lt;em&gt;bv.&lt;/em&gt; mijn stukje &lt;a href=&quot;organen.html&quot;&gt;&lt;em&gt;Freyheid&lt;/em&gt;&lt;/a&gt;). Spaarzaamheid zonder gierigheid, voorzichtigheid zonder preutsheid, traagheid zonder saaiheid, saaiheid zonder verveling,  verveling zonder irritatie. De muziek is als het ware een stilleven, een paradoxale verhouding tussen de vooruitgang van tijd en de rustpunten die we zoeken. De instantane blik op het landschap wordt uitgesponnen over een kwartier (&lt;em&gt;Petit fragment de paysage&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;“Het is een soort niets dat ik zoek, hetgeen dat je overhoudt als je uit de kom van je handen hebt willen drinken”&lt;/em&gt; is een zin die ik (min of meer) onthoud uit een gedicht van Herman de Coninck. De muziek vindt een dergelijk niets, geen absoluut niets, maar een poging om er in de limiet te geraken. Een voortdurende balans wordt aangeroepen tussen ‘zijn’ en ‘niet-zijn’, de muziek houdt ons vast in het moment, en stopt de tijd. Een stilstaande tijd biedt geen mogelijkheden, en zelfs geen verleden (?), een zuivere manifestatie van niets?
+We hebben kunst nodig om ons vast te houden in het moment (&lt;em&gt;Fragile Balance&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Is de muziek een projectie van efemere schaduwen naar een tijdsdimensie (&lt;em&gt;Ombres exactes sans dûreté&lt;/em&gt;)? Of is dit dolgedraaide wartaal? Een interessante vergelijking om te maken is die tussen muziek van Frey (of andere &lt;em&gt;Wandelweiser&lt;/em&gt; componisten) met ambient-drone muziek. Beide lijken vaak te trachten een moment vast te houden, de illusie te wekken dat de tijd trager of niet loopt. Frey doet dat als in een minimalistische lijnentekening (&lt;em&gt;Grizzana&lt;/em&gt;), een spaarzaam spel op een wit canvas. Drone muziek, typisch uit een minder academische, meer ‘populaire’ hoek, doet dit helemaal anders. Ze schildert monochromen waarin men kan verdwalen, niet zoekend omdat men &lt;em&gt;a priori&lt;/em&gt; weet dat er niets te vinden is. Dat is de kwaliteit van zowel de drone als het monochroom.&lt;/p&gt;
+
+&lt;p&gt;Naast het bijzondere en betoverende temporele aspect van Frey’s muziek, is er ook de onvermijdelijk spatiale evocatie. Muziek opereert in &lt;em&gt;totaal&lt;/em&gt; andere dimensies dan wij. Muziek heeft steeds het twee-dimensionele karakter van de notenbalk, de melodische sequentie en de harmonische stapeling. Frey’s muziek roept een zekere ruimtelijkheid op. Een muziek die lijkt te ontstaan door van het plafond vallende druppels op willekeurige plaatsen in een witte kamer (&lt;em&gt;Lieus d’ombres&lt;/em&gt;).&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;/assets/jfgriz.jpg &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;</content><author><name></name></author><summary type="html">Jürg Frey is al even een fascinatie voor mij (zie bv. mijn stukje Freyheid). Spaarzaamheid zonder gierigheid, voorzichtigheid zonder preutsheid, traagheid zonder saaiheid, saaiheid zonder verveling, verveling zonder irritatie. De muziek is als het ware een stilleven, een paradoxale verhouding tussen de vooruitgang van tijd en de rustpunten die we zoeken. De instantane blik op het landschap wordt uitgesponnen over een kwartier (Petit fragment de paysage).</summary></entry><entry><title type="html">Levin’s MCE model</title><link href="/polyploidy/popgen/2018/02/24/levin75.html" rel="alternate" type="text/html" title="Levin's MCE model" /><published>2018-02-24T00:00:00+01:00</published><updated>2018-02-24T00:00:00+01:00</updated><id>/polyploidy/popgen/2018/02/24/levin75</id><content type="html" xml:base="/polyploidy/popgen/2018/02/24/levin75.html">&lt;p&gt;In his 1975 paper, Donald Levin proposed the first model of polyploid population establishment. Polyploidy was already for some time acknowledged as a feature of evolutionary interest in botany, but to my knowledge, Levin was the first to provide a (simple) mathematical description of the problem of cytotype coexistence. The model is inspired by population genetics, but instead of following alleles in a population, cytotypes (specifically diploids &amp;amp; tetraploids) are followed. Important to note is that Levin did not consider formation of tetraploids.&lt;/p&gt;
+
+&lt;p&gt;Levin models two coexisting cytotypes which undergo random mating (with some degree of selfing). Inter-cytotype matings are assumed to lead to inviable and infertile offspring. In Levin’s model, the proportion of the two cytotypes are denoted as $p$ and $q$. The frequency of within-cytotype matings is given by $p^2$ for the first cytotype and $q^2$ for the second cytotype. The frequency of between-cytotype matings is of course $2pq$. To see the strong frequency dependent effect under this model, consider the proportion of failed matings for each cytotype, given by $\frac{2pq}{p} = 2q = 2(1-p)$ for the first cytotype and analogously by $2p$ for the second cytotype. The main observation is thus that &lt;em&gt;the proportion of failed matings increases for lower population sizes&lt;/em&gt;, which Levin called the minority cytotype disadvantage, leading to minority cytotype exclusion (MCE).&lt;/p&gt;
+
+&lt;p&gt;Indeed after one generation, the frequency of the first cytotype is given by $p’ = \frac{p^2}{p^2 + q^2}$, giving a change in cytotype proportion of&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\Delta p &amp;=&amp; \frac{p^2}{p^2 + q^2} - p \\
+         &amp;=&amp; \frac{p^2q - q^2p}{p^2 + q^2} \\
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;and likewise $ \Delta q = \frac{q^2p - p^2q}{p^2 + q^2} = -\Delta p $. This clearly shows how the minority cytotype disadvantage leads to minority cytotype exclusion. This is illustrated in the following plot:&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;/assets/levinmce_1.png &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;
+
+&lt;p&gt;Levin further incorporates selfing. With selfing probability $s$, the proportion of successful matings of course increases to $p^2(1-s) + ps$ (why not $p^(1-s)^2 + ps$?). The above expressions can be adjusted for selfing as follows&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta p = \frac{p^2(1-s) + ps}{p^2(1-s) + s + q^2(1-s)} - p&lt;/script&gt;
+
+&lt;p&gt;I think (note that $ps + qs = (p+q)s = s$).&lt;/p&gt;</content><author><name></name></author><summary type="html">In his 1975 paper, Donald Levin proposed the first model of polyploid population establishment. Polyploidy was already for some time acknowledged as a feature of evolutionary interest in botany, but to my knowledge, Levin was the first to provide a (simple) mathematical description of the problem of cytotype coexistence. The model is inspired by population genetics, but instead of following alleles in a population, cytotypes (specifically diploids &amp;amp; tetraploids) are followed. Important to note is that Levin did not consider formation of tetraploids.</summary></entry></feed>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Selection on a single diallelic locus | bb</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Selection on a single diallelic locus" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:" />
+<meta property="og:description" content="We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:" />
+<link rel="canonical" href="/notes/popgen/evolution/2018/02/24/single_locus_selection.html" />
+<meta property="og:url" content="/notes/popgen/evolution/2018/02/24/single_locus_selection.html" />
+<meta property="og:site_name" content="bb" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-02-24T16:04:50+01:00" />
+<script type="application/ld+json">
+{"description":"We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:","@type":"BlogPosting","url":"/notes/popgen/evolution/2018/02/24/single_locus_selection.html","headline":"Selection on a single diallelic locus","dateModified":"2018-02-24T16:04:50+01:00","datePublished":"2018-02-24T16:04:50+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/notes/popgen/evolution/2018/02/24/single_locus_selection.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="bb" />
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">bb</a>
+
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Selection on a single diallelic locus</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-02-24T16:04:50+01:00" itemprop="datePublished">
+        
+        Feb 24, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:</p>
+
+<script type="math/tex; mode=display">p' = \frac{p^2 w_{AA} + p(1-p) w_{Aa}}{p^2 w_{AA} + 2p(1-p)w_{Aa} + (1-p)^2w_{aa}}</script>
+
+<p>with $w$ the relative fitness for the genotype in subscript and $p$ the allele frequency of $A$. $p’$ denotes the allele frequency of $A$ in the next generation. The denominator ensures scaling to the novel population size obtained after selection. we further refer to it as the average fitness of the population $\bar{w}$. It is also useful to express the mean relative fitness of the allele $A$ as:</p>
+
+<script type="math/tex; mode=display">\bar{w_{A}} = p w_{AA} + (1-p) w_{Aa}</script>
+
+<p>This can be interpreted as the average relative fitness of an individual, given that it received one $A$ allele from one parent (note the analogy with average effect in quantitative genetics).</p>
+
+<p>We can find the change in allele frequency due to selection as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\Delta p &=& p' - p  \\
+         &=& \frac{p^2 w_{AA} + p(1-p) w_{Aa} - p\bar{w}}{\bar{w}}
+         &=& \frac{p(\bar{w_A} - \bar{w})}{\bar{w}}
+\end{eqnarray} %]]></script>
+
+<p>We can use the above formulae to determine for example the change in allele frequency of a fully recessive allele $A$ with frequency $p$ and selection coefficient $s$. The average fitness of the allele is given by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\bar{w_A} &=& p(1+s) + (1-p) \\
+          &=& 1 + sp
+\end{eqnarray} %]]></script>
+
+<p>The average fitness of the population by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\bar{w} &=& p^2(1+s) + 2p(1-p) + (1-p)^2 \\
+        &=& 1 + sp^2 \\
+\end{eqnarray} %]]></script>
+
+<p>The new allele frequency after one generation with selection is than given by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+p' &=& \frac{p\bar{w_A}}{\bar{w}} \\
+   &=& \frac{p(1+sp^2)}{1 + sp^2} \\
+\end{eqnarray} %]]></script>
+
+<p>Resulting in a per generation change in allele frequency of</p>
+
+<script type="math/tex; mode=display">\Delta p = \frac{sp^2(1-p)}{1+sp^2}</script>
+
+<p>The expressions for different forms of selection (dominance, recessiveness, additivity, <em>etc.</em>) can be readily worked out in this way.</p>
+
+  </div>
+
+  
+
+  <a class="u-url" href="/notes/popgen/evolution/2018/02/24/single_locus_selection.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    
+
+  </body>
+
+</html>
