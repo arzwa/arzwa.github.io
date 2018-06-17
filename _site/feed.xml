@@ -1,47 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-03-01T23:40:32+01:00</updated><id>/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Coalescent theory</title><link href="/popgen/2018/03/01/coal.html" rel="alternate" type="text/html" title="Coalescent theory" /><published>2018-03-01T00:00:00+01:00</published><updated>2018-03-01T00:00:00+01:00</updated><id>/popgen/2018/03/01/coal</id><content type="html" xml:base="/popgen/2018/03/01/coal.html">&lt;p&gt;Until a month or three ago, I had barely heard anything about coalescent theory, and I have been reading about it with great interest since then. Here I try to give some overview for myself about what I am yet comfortable with. It will probably be nothing more than a summary of the following wonderful book:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-17T18:50:29+02:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">\phi\mu</title><link href="http://localhost:4000/music%20vuilbak/2018/04/30/phimu.html" rel="alternate" type="text/html" title="\phi\mu" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/music%20vuilbak/2018/04/30/phimu</id><content type="html" xml:base="http://localhost:4000/music%20vuilbak/2018/04/30/phimu.html">&lt;p&gt;Better known as &lt;a href=&quot;https://bruinebeer.bandcamp.com/album/-&quot;&gt;φμ&lt;/a&gt; when unicode works or $\phi\mu$ if we want to do fancy math style. Previously (in earlier versions) also known as ‘&lt;a href=&quot;https://bruinebeer.bandcamp.com/album/-&quot;&gt;Generative music for sleeping&lt;/a&gt;’ (or more informally even &lt;code class=&quot;highlighter-rouge&quot;&gt;orthosong&lt;/code&gt;). Whatever the name, it is a work I made in 2016 and edited and expanded in the last months of 2017 and is an exploration in the world of generative music and unedited long-duration field recording. As some of the earlier titles already indicate, it can be considered as music for sleeping, or at least as music with some sleep-inducing qualities. I am particularly fond of this music as a matter of fact, and while many might think it is way lamer than previous things I made, I might consider it as my best work (wherever that might end up on some external reference scale). It was presented during an exhibition in the art gallery ‘Galerij Jan Colle’ in Ghent during an exhibition entitled ‘Waar de vogeltjes fluiten’, curated by Charlotte Vandenbroucke.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hein, Jotun; Schierup, Mikkel H.; Wiuf, C. (2003).
-Gene Genealogies, Variation and Evolution A primer in coalescent theory.
-https://doi.org/10.1086/501263
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;center&gt;
+&lt;img src=&quot;http://localhost:4000/assets/phimu2.jpg &quot; width=&quot;49.8%&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/phimu.jpg &quot; width=&quot;49.8%&quot; /&gt;
+&lt;/center&gt;
 
-&lt;h2 id=&quot;the-wright-fisher-model&quot;&gt;The Wright-Fisher model&lt;/h2&gt;
+&lt;p&gt;I have written about the underlying generative model, which is based on multiple sequence alignments of sets of evolutionary related genes (better known as &lt;em&gt;gene families&lt;/em&gt;), before and will not reiterate these technical details here. I include the accompanying note for the exhibition here and point to my bandcamp page for the actual music.&lt;/p&gt;
 
-&lt;p&gt;The Wright-Fisher population genetics model assumes a constant (finite) population size ($N$) that evolves under random mating with discrete non-overlapping generations and no selection. It is further assumed that there is no recombination within genes. Under this model it is easy to see that a gene $g_i$ will leave $k$ descendant genes in the next generation is given by the binomial probability&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;This music was generated based on sets of evolutionary related gene sequences across different plant species. This synthetic result was merged with field recordings made on travels during the summers of 2016 and 2017 to form an organic whole. The music embodies the paradoxical goal of purposelessness. It evokes tranquility and peaceful indifference.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=k) = \binom{2N}{k} \Big(\frac{1}{2N}\Big)^k \Big(1-\frac{1}{2N}\Big)^{2N-k}&lt;/script&gt;
+&lt;iframe style=&quot;border: 0; width: 100%; height: 120px;&quot; src=&quot;https://bandcamp.com/EmbeddedPlayer/album=2504424009/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/&quot; seamless=&quot;&quot;&gt;&lt;a href=&quot;http://bruinebeer.bandcamp.com/album/-&quot;&gt;φμ by Bruine Beer&lt;/a&gt;&lt;/iframe&gt;</content><author><name></name></author><summary type="html">Better known as φμ when unicode works or $\phi\mu$ if we want to do fancy math style. Previously (in earlier versions) also known as ‘Generative music for sleeping’ (or more informally even orthosong). Whatever the name, it is a work I made in 2016 and edited and expanded in the last months of 2017 and is an exploration in the world of generative music and unedited long-duration field recording. As some of the earlier titles already indicate, it can be considered as music for sleeping, or at least as music with some sleep-inducing qualities. I am particularly fond of this music as a matter of fact, and while many might think it is way lamer than previous things I made, I might consider it as my best work (wherever that might end up on some external reference scale). It was presented during an exhibition in the art gallery ‘Galerij Jan Colle’ in Ghent during an exhibition entitled ‘Waar de vogeltjes fluiten’, curated by Charlotte Vandenbroucke.</summary></entry><entry><title type="html">Non-particular dream</title><link href="http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd.html" rel="alternate" type="text/html" title="Non-particular dream" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd</id><content type="html" xml:base="http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd.html">&lt;p&gt;&lt;a href=&quot;https://bruinebeer.bandcamp.com/album/non-particular-dream&quot;&gt;These tracks&lt;/a&gt; have been laying around for quite a while, and I have always  enjoyed them myself. However they have only been released in the most obscure places: there was this vuilbak compilation cassette called ‘Stort Vol.2’, which was a limited edition release of size 3 (a threefold increase compared to Stort Vol.1!), and one of the tracks could be found somewhere on the &lt;a href=&quot;www.vuilbak.in&quot;&gt;vuilbak record-label website&lt;/a&gt;. Now these are collected under the title &lt;em&gt;Non-particular dream&lt;/em&gt;. In the words of the great composer:&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;i.e.&lt;/em&gt; $X \sim Binom(m=2N, p=\frac{1}{2N})$ with $E(X) = mp = 1$ and variance $Var(X) = mp(1-p) =$ $1 - \frac{1}{2N}$. This means also that is $2N$ is very large, $X \sim Poisson(1)$ &lt;em&gt;i.e.&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;“For those who love such things, and in particular for those who are familiar with comparable work, for the delight of their souls”.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x=k) = \frac{1}{k!}e^{-1}&lt;/script&gt;
+&lt;center&gt;
+&lt;img src=&quot;http://localhost:4000/assets/npd.jpg &quot; width=&quot;100%&quot; /&gt;
+&lt;/center&gt;</content><author><name></name></author><summary type="html">These tracks have been laying around for quite a while, and I have always enjoyed them myself. However they have only been released in the most obscure places: there was this vuilbak compilation cassette called ‘Stort Vol.2’, which was a limited edition release of size 3 (a threefold increase compared to Stort Vol.1!), and one of the tracks could be found somewhere on the vuilbak record-label website. Now these are collected under the title Non-particular dream. In the words of the great composer:</summary></entry><entry><title type="html">Recap - finite populations</title><link href="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html" rel="alternate" type="text/html" title="Recap - finite populations" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html">&lt;h2 id=&quot;finite-idealized-population&quot;&gt;Finite idealized population&lt;/h2&gt;
 
-&lt;p&gt;This is a result to remember: &lt;em&gt;in a large Wright-Fisher population, a gene leaves a Poisson number of descendants with expected value of 1&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;A bit of a recap is never a bad thing to do. So considering a locus with two alleles $p$ and $q$ in a finite diploid population of size $N$, initially at frequencies $q_0$ and $p_0$. Assuming an idealized population, following all Hardy-Weinberg conditions except the infinite population size, the expected frequency of $q_1$ is then $q_0$. The variance of this quantity can be calculated as a binomial sampling variance with sample size of $2N$ and is given by:&lt;/p&gt;
 
-&lt;p&gt;This is quite cool since it allows us to get some ideas of interesting values. For example, about $\frac{1}{1!}e^{-1} \approx 0.37$ genes do not leave descendants, or conversely about 0.63 percent of the genes do leave descendants. So the proportion of genes $t$ generations ago from which a large population descents is about $0.63^t$.&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sigma^2_{q_1} = \frac{q_0 (1-q_0)}{2N}&lt;/script&gt;
 
-&lt;h2 id=&quot;the-discrete-time-coalescent&quot;&gt;The discrete time coalescent&lt;/h2&gt;
+&lt;p&gt;This can be interpreted as the variance in $q_1$ among different samples of size $N$ drawn from a base population with $q = q_0$. This is also the variance of the &lt;em&gt;change&lt;/em&gt; in allele frequency $\sigma^2_{\Delta q}$.&lt;/p&gt;
 
-&lt;p&gt;We’re interested in finding the expected waiting time ($j$) until two genes find their common ancestor (&lt;em&gt;i.e.&lt;/em&gt; their lineages coalesce) when traversing the genealogy of a Wright-Fisher population back in time. This is of course given by a geometric distribution (what is the probability of having no coalescence $j-1$ generations and coalescence the $j^{th}$ generation?)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=j) = \Big(1-\frac{1}{2N}\Big)^{j-1}\frac{1}{2N}&lt;/script&gt;
-
-&lt;p&gt;Note that the probability that two genes coalesce in any generation is $\frac{1}{2N}$. This shows that $X \sim Geom(\frac{1}{2N})$ and as such has expected value $2N$ (if success probability is $\frac{1}{2N}$, it takes on average $2N$ trials to attain success) and variance $2N(2N-1)$.&lt;/p&gt;
-
-&lt;p&gt;Similarly, we can reason what the expected waiting time is for a sample of $n$ genes. The probability that $k$ genes have $k$ different ancestor will come in handy to approximate this. This is given by&lt;/p&gt;
+&lt;p&gt;We can also consider &lt;strong&gt;genotype frequencies&lt;/strong&gt;, where the frequency of homozygotes in generation $t$ is of course given by $q_{t-1}^2$ and $p_{t-1}^2$. Consider the mean frequency of homozygotes among lines sampled from a base population with minor allele frequency $q_0$, which can be denoted $\overline{q^2}$. Recall that the expression for the variance of a random variable $X$ is given by $E(X^2) - E(X)^2$. Thus we have:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{eqnarray}
-\frac{2N}{2N}\frac{(2N-1)}{2N}\frac{2N-2}{2N}\cdots\frac{2N-k+1}{2N} &amp;=&amp; \prod_{i=1}^{k-1} \Big(1-\frac{i}{2N}\Big) \\
- &amp;\approx&amp; 1 - \sum_{i=1}^{k-1} \frac{i}{2N}  = 1-\binom{k}{2}\frac{1}{2N}
+\sigma^2_{q} &amp;=&amp; \overline{q^2} - \overline{q}^2 \\
+\overline{q^2} &amp;=&amp; \overline{q}^2 + \sigma^2_{q}
 \end{eqnarray} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;The last approximation drops terms in $O(\frac{1}{N^2})$ and higher powers of $N$. The probability that any of the $k$ genes coalesces in a given generation is thus approximately given by $\binom{k}{2}\frac{1}{2N}$ so the expected waiting time for 2 out of $k$ genes to coalesce is given by&lt;/p&gt;
+&lt;p&gt;The consequences of this expression are clear. Indeed, $\overline{q}$ is just given by $q_0$, &lt;em&gt;i.e.&lt;/em&gt; the allele frequency in the base population. So the expected number of homozygotes $\overline{q^2}$ is always in excess over the original fraction of homozygotes $q_0^2$. Likewise, the fraction of heterozygotes is reduced by $2\sigma^2_{q}$. Note that we have not considered the process in function of time. We have just observed a snapshot situation in a finite population and have related it to the base population from which it was originally drawn. By doing this we observed that the fraction of homozygotes is increased with the variance of the allele frequency $\sigma_q^2$. How $\sigma_q^2$ evolves with time is something we will consider next.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=j) \approx \Bigg(1-\binom{k}{2}\frac{1}{2N}\Bigg)^{j-1}\binom{k}{2}\frac{1}{2N}&lt;/script&gt;
+&lt;h2 id=&quot;inbreeding&quot;&gt;Inbreeding&lt;/h2&gt;
 
-&lt;h2 id=&quot;the-continuous-time-coalescent&quot;&gt;The continuous time coalescent&lt;/h2&gt;
+&lt;p&gt;We will now consider the famous coefficient of inbreeding, which is a measure of the dispersive process happening in finite populations. The coefficient of inbreeding $F$ is the probability that two alleles at a randomly sampled locus are &lt;em&gt;identical by descent&lt;/em&gt; (IBD). The average $F$ gives a measure of genetic drift in a population. Note that $F$ is only meaningful when compared to a base population!&lt;/p&gt;
 
-&lt;p&gt;Just like the binomial distribution is related to the Poisson distribution, the geometric distribution is related to the exponential distribution. The coalescent can be scaled such that one time unit on the continuous scale corresponds to $2N$, the expected time for two genes to find a common ancestor. This means $t = \frac{j}{2N}$&lt;/p&gt;</content><author><name></name></author><summary type="html">Until a month or three ago, I had barely heard anything about coalescent theory, and I have been reading about it with great interest since then. Here I try to give some overview for myself about what I am yet comfortable with. It will probably be nothing more than a summary of the following wonderful book:</summary></entry><entry><title type="html">The infinitesimal model</title><link href="/qgen/popgen/evolution/2018/02/24/infmodel.html" rel="alternate" type="text/html" title="The infinitesimal model" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/qgen/popgen/evolution/2018/02/24/infmodel</id><content type="html" xml:base="/qgen/popgen/evolution/2018/02/24/infmodel.html">&lt;p&gt;Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.&lt;/p&gt;
+&lt;p&gt;Considering a base population with $2N$ genes which we consider all to be independent. We can easily see that $ F_1 = \frac{1}{2N} $. Similarly, we can reason that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_2 = \frac{1}{2N} + (1 - \frac{1}{2N})F_1&lt;/script&gt;
+
+&lt;p&gt;This gives a recursion for $F$. However this recursion is as such not very easy to work with. We can easily see that there is always an addition of $\frac{1}{2N}$ to the inbreeding coefficient in subsequent generations, originating from the probability to sample identical alleles in the base population. Call this $\Delta F = \frac{1}{2N}$. Now we can write the following expression&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_{t} = \Delta F + (1 -\Delta F)F_{t-1}&lt;/script&gt;
+
+&lt;p&gt;which can be rearranged to give&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta F = \frac{F_{t} - F_{t-1}}{1-F_{t-1}}&lt;/script&gt;
+
+&lt;p&gt;which clearly shows the nature of $\Delta F$ as a measure for the rate of inbreeding. Indeed, it expresses the increase in the inbreeding coefficient normalized by the proportion of the population that was not yet inbred.&lt;/p&gt;
+
+&lt;p&gt;We now define the panmictic index $P_t = 1-F_t$ and we rearrange the last expression to give&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{P_t}{P_{t-1}} = 1-\Delta F&lt;/script&gt;
+
+&lt;p&gt;which gives rise to a lovely recursion rendering&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\frac{P_t}{P_{t-2}} = \frac{P_t}{P_{t-1}} \frac{P_{t-1}}{P_{t-2}} &amp;=&amp; (1-\Delta F)^2 \\
+&amp;\vdots&amp; \\
+P_t &amp;=&amp; (1 - \Delta F)^t
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Which allows us to get a general expression for $F$ in function of $t$&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_t = 1 - (1-\Delta F)^t&lt;/script&gt;
+
+&lt;p&gt;which holds of course only when the F_0 is considered as 0.&lt;/p&gt;
+
+&lt;p&gt;We can now revisit the expressions in the previous sections which were attained by considering properties of binomial samples. We have shown that $\sigma_{\Delta q}^2 = \frac{q_0(1-q_0)}{2N}$ which we can now express as $q_0(1-q_0)\Delta F = q_0p_0\Delta F$. Similarly we can consider the variance in gene frequencies among different hypothetical lines of a same base population in any generation as $\sigma_{q,t}^2 = q_0p_0F_t$. Whereas $\Delta F$ can be regarded as the rate of new inbreeding, $F_t$ is a measure of the accumulated effect of random drift over $t$ generations.&lt;/p&gt;
+
+&lt;p&gt;We can again consider genotype frequencies. The mean fraction of homozygotes across hypothetical lines of size $2N$ of a same base population is still given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\overline{q^2} = \overline{q}^2 + \sigma_q^2&lt;/script&gt;
+
+&lt;p&gt;Where $\sigma_q^2$ can now be expressed in terms of the base population frequencies and the number of generations! Indeed, we have:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\overline{q^2} = q_0^2 + q_0p_0F_t&lt;/script&gt;
+
+&lt;p&gt;This clearly shows the cumulating excess of homozygotes through inbreeding. Similarly, we can consider the decline in the fraction heterozygotes ($H$). Given $H_0 = 2p_0q_0$ we can see that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+H_t &amp;=&amp; 2p_0q_0 - 2q_0p_0F_t \\
+    &amp;=&amp; 2p_0q_0(1-F_t) \\
+    &amp;=&amp; H_0(1-F_t) = H_0P_t
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;since the homozygote excess occurs at the expense of heterozygotes. Interestingly, this provides an interpretation for the panmictic index as the proportional decrease in the fraction of heterozygotes relative to the base population.&lt;/p&gt;
+
+&lt;p&gt;This is I think the core theory of inbreeding and basic population genetics in finite populations which one should always be able to reproduce on demand.&lt;/p&gt;</content><author><name></name></author><summary type="html">Finite idealized population</summary></entry><entry><title type="html">Allele surfing</title><link href="http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing.html" rel="alternate" type="text/html" title="Allele surfing" /><published>2018-04-29T00:00:00+02:00</published><updated>2018-04-29T00:00:00+02:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing.html">&lt;p&gt;Continuing my lonely journal club, I stumbled on this paper today:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gilbert, K.J., Sharp, N.P., Angert, A.L., Conte, G.L., Draghi, J.A., Guillaume, F., Hargreaves, A.L., Matthey-Doret, R., Whitlock, M.C., 2018.
+Local Adaptation Interacts with Expansion Load during Range Expansion: Maladaptation Reduces Expansion Load.
+The American Naturalist 189, no 4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And as I am quite interested in the population genetics of local adaptation and adaptation to climate change I took a look. While reading, an interesting concept previously unknown to me (or at least the term to describe it was unknown to me) was discussed, for which the term ‘&lt;strong&gt;allele surfing&lt;/strong&gt;’ has been coined (Klopfstein &lt;em&gt;et al.&lt;/em&gt; 2006). Quoting Gilbert &lt;em&gt;et al.&lt;/em&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“[…] This leads to the process of allele surfing (Klopfstein &lt;em&gt;et al.&lt;/em&gt; 2006), whereby a deleterious mutation that arises at the range edge is more likely to drift to high frequency than it would if it arose in the denser core of the species range. Because selection is inefficient, strongly deleterious alleles may persist and reach higher frequencies than expected in a population at equilibrium (Peischl and Excoffier 2015). Theoretical work shows that allele surfing is the main cause of increased deleterious allele frequency within recently expanded populations (Excoffier &lt;em&gt;et al.&lt;/em&gt; 2009). The reduction in fitness due to the accumulation of these deleterious alleles is termed expansion load (Peischl &lt;em&gt;et al.&lt;/em&gt; 2013; Peischl and Excoffier 2015).”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This statement connects the process of allele surfing to the concept of &lt;strong&gt;expansion load&lt;/strong&gt;, which might affect a population when undergoing range displacement as a response to environmental change. Indeed, while tracking its climatic optimum, a population resists global extinction but induces successive founder events, with a smaller effective population size in the newly entered range and stronger drift as a result.&lt;/p&gt;
+
+&lt;p&gt;The paper by Gilbert &lt;em&gt;et al.&lt;/em&gt; is concerned with the interplay of this process with the problem of genetic swamping, which I have examined to quite some extent before. This is the process whereby maladaptive gene flow from the more populous center of the species’ range counteracts (‘swamps’) local adaptation at the range margins. This process can also be viewed in terms of load as a ‘migrational load’. How do the combined effects of maladaptive gene flow (causing migrational load) and allele surfing (causing expansion load) affect a population that is expanding (or displacing)? These are the questions addressed by Gilbert &lt;em&gt;et al.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Another cool paper on allele surfing and expansion load is the following&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Peischl, S., Kirkpatrick, M., Excoffier, L., 2015.
+Expansion Load and the Evolutionary Dynamics of a Species Range.
+The American Naturalist 185, E81–E93. https://doi.org/10.1086/680220
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;In which they have a real cool figure of surfing alleles in asexual populations!&lt;/p&gt;</content><author><name></name></author><summary type="html">Continuing my lonely journal club, I stumbled on this paper today:</summary></entry><entry><title type="html">The infinitesimal model</title><link href="http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel.html" rel="alternate" type="text/html" title="The infinitesimal model" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel.html">&lt;p&gt;Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-basic-infinitesimal-model&quot;&gt;The basic infinitesimal model&lt;/h2&gt;
 
@@ -102,63 +178,7 @@ V_0\Bigg(1 - \frac{(F_{i,i} + F_{j,j})}{2}\Bigg)&lt;/script&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;p&gt;Barton, N. H., Etheridge, A. M., &amp;amp; Véber, A. (2017). The infinitesimal model: Definition, derivation, and implications. Theoretical Population Biology, 118, 50–73. https://doi.org/10.1016/j.tpb.2017.06.001&lt;/p&gt;</content><author><name></name></author><summary type="html">Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.</summary></entry><entry><title type="html">Selection on a single diallelic locus</title><link href="/notes/popgen/evolution/2018/02/24/single_locus_selection.html" rel="alternate" type="text/html" title="Selection on a single diallelic locus" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/notes/popgen/evolution/2018/02/24/single_locus_selection</id><content type="html" xml:base="/notes/popgen/evolution/2018/02/24/single_locus_selection.html">&lt;p&gt;We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p' = \frac{p^2 w_{AA} + p(1-p) w_{Aa}}{p^2 w_{AA} + 2p(1-p)w_{Aa} + (1-p)^2w_{aa}}&lt;/script&gt;
-
-&lt;p&gt;with $w$ the relative fitness for the genotype in subscript and $p$ the allele frequency of $A$. $p’$ denotes the allele frequency of $A$ in the next generation. The denominator ensures scaling to the novel population size obtained after selection. we further refer to it as the average fitness of the population $\bar{w}$. It is also useful to express the mean relative fitness of the allele $A$ as:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bar{w_{A}} = p w_{AA} + (1-p) w_{Aa}&lt;/script&gt;
-
-&lt;p&gt;This can be interpreted as the average relative fitness of an individual, given that it received one $A$ allele from one parent (note the analogy with average effect in quantitative genetics).&lt;/p&gt;
-
-&lt;p&gt;We can find the change in allele frequency due to selection as:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-\Delta p &amp;=&amp; p' - p  \\
-         &amp;=&amp; \frac{p^2 w_{AA} + p(1-p) w_{Aa} - p\bar{w}}{\bar{w}}
-         &amp;=&amp; \frac{p(\bar{w_A} - \bar{w})}{\bar{w}}
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;We can use the above formulae to determine for example the change in allele frequency of a fully recessive allele $A$ with frequency $p$ and selection coefficient $s$. The average fitness of the allele is given by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-\bar{w_A} &amp;=&amp; p(1+s) + (1-p) \\
-          &amp;=&amp; 1 + sp
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;The average fitness of the population by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-\bar{w} &amp;=&amp; p^2(1+s) + 2p(1-p) + (1-p)^2 \\
-        &amp;=&amp; 1 + sp^2 \\
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;The new allele frequency after one generation with selection is than given by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-p' &amp;=&amp; \frac{p\bar{w_A}}{\bar{w}} \\
-   &amp;=&amp; \frac{p(1+sp^2)}{1 + sp^2} \\
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Resulting in a per generation change in allele frequency of&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta p = \frac{sp^2(1-p)}{1+sp^2}&lt;/script&gt;
-
-&lt;p&gt;The expressions for different forms of selection (dominance, recessiveness, additivity, &lt;em&gt;etc.&lt;/em&gt;) can be readily worked out in this way.&lt;/p&gt;</content><author><name></name></author><summary type="html">We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:</summary></entry><entry><title type="html">Jürg Frey - Grizzana &amp;amp; Other Pieces</title><link href="/music/classical/wandelweiser/2018/02/24/jfgriz.html" rel="alternate" type="text/html" title="Jürg Frey - Grizzana &amp; Other Pieces" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>/music/classical/wandelweiser/2018/02/24/jfgriz</id><content type="html" xml:base="/music/classical/wandelweiser/2018/02/24/jfgriz.html">&lt;p&gt;Jürg Frey is al even een fascinatie voor mij (zie &lt;em&gt;bv.&lt;/em&gt; mijn stukje &lt;a href=&quot;organen.html&quot;&gt;&lt;em&gt;Freyheid&lt;/em&gt;&lt;/a&gt;). Spaarzaamheid zonder gierigheid, voorzichtigheid zonder preutsheid, traagheid zonder saaiheid, saaiheid zonder verveling,  verveling zonder irritatie. De muziek is als het ware een stilleven, een paradoxale verhouding tussen de vooruitgang van tijd en de rustpunten die we zoeken. De instantane blik op het landschap wordt uitgesponnen over een kwartier (&lt;em&gt;Petit fragment de paysage&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;“Het is een soort niets dat ik zoek, hetgeen dat je overhoudt als je uit de kom van je handen hebt willen drinken”&lt;/em&gt; is een zin die ik (min of meer) onthoud uit een gedicht van Herman de Coninck. De muziek vindt een dergelijk niets, geen absoluut niets, maar een poging om er in de limiet te geraken. Een voortdurende balans wordt aangeroepen tussen ‘zijn’ en ‘niet-zijn’, de muziek houdt ons vast in het moment, en stopt de tijd. Een stilstaande tijd biedt geen mogelijkheden, en zelfs geen verleden (?), een zuivere manifestatie van niets?
-We hebben kunst nodig om ons vast te houden in het moment (&lt;em&gt;Fragile Balance&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Is de muziek een projectie van efemere schaduwen naar een tijdsdimensie (&lt;em&gt;Ombres exactes sans dûreté&lt;/em&gt;)? Of is dit dolgedraaide wartaal? Een interessante vergelijking om te maken is die tussen muziek van Frey (of andere &lt;em&gt;Wandelweiser&lt;/em&gt; componisten) met ambient-drone muziek. Beide lijken vaak te trachten een moment vast te houden, de illusie te wekken dat de tijd trager of niet loopt. Frey doet dat als in een minimalistische lijnentekening (&lt;em&gt;Grizzana&lt;/em&gt;), een spaarzaam spel op een wit canvas. Drone muziek, typisch uit een minder academische, meer ‘populaire’ hoek, doet dit helemaal anders. Ze schildert monochromen waarin men kan verdwalen, niet zoekend omdat men &lt;em&gt;a priori&lt;/em&gt; weet dat er niets te vinden is. Dat is de kwaliteit van zowel de drone als het monochroom.&lt;/p&gt;
-
-&lt;p&gt;Naast het bijzondere en betoverende temporele aspect van Frey’s muziek, is er ook de onvermijdelijk spatiale evocatie. Muziek opereert in &lt;em&gt;totaal&lt;/em&gt; andere dimensies dan wij. Muziek heeft steeds het twee-dimensionele karakter van de notenbalk, de melodische sequentie en de harmonische stapeling. Frey’s muziek roept een zekere ruimtelijkheid op. Een muziek die lijkt te ontstaan door van het plafond vallende druppels op willekeurige plaatsen in een witte kamer (&lt;em&gt;Lieus d’ombres&lt;/em&gt;).&lt;/p&gt;
-
-&lt;center&gt;&lt;img src=&quot;/assets/jfgriz.jpg &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;</content><author><name></name></author><summary type="html">Jürg Frey is al even een fascinatie voor mij (zie bv. mijn stukje Freyheid). Spaarzaamheid zonder gierigheid, voorzichtigheid zonder preutsheid, traagheid zonder saaiheid, saaiheid zonder verveling, verveling zonder irritatie. De muziek is als het ware een stilleven, een paradoxale verhouding tussen de vooruitgang van tijd en de rustpunten die we zoeken. De instantane blik op het landschap wordt uitgesponnen over een kwartier (Petit fragment de paysage).</summary></entry><entry><title type="html">Levin’s MCE model</title><link href="/polyploidy/popgen/2018/02/24/levin75.html" rel="alternate" type="text/html" title="Levin's MCE model" /><published>2018-02-24T00:00:00+01:00</published><updated>2018-02-24T00:00:00+01:00</updated><id>/polyploidy/popgen/2018/02/24/levin75</id><content type="html" xml:base="/polyploidy/popgen/2018/02/24/levin75.html">&lt;p&gt;In his 1975 paper, Donald Levin proposed the first model of polyploid population establishment. Polyploidy was already for some time acknowledged as a feature of evolutionary interest in botany, but to my knowledge, Levin was the first to provide a (simple) mathematical description of the problem of cytotype coexistence. The model is inspired by population genetics, but instead of following alleles in a population, cytotypes (specifically diploids &amp;amp; tetraploids) are followed. Important to note is that Levin did not consider formation of tetraploids.&lt;/p&gt;
+&lt;p&gt;Barton, N. H., Etheridge, A. M., &amp;amp; Véber, A. (2017). The infinitesimal model: Definition, derivation, and implications. Theoretical Population Biology, 118, 50–73. https://doi.org/10.1016/j.tpb.2017.06.001&lt;/p&gt;</content><author><name></name></author><summary type="html">Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.</summary></entry><entry><title type="html">Levin’s MCE model</title><link href="http://localhost:4000/polyploidy/popgen/2018/02/24/levin75.html" rel="alternate" type="text/html" title="Levin's MCE model" /><published>2018-02-24T00:00:00+01:00</published><updated>2018-02-24T00:00:00+01:00</updated><id>http://localhost:4000/polyploidy/popgen/2018/02/24/levin75</id><content type="html" xml:base="http://localhost:4000/polyploidy/popgen/2018/02/24/levin75.html">&lt;p&gt;In his 1975 paper, Donald Levin proposed the first model of polyploid population establishment. Polyploidy was already for some time acknowledged as a feature of evolutionary interest in botany, but to my knowledge, Levin was the first to provide a (simple) mathematical description of the problem of cytotype coexistence. The model is inspired by population genetics, but instead of following alleles in a population, cytotypes (specifically diploids &amp;amp; tetraploids) are followed. Important to note is that Levin did not consider formation of tetraploids.&lt;/p&gt;
 
 &lt;p&gt;Levin models two coexisting cytotypes which undergo random mating (with some degree of selfing). Inter-cytotype matings are assumed to lead to inviable and infertile offspring. In Levin’s model, the proportion of the two cytotypes are denoted as $p$ and $q$. The frequency of within-cytotype matings is given by $p^2$ for the first cytotype and $q^2$ for the second cytotype. The frequency of between-cytotype matings is of course $2pq$. To see the strong frequency dependent effect under this model, consider the proportion of failed matings for each cytotype, given by $\frac{2pq}{p} = 2q = 2(1-p)$ for the first cytotype and analogously by $2p$ for the second cytotype. The main observation is thus that &lt;em&gt;the proportion of failed matings increases for lower population sizes&lt;/em&gt;, which Levin called the minority cytotype disadvantage, leading to minority cytotype exclusion (MCE).&lt;/p&gt;
 
@@ -172,9 +192,9 @@ We hebben kunst nodig om ons vast te houden in het moment (&lt;em&gt;Fragile Bal
 
 &lt;p&gt;and likewise $ \Delta q = \frac{q^2p - p^2q}{p^2 + q^2} = -\Delta p $. This clearly shows how the minority cytotype disadvantage leads to minority cytotype exclusion. This is illustrated in the following plot:&lt;/p&gt;
 
-&lt;center&gt;&lt;img src=&quot;/assets/levinmce_1.png &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src=&quot;http://localhost:4000/assets/levinmce_1.png &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;
 
-&lt;p&gt;Levin further incorporates selfing. With selfing probability $s$, the proportion of successful matings of course increases to $p^2(1-s) + ps$ (why not $p^(1-s)^2 + ps$?). The above expressions can be adjusted for selfing as follows&lt;/p&gt;
+&lt;p&gt;Levin further incorporates selfing. With selfing probability $s$, the proportion of successful matings of course increases to $p^2(1-s) + ps$ (why not $p^2(1-s)^2 + ps$?). The above expressions can be adjusted for selfing as follows&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta p = \frac{p^2(1-s) + ps}{p^2(1-s) + s + q^2(1-s)} - p&lt;/script&gt;
 
