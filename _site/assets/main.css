@@ -893,5 +893,6 @@ hr { border-width: 2px; border-color: black; border-style: solid; }
 
 .kitch { font-family: 'Dancing Script', cursive; }
 
-.vb-post-content a { color: green; }
-.vb-post-content a:hover { color: black; }
+.vb-posts { text-align: left; }
+.vb-posts a { color: green; }
+.vb-posts a:hover { color: black; }

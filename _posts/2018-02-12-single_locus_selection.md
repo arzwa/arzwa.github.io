@@ -3,7 +3,7 @@ layout: post
 title:  "Selection on a single diallelic locus"
 date:   2018-02-24 16:04:50 +0100
 categories: notes popgen evolution
-published: false
+published: true
 ---
 
 We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:

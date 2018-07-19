@@ -28,34 +28,18 @@ layout: none
 	</div>
 
   <!-- POSTS -->
-  <div class="w3-container w3-padding">
+  <div class="w3-container w3-padding vb-posts">
   {{ content }}
 
   {% if site.posts.size > 0 %}
     {% for post in site.posts %}
-      {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-      <li>{{ post.date | date: date_format }} | <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></li>
+      {% assign date_format = site.minima.date_format | default: "%b %2d, %Y" %}
+      <li>{{ post.date | date: date_format }} | <a href="{{ post.url | relative_url }}">{{ post.title | escape | truncate: 30}}</a></li>
       {% endfor %}
   {% endif %}
   </div>
 
-  <div class="w3-container">
-    <img src="{{ " /assets/img/veersemeer.jpg "}}" width='100%'>
-  </div>
-
-  <div class="garamond w3-padding">
-    <i>"Biology has so far spent itself in cataloguing the endlessly interesting epiphenomena of life, but at the heart of it there is still only a gaping void."</i> - (Robert Rosen Life Itself, p. 14)
-  </div>
-
-  <div class='container garamond w3-padding' style='padding-top:0px;'>
-    <p style='text-align:right;'>
-			<a href='pages/mu2/kabbelen.html'><i>Kabbelen</i></a>
-		</p>
-		<p>
-      <a href='https://bruinebeer.bandcamp.com/album/kabbelen'><i>Kabbelen
-      </i></a> - This album mainly consists of three parts, though trying to remain a whole. Kabbelen is the main theme, the purposeless flowing of things, rivers, streams, thoughts, this music, ... It is not at all an album for active listening, it often is ambient music in the original sense, don't let it interfere, don't try not to fall asleep. <i>Still purposeless flowing music to relax, ignore or listen to.</i> <a href='kabbelen.html'> Read more [...] </a>
-    </p>
-  </div>
+  <img src="{{ " /assets/img/pool.jpg "}}" width='100%'>
 </div>
 
 <!-- WIDE PANEL -->
@@ -80,6 +64,14 @@ layout: none
       <a href='https://bruinebeer.bandcamp.com/album/glaswerk'><i>Glaswerk
       </i></a> consists of six short pieces (only 11 minutes in duration) for an ensemble of three and five glasses [...] <a href='glaswerk.html'>more</a>
     </p>
+  </div>
+
+
+    <img src="{{ " /assets/img/veersemeer.jpg "}}" width='100%'>
+
+
+  <div class="garamond">
+    <i>"Biology has so far spent itself in cataloguing the endlessly interesting epiphenomena of life, but at the heart of it there is still only a gaping void."</i> - (Robert Rosen Life Itself, p. 14)
   </div>
 </div>
 
@@ -121,6 +113,16 @@ layout: none
 			github</a></i>
 			<a href='orthosong.html'>[...]</a>
 		</p>
+  </div>
+
+  <div class='container garamond' style='padding-top:0px;'>
+    <p style='text-align:right;'>
+      <a href='pages/mu2/kabbelen.html'><i>Kabbelen</i></a>
+    </p>
+    <p>
+      <a href='https://bruinebeer.bandcamp.com/album/kabbelen'><i>Kabbelen
+      </i></a> - This album mainly consists of three parts, though trying to remain a whole. Kabbelen is the main theme, the purposeless flowing of things, rivers, streams, thoughts, this music, ... It is not at all an album for active listening, it often is ambient music in the original sense, don't let it interfere, don't try not to fall asleep. <i>Still purposeless flowing music to relax, ignore or listen to.</i> <a href='kabbelen.html'> Read more [...] </a>
+    </p>
   </div>
 </div>
 
