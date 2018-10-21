@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-19T14:15:55+02:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Non-central Chi-squared</title><link href="http://localhost:4000/notes/2018/07/18/noncentral.html" rel="alternate" type="text/html" title="Non-central Chi-squared" /><published>2018-07-18T00:00:00+02:00</published><updated>2018-07-18T00:00:00+02:00</updated><id>http://localhost:4000/notes/2018/07/18/noncentral</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/18/noncentral.html">&lt;p&gt;The distribution of the square of a normal but non standard-normal random variable $X \sim \mathcal{N}(\mu, sigma^2)$
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-21T10:44:26+02:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Non-central Chi-squared</title><link href="http://localhost:4000/notes/2018/07/18/noncentral.html" rel="alternate" type="text/html" title="Non-central Chi-squared" /><published>2018-07-18T00:00:00+02:00</published><updated>2018-07-18T00:00:00+02:00</updated><id>http://localhost:4000/notes/2018/07/18/noncentral</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/18/noncentral.html">&lt;p&gt;The distribution of the square of a normal but non standard-normal random variable $X \sim \mathcal{N}(\mu, sigma^2)$
 is given by a scaled non-central $\chi^2$ distribution. That is the $X$ = $\sigma^2 Z$ with $Z$ a noncentral $\chi^2$
 distribution with scale parameter $\lambda = (\frac{mu}{\sigma})^2$.&lt;/p&gt;
 
@@ -172,7 +172,7 @@ The American Naturalist 185, E81–E93. https://doi.org/10.1086/680220
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;V_1' = \frac{V_1}{2} + V_0&lt;/script&gt;
 
-&lt;p&gt;Where the first term cn be seen as the within family ariance, and the second as the between family variance. At equilibrium, where $V_1’ = V_1$, $V_1$ is given by&lt;/p&gt;
+&lt;p&gt;Where the first term can be seen as the within family variance, and the second as the between family variance. At equilibrium, where $V_1’ = V_1$, $V_1$ is given by&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{eqnarray}
@@ -196,17 +196,7 @@ The American Naturalist 185, E81–E93. https://doi.org/10.1086/680220
 
 &lt;p&gt;For haploid individuals $i$ and $j$, the relationship, derived from a pedigree is described by $F_{i,j}$, which is the probability of identity by descent (IBD) of two genes from these individuals. The variance among offspring of these two parental haploid individuals is just $V_0(1-F_{i,j})$.&lt;/p&gt;
 
-&lt;p&gt;In a diploid individual, meiosis induces segregation variance among gametes proportional to $(1-F_{i,i})$, with $F_{i,i}$ the probability that two genes of a diploid pair are IBD. To form a gamete in individual $i$, we start with two independently sampled ancestral genes within the diploid individual, with variance among these $2V_0$ (since the variance of the sum of two uncorrelated random variables is just the sum of their variances) and probability of IBD $F_{i,i}$. &lt;em&gt;I am not fully sure about the following derivation&lt;/em&gt; (and also not if the notation is sound), but when meisosis forms 4 gametes, with mean phenotype $\bar{z}_{i,i}$ the corresponding variance should be something like this&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-Var(\bar{z_{i,i}}) &amp;=&amp; Var\Big(\frac{1}{4}\sum_{j=1}^{4}z_{i,i,j}\Big) \\
-                   &amp;=&amp; \frac{\sum_{j=1}^{4}Var(z_{i,i})}{4^2} \\
-                   &amp;=&amp; \frac{4Var(z_{i,i})}{4^2} \\
-                   &amp;=&amp; \frac{1}{4}2V_0 \\
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;conditioning on the genes sampled not being IBD. This gives an overall segregational variance for a mating of diploid parent $i$ and $j$ described by&lt;/p&gt;
+&lt;p&gt;In a diploid individual, meiosis induces segregation variance among gametes proportional to $(1-F_{i,i})$, with $F_{i,i}$ the probability that two genes of a diploid pair are IBD. To form a gamete in individual $i$, we start with two independently sampled ancestral genes within the diploid individual, with variance among these $2V_0$ (since the variance of the sum of two uncorrelated random variables is just the sum of their variances) and probability of IBD $F_{i,i}$. The variance at the gametic level, conditioning on the genes sampled not being IBD, is derived as the variance of the average of two independent draws from the base population. This gives an overall segregational variance for a mating of diploid parent $i$ and $j$ described by&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{4}(1-F_{i,i})2V_0 + \frac{1}{4}(1-F_{j,j})2V_0 =
 V_0\Bigg(1 - \frac{(F_{i,i} + F_{j,j})}{2}\Bigg)&lt;/script&gt;

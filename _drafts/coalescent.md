@@ -1,0 +1,38 @@
+---
+title: Neutral evolution - the coalescent
+---
+
+So yeah, we now the basic coalescent is fairly easy. The probbility that two lineages
+coalesce in generation $t$ in an idealized Wright-Fisher population is given by
+
+$$ P_c(t) = \Big(\frac{1}{2n}\Big)\Big(1 - \frac{1}{2N}\Big)^{t-1} $$
+
+which defines a geometric distribution with 'success' probability $1/2N$. One
+can derive a whole load of nice applied math from there on. A particularly nice
+result is the mean time of coalescence of two lineages, which is by definition
+of the mean
+
+$$ \mathbb{E}(t_c(2)) = \sum_{t=1}^{\infty}tP_c(t) $$
+
+and then they say that this is $2N$, but why? Well, we know that the series 
+
+$$ \sum_{t=0}^{\infty} x^k = \frac{1}{1-x} $$
+
+is absolutely convergent for $\|x\| < 1$. This implies we can take the derivative
+
+$$\begin{eqnarray} 
+\frac{d}{dx}\sum_{t=0}^{\infty} x^t &=& \sum_{t=0}^{\infty} \frac{dx^t}{dx} \\ 
+                                    &=& \sum_{t=0}^{\infty} tx^{t-1} 
+\end{eqnarray}$$
+
+which must equal $\frac{d}{dx}\frac{1}{1-x} = \frac{1}{(1-x)^2}$. So applying
+this to our case where $x = (1-1/2N)$ we have
+
+$$\begin{eqnarray} 
+\mathbb{E}(t_c(2)) &=& \sum_{t=1}^{\infty}t \frac{1}{2N} \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &=& \frac{1}{2N} \sum_{t=1}^{\infty} t \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &=& \frac{1}{2N} \Bigg(\frac{1}{(1-1+\frac{1}{2N})^2}\Bigg) \\ 
+                   &=& 2N 
+\end{eqnarray}$$
+
+which is neat.
