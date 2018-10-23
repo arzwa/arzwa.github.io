@@ -1,0 +1,137 @@
+---
+layout: none
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+{% include head.html %}
+<body>
+
+<!-- LEFT PANEL -->
+<div class='w3-col s12 m6 l4'>
+  <div class='w3-bar w3-white'>
+		<div class="w3-bar-item bar2"><i>bb</i></div>
+		<div class="w3-bar-item"><a href='pages/mu/'>&mu;</a></div>
+		<div class="w3-bar-item bar2"><a href='phi.html'>&phi;</a></div>
+		<div class="w3-bar-item"><a href='beta.html'>&beta;</a></div>
+		<div class="w3-bar-item"><a href='pages/mu2/index.html'>&mu;<sup>2</sup></a></div>
+		<div class="w3-bar-item bar2"><a href='bbgraph.html'>G(V,E)</a></div>
+		<div class="w3-bar-item bar2">
+			<a href='http://www.vuilbak.in/vuilbak-recordlabel/home.html'>vuilbak recordlabel</a>
+		</div>
+	</div>
+
+	<!-- SECOND BAR -->
+	<div class='w3-bar w3-white'>
+		<div class='w3-bar-item bar2'><a href='http://www.vuilbak.in'>vuilbak</a></div>
+		<div class='w3-bar-item bar2'>πάντα χωρεῖ καὶ οὐδὲν μένει</div>
+	</div>
+
+  <!-- POSTS -->
+  <div class="w3-container w3-padding vb-posts">
+  {{ content }}
+
+  {% if site.posts.size > 0 %}
+    {% for post in site.posts %}
+      {% assign date_format = site.minima.date_format | default: "%b %2d, %Y" %}
+      <li>{{ post.date | date: date_format }} | <a href="{{ post.url | relative_url }}">{{ post.title | escape | truncate: 30}}</a></li>
+      {% endfor %}
+  {% endif %}
+  </div>
+
+  <img src="{{ " /assets/img/pool.jpg "}}" width='100%'>
+
+ <div class='container garamond'>
+   <p>
+      <i>"From eight o'clocktoten o'clockreal biologists work collecting data and doing science, but then for relaxation they run to theevolutionary playground, only to return, fortified and reenergized (perhaps relieved) by the gay abandon of speculation, to the stuff of which science and technology are really made."</i> - Janis Antonovics
+   </p>
+ </div>
+</div>
+
+<!-- WIDE PANEL -->
+<div class='w3-col s12 m6 l8 w3-padding'>
+	<img src="{{ " /assets/img/phono.JPG "}}" width='100%'>
+</div>
+
+<!-- MIDDLE PANEL -->
+<div class='w3-col s12 m6 l4 w3-padding'>
+  <div class='container garamond' style='padding-top:0px;'>
+    <p style='text-align:right;'>
+      <a href='pages/mu2/schapendal.html'><i>Schapendal</i></a>
+    </p>
+    <p>
+      Recordings from sheep in Sutjeska / Piva national park (Bosnia i Herzegovina / Montenegro).
+      <br><a href='pages/mu2/schapendal.html'><img src="{{ " /assets/img/piva.jpg "}}" width='100%'></a>
+    </p>
+  </div>
+
+  <div class='container garamond' style='padding-top:0px;'>
+    <p>
+      <a href='https://bruinebeer.bandcamp.com/album/glaswerk'><i>Glaswerk
+      </i></a> consists of six short pieces (only 11 minutes in duration) for an ensemble of three and five glasses [...] <a href='glaswerk.html'>more</a>
+    </p>
+  </div>
+
+
+    <img src="{{ " /assets/img/veersemeer.jpg "}}" width='100%'>
+
+
+  <div class="garamond">
+    <i>"Biology has so far spent itself in cataloguing the endlessly interesting epiphenomena of life, but at the heart of it there is still only a gaping void."</i> - (Robert Rosen Life Itself, p. 14)
+  </div>
+</div>
+
+
+<!-- RIGHT PANEL -->
+<div class='w3-col s12 m6 l4 w3-padding'>
+
+	<div class='container garamond' style='padding-top:0px;'>
+		<p style='text-align:right;'>
+			<a href='pages/mu2/triadic_memories.html'><i>Triadic memories</i></a>
+		</p>
+		<p>
+			<i>Stochastic bass guitar music for sunday morning.</i> has not really
+			something to do with Morton Feldman's triadic memories. It is a
+			small piece randomly generated from a set of consonant triads
+			recorded with my bass guitar. It is mostly made for relaxing and
+			<a href='pages/mu2/triadic_memories.html'>[...]</a>
+		</p>
+	</div>
+
+	<div class='container garamond' style='padding-top:0px;'>
+		<p class='blockquote'>
+			<i>"For presumably, it is unlikely that fire or earth or anything else
+			of that sort would cause some things to be in a good or fine state
+			and would cause other things to come to be in that state, and
+			unlikely that people would thin so; still, it was unsatisfactory to
+			entrust so great a result to chance and luck."</i> (Aristotle
+			Metaphysics I 984b 11-14).
+		</p>
+	</div>
+
+  <div class='container garamond' style='padding-top:0px;'>
+    <p style='text-align:left;'>
+			<a href='orthosong.html'><i>orthosong</i></a>
+		</p>
+		<p>
+			<i>A python program for comparative genomic music.</i>
+			Susumu Ohno sings amino acids. <i><a href='https://github.com/arzwa/orthosong'>
+			github</a></i>
+			<a href='orthosong.html'>[...]</a>
+		</p>
+  </div>
+
+  <div class='container garamond' style='padding-top:0px;'>
+    <p style='text-align:right;'>
+      <a href='pages/mu2/kabbelen.html'><i>Kabbelen</i></a>
+    </p>
+    <p>
+      <a href='https://bruinebeer.bandcamp.com/album/kabbelen'><i>Kabbelen
+      </i></a> - This album mainly consists of three parts, though trying to remain a whole. Kabbelen is the main theme, the purposeless flowing of things, rivers, streams, thoughts, this music, ... It is not at all an album for active listening, it often is ambient music in the original sense, don't let it interfere, don't try not to fall asleep. <i>Still purposeless flowing music to relax, ignore or listen to.</i> <a href='kabbelen.html'> Read more [...] </a>
+    </p>
+  </div>
+</div>
+
+</body>
+
+</html>
