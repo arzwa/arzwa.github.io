@@ -1,62 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-21T10:44:26+02:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Non-central Chi-squared</title><link href="http://localhost:4000/notes/2018/07/18/noncentral.html" rel="alternate" type="text/html" title="Non-central Chi-squared" /><published>2018-07-18T00:00:00+02:00</published><updated>2018-07-18T00:00:00+02:00</updated><id>http://localhost:4000/notes/2018/07/18/noncentral</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/18/noncentral.html">&lt;p&gt;The distribution of the square of a normal but non standard-normal random variable $X \sim \mathcal{N}(\mu, sigma^2)$
-is given by a scaled non-central $\chi^2$ distribution. That is the $X$ = $\sigma^2 Z$ with $Z$ a noncentral $\chi^2$
-distribution with scale parameter $\lambda = (\frac{mu}{\sigma})^2$.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;seaborn&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sns&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;si&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;normal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;si&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;z_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;si&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;noncentral_chisquare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;si&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kdeplot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shade&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;linestyle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;--&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;forestgreen&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Non-central $&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;chi^2$&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kdeplot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;k&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;linestyle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Square of normal&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;despine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;center&gt;&lt;img src=&quot;http://localhost:4000/assets/img/noncentralchisq.png &quot; width=&quot;400px&quot; /&gt;&lt;/center&gt;
-
-&lt;p&gt;Consider stabilizing selection on a quantitative trait, where phenotype $z$ is
-related to fitness $w$ as follows:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w = e^{-\frac{1}{2} \beta(z-\theta)^2}&lt;/script&gt;
-
-&lt;p&gt;We are interested in finding the expected value of $w$, given the random
-variable $z$, which follows a Normal distribution with known mean
-$\overline{z}$ and variance $\sigma^2$. Obviously we know that $z - \theta$
-also follows a Normal distribution. Call this r.v. $X$ with mean $\mu$. Now we
-want to find the distribution of $X^2$. This should have something to do with a
-$\chi^2$ distribution.&lt;/p&gt;
-
-&lt;p&gt;It turns out that $X^2$ has the same distribution as the r.v. $\sigma^2 Y$
-where $Y$ follows a non-central $\chi^2$ distribution with one d.f.
-$\chi^2_{k=1}((\frac{\mu}{\sigma})^2)$.&lt;/p&gt;
-
-&lt;p&gt;Now we can find $E(w) = E(e^{-\frac{1}{2} \beta \sigma^2 y})$ with $y = (z -
-\theta)^2$ by using the moment generating function $e^{tY}$ where we $t =
--\frac{1}{2} \beta \sigma^2$ of the non-central $\chi^2$ distribution.&lt;/p&gt;</content><author><name></name></author><summary type="html">The distribution of the square of a normal but non standard-normal random variable $X \sim \mathcal{N}(\mu, sigma^2)$ is given by a scaled non-central $\chi^2$ distribution. That is the $X$ = $\sigma^2 Z$ with $Z$ a noncentral $\chi^2$ distribution with scale parameter $\lambda = (\frac{mu}{\sigma})^2$.</summary></entry><entry><title type="html">Bloodstream Sermon - Jefre Cantu-Ledesma</title><link href="http://localhost:4000/2018/07/18/bloodstream_sermon.html" rel="alternate" type="text/html" title="Bloodstream Sermon - Jefre Cantu-Ledesma" /><published>2018-07-18T00:00:00+02:00</published><updated>2018-07-18T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/18/bloodstream_sermon</id><content type="html" xml:base="http://localhost:4000/2018/07/18/bloodstream_sermon.html">&lt;p&gt;Dried blades of grass wiggled by a soft wind, showing minimal resistance, seem to feel the microscopic dynamics of this music. These drones are all about texture, the ruggedness and roughness of an unpolished concrete wall. This is &lt;em&gt;wabi sabi&lt;/em&gt; as far as I understand it. A music which feels comfortingly timeless, yet acknowledges the deciduous and perishable nature of things. It is perhaps a recurrent quality of ambient music to express these intuitions, most directly present in Basinski’s Disintegration Loops, but far from absent in this superficially highly persistent drone music of Jefre Cantu-Ledesma. The contrast between the timeless universe evoked by this music and the textural humbleness and imperfectness in the actual noise gives us the quintessential ambient music experience. One could hardly propose a better title for this music. The impermanent, yet everlasting recurrence of life is evoked and transcended in this music.&lt;/p&gt;
-
-&lt;p&gt;&lt;img style=&quot;width:100%;&quot; src=&quot; /assets/img/jefre_bs.jpg &quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Dried blades of grass wiggled by a soft wind, showing minimal resistance, seem to feel the microscopic dynamics of this music. These drones are all about texture, the ruggedness and roughness of an unpolished concrete wall. This is wabi sabi as far as I understand it. A music which feels comfortingly timeless, yet acknowledges the deciduous and perishable nature of things. It is perhaps a recurrent quality of ambient music to express these intuitions, most directly present in Basinski’s Disintegration Loops, but far from absent in this superficially highly persistent drone music of Jefre Cantu-Ledesma. The contrast between the timeless universe evoked by this music and the textural humbleness and imperfectness in the actual noise gives us the quintessential ambient music experience. One could hardly propose a better title for this music. The impermanent, yet everlasting recurrence of life is evoked and transcended in this music.</summary></entry><entry><title type="html">\phi\mu</title><link href="http://localhost:4000/music%20vuilbak/2018/04/30/phimu.html" rel="alternate" type="text/html" title="\phi\mu" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/music%20vuilbak/2018/04/30/phimu</id><content type="html" xml:base="http://localhost:4000/music%20vuilbak/2018/04/30/phimu.html">&lt;p&gt;Better known as &lt;a href=&quot;https://bruinebeer.bandcamp.com/album/-&quot;&gt;φμ&lt;/a&gt; when unicode works or $\phi\mu$ if we want to do fancy math style. Previously (in earlier versions) also known as ‘&lt;a href=&quot;https://bruinebeer.bandcamp.com/album/-&quot;&gt;Generative music for sleeping&lt;/a&gt;’ (or more informally even &lt;code class=&quot;highlighter-rouge&quot;&gt;orthosong&lt;/code&gt;). Whatever the name, it is a work I made in 2016 and edited and expanded in the last months of 2017 and is an exploration in the world of generative music and unedited long-duration field recording. As some of the earlier titles already indicate, it can be considered as music for sleeping, or at least as music with some sleep-inducing qualities. I am particularly fond of this music as a matter of fact, and while many might think it is way lamer than previous things I made, I might consider it as my best work (wherever that might end up on some external reference scale). It was presented during an exhibition in the art gallery ‘Galerij Jan Colle’ in Ghent during an exhibition entitled ‘Waar de vogeltjes fluiten’, curated by Charlotte Vandenbroucke.&lt;/p&gt;
-
-&lt;center&gt;
-&lt;img src=&quot;http://localhost:4000/assets/phimu2.jpg &quot; width=&quot;49.8%&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/phimu.jpg &quot; width=&quot;49.8%&quot; /&gt;
-&lt;/center&gt;
-
-&lt;p&gt;I have written about the underlying generative model, which is based on multiple sequence alignments of sets of evolutionary related genes (better known as &lt;em&gt;gene families&lt;/em&gt;), before and will not reiterate these technical details here. I include the accompanying note for the exhibition here and point to my bandcamp page for the actual music.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This music was generated based on sets of evolutionary related gene sequences across different plant species. This synthetic result was merged with field recordings made on travels during the summers of 2016 and 2017 to form an organic whole. The music embodies the paradoxical goal of purposelessness. It evokes tranquility and peaceful indifference.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-30T00:02:00+01:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">Gregory Dale Adamson - Philosophy in the age of Science and Capital</title><link href="http://localhost:4000/science/philosophy/2018/11/26/adamson.html" rel="alternate" type="text/html" title="Gregory Dale Adamson - Philosophy in the age of Science and Capital" /><published>2018-11-26T00:00:00+01:00</published><updated>2018-11-26T00:00:00+01:00</updated><id>http://localhost:4000/science/philosophy/2018/11/26/adamson</id><content type="html" xml:base="http://localhost:4000/science/philosophy/2018/11/26/adamson.html">&lt;blockquote&gt;
+  &lt;p&gt;As Bergson has demonstrated, in order to distance ourselves from the objective
+world as well as to perceive aspects of it, consciousness does not ‘add’
+anything to the real, but substracts that which is of no interest (p. 20).&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;iframe style=&quot;border: 0; width: 100%; height: 120px;&quot; src=&quot;https://bandcamp.com/EmbeddedPlayer/album=2504424009/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/&quot; seamless=&quot;&quot;&gt;&lt;a href=&quot;http://bruinebeer.bandcamp.com/album/-&quot;&gt;φμ by Bruine Beer&lt;/a&gt;&lt;/iframe&gt;</content><author><name></name></author><summary type="html">Better known as φμ when unicode works or $\phi\mu$ if we want to do fancy math style. Previously (in earlier versions) also known as ‘Generative music for sleeping’ (or more informally even orthosong). Whatever the name, it is a work I made in 2016 and edited and expanded in the last months of 2017 and is an exploration in the world of generative music and unedited long-duration field recording. As some of the earlier titles already indicate, it can be considered as music for sleeping, or at least as music with some sleep-inducing qualities. I am particularly fond of this music as a matter of fact, and while many might think it is way lamer than previous things I made, I might consider it as my best work (wherever that might end up on some external reference scale). It was presented during an exhibition in the art gallery ‘Galerij Jan Colle’ in Ghent during an exhibition entitled ‘Waar de vogeltjes fluiten’, curated by Charlotte Vandenbroucke.</summary></entry><entry><title type="html">Non-particular dream</title><link href="http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd.html" rel="alternate" type="text/html" title="Non-particular dream" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd</id><content type="html" xml:base="http://localhost:4000/music%20vuilbak%20bruinebeer/2018/04/30/npd.html">&lt;p&gt;&lt;a href=&quot;https://bruinebeer.bandcamp.com/album/non-particular-dream&quot;&gt;These tracks&lt;/a&gt; have been laying around for quite a while, and I have always  enjoyed them myself. However they have only been released in the most obscure places: there was this vuilbak compilation cassette called ‘Stort Vol.2’, which was a limited edition release of size 3 (a threefold increase compared to Stort Vol.1!), and one of the tracks could be found somewhere on the &lt;a href=&quot;www.vuilbak.in&quot;&gt;vuilbak record-label website&lt;/a&gt;. Now these are collected under the title &lt;em&gt;Non-particular dream&lt;/em&gt;. In the words of the great composer:&lt;/p&gt;
-
 &lt;blockquote&gt;
-  &lt;p&gt;“For those who love such things, and in particular for those who are familiar with comparable work, for the delight of their souls”.&lt;/p&gt;
-&lt;/blockquote&gt;
+  &lt;p&gt;[…] The instant conditions scientific thought and representation in its 
+entirety, introducing a Platonism into science which is, as Bergson writes, 
+‘immanent to the method’. (p. 40)&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="Bergson" /><category term="Marx" /><summary type="html">As Bergson has demonstrated, in order to distance ourselves from the objective world as well as to perceive aspects of it, consciousness does not ‘add’ anything to the real, but substracts that which is of no interest (p. 20).</summary></entry><entry><title type="html">Theoretical vs. empirical science</title><link href="http://localhost:4000/quotes/2018/11/15/Rosen_on_theoretical_empirical_science.html" rel="alternate" type="text/html" title="Theoretical vs. empirical science" /><published>2018-11-15T00:00:00+01:00</published><updated>2018-11-15T00:00:00+01:00</updated><id>http://localhost:4000/quotes/2018/11/15/Rosen_on_theoretical_empirical_science</id><content type="html" xml:base="http://localhost:4000/quotes/2018/11/15/Rosen_on_theoretical_empirical_science.html"></content><author><name></name></author><category term="Robert Rosen" /><category term="theoretical biology" /><summary type="html"></summary></entry><entry><title type="html">The Robertson-Price identity</title><link href="http://localhost:4000/2018/10/21/robertson_price.html" rel="alternate" type="text/html" title="The Robertson-Price identity" /><published>2018-10-21T00:00:00+02:00</published><updated>2018-10-21T00:00:00+02:00</updated><id>http://localhost:4000/2018/10/21/robertson_price</id><content type="html" xml:base="http://localhost:4000/2018/10/21/robertson_price.html">&lt;p&gt;Consider the change in population mean $S = \mu_s - \mu$ due to selection on a
+character $z$, where $\mu_s$ denotes the population mean after selection but
+&lt;em&gt;before&lt;/em&gt; reproduction.  Let $p(z)$ and $p_s(z)$ denote the frequency of
+phenotype $z$ before and after selection respectively and $W(z)$ the abolute
+fitness associated with the trait value $z$.  By definition of the mean we have&lt;/p&gt;
 
-&lt;center&gt;
-&lt;img src=&quot;http://localhost:4000/assets/npd.jpg &quot; width=&quot;100%&quot; /&gt;
-&lt;/center&gt;</content><author><name></name></author><summary type="html">These tracks have been laying around for quite a while, and I have always enjoyed them myself. However they have only been released in the most obscure places: there was this vuilbak compilation cassette called ‘Stort Vol.2’, which was a limited edition release of size 3 (a threefold increase compared to Stort Vol.1!), and one of the tracks could be found somewhere on the vuilbak record-label website. Now these are collected under the title Non-particular dream. In the words of the great composer:</summary></entry><entry><title type="html">Recap - finite populations</title><link href="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html" rel="alternate" type="text/html" title="Recap - finite populations" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html">&lt;h2 id=&quot;finite-idealized-population&quot;&gt;Finite idealized population&lt;/h2&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_s = \int_z z p_s(z) dz&lt;/script&gt;
+
+&lt;p&gt;We need to find an expression for $p_s(z)$ to get further. $p_s(z)$ is of
+course equal to $W(z)p(z)/\int_zW(z)p(z)dz$, where the denominator ensures that
+$\int_z p_s(z) dz = \bar{W} = 1$ to form a proper density. We can define the
+relative fitness as $w(z) = W(z) / \bar{W}$ so that we can write&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p_s(z) = w(z) p(z)&lt;/script&gt;
+
+&lt;p&gt;Which is a very intuitive expression relating the phenotypic distribution
+before and after selection. We can now rewrite the expression for $mu_s$ as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_s = \int_z z w(z) p(z) dz = \mathrm{E}(z w(z))&lt;/script&gt;
+
+&lt;p&gt;Note that by definition $\mathrm{E}(w(z)) = \bar{w} = 1$ so that we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+ S &amp;=&amp; \mu_s - \mu \\
+   &amp;=&amp; \mathrm{E}(z w(z)) - \mathrm{E}(z) \\
+   &amp;=&amp; \mathrm{E}(z w(z)) - \mathrm{E}(z) \mathrm{E}(w(z)) \\
+   &amp;=&amp; \sigma(z, w(z)) 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;that is, &lt;em&gt;the selection differential&lt;/em&gt; $S$ &lt;em&gt;is equal to the covariance of trait
+value with relative fitness&lt;/em&gt;. This result is known as the Robertson-Price
+identity.&lt;/p&gt;
+
+&lt;p&gt;We now go to the offsping generation to investigate the effect of the selection
+procedure.  We are interested in $\mu_o - \mu$, that is the change in trait
+mean in the offspring generation due to selection. Considering the regression
+of offspring trait values on the parent trait values with coefficient $\beta$,
+we have that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\mu = \mu_o - \mu = \beta(\mu_s - \mu) = \beta S&lt;/script&gt;
+
+&lt;p&gt;which is known as the Breeder’s equation.&lt;/p&gt;</content><author><name></name></author><summary type="html">Consider the change in population mean $S = \mu_s - \mu$ due to selection on a character $z$, where $\mu_s$ denotes the population mean after selection but before reproduction. Let $p(z)$ and $p_s(z)$ denote the frequency of phenotype $z$ before and after selection respectively and $W(z)$ the abolute fitness associated with the trait value $z$. By definition of the mean we have</summary></entry><entry><title type="html">The mean time of coalescence</title><link href="http://localhost:4000/2018/08/10/coal.html" rel="alternate" type="text/html" title="The mean time of coalescence" /><published>2018-08-10T00:00:00+02:00</published><updated>2018-08-10T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/10/coal</id><content type="html" xml:base="http://localhost:4000/2018/08/10/coal.html">&lt;p&gt;So yeah, we know the basic coalescent is fairly easy to grasp. The probability
+that two lineages coalesce in generation $t$ in an idealized Wright-Fisher
+population is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P_c(t) = \Big(\frac{1}{2n}\Big)\Big(1 - \frac{1}{2N}\Big)^{t-1}&lt;/script&gt;
+
+&lt;p&gt;which defines a geometric distribution with ‘success’ probability $1/2N$. One
+can derive a whole load of nice applied math from there on. A particularly nice
+result is the mean time of coalescence of two lineages, which is by definition
+of the mean&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}(t_c(2)) = \sum_{t=1}^{\infty}tP_c(t)&lt;/script&gt;
+
+&lt;p&gt;and then they say that this is $2N$, but why? Well, we know that the series&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{\infty} x^k = \frac{1}{1-x}&lt;/script&gt;
+
+&lt;p&gt;is absolutely convergent for $|x| &amp;lt; 1$. This implies we can take the derivative&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray} 
+\frac{d}{dx}\sum_{t=0}^{\infty} x^t &amp;=&amp; \sum_{t=0}^{\infty} \frac{dx^t}{dx} \\ 
+                                    &amp;=&amp; \sum_{t=0}^{\infty} tx^{t-1} 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which must equal $\frac{d}{dx}\frac{1}{1-x} = \frac{1}{(1-x)^2}$. So applying
+this to our case where $x = (1-1/2N)$ we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray} 
+\mathbb{E}(t_c(2)) &amp;=&amp; \sum_{t=1}^{\infty}t \frac{1}{2N} \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &amp;=&amp; \frac{1}{2N} \sum_{t=1}^{\infty} t \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &amp;=&amp; \frac{1}{2N} \Bigg(\frac{1}{(1-1+\frac{1}{2N})^2}\Bigg) \\ 
+                   &amp;=&amp; 2N 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which is neat.&lt;/p&gt;</content><author><name></name></author><summary type="html">So yeah, we know the basic coalescent is fairly easy to grasp. The probability that two lineages coalesce in generation $t$ in an idealized Wright-Fisher population is given by</summary></entry><entry><title type="html">Recap - finite populations</title><link href="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html" rel="alternate" type="text/html" title="Recap - finite populations" /><published>2018-04-30T00:00:00+02:00</published><updated>2018-04-30T00:00:00+02:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution%20recap/2018/04/30/finite_populations.html">&lt;h2 id=&quot;finite-idealized-population&quot;&gt;Finite idealized population&lt;/h2&gt;
 
 &lt;p&gt;A bit of a recap is never a bad thing to do. So considering a locus with two alleles $p$ and $q$ in a finite diploid population of size $N$, initially at frequencies $q_0$ and $p_0$. Assuming an idealized population, following all Hardy-Weinberg conditions except the infinite population size, the expected frequency of $q_1$ is then $q_0$. The variance of this quantity can be calculated as a binomial sampling variance with sample size of $2N$ and is given by:&lt;/p&gt;
 
@@ -132,80 +162,7 @@ H_t &amp;=&amp; 2p_0q_0 - 2q_0p_0F_t \\
 
 &lt;p&gt;since the homozygote excess occurs at the expense of heterozygotes. Interestingly, this provides an interpretation for the panmictic index as the proportional decrease in the fraction of heterozygotes relative to the base population.&lt;/p&gt;
 
-&lt;p&gt;This is I think the core theory of inbreeding and basic population genetics in finite populations which one should always be able to reproduce on demand.&lt;/p&gt;</content><author><name></name></author><summary type="html">Finite idealized population</summary></entry><entry><title type="html">Allele surfing</title><link href="http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing.html" rel="alternate" type="text/html" title="Allele surfing" /><published>2018-04-29T00:00:00+02:00</published><updated>2018-04-29T00:00:00+02:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution%20journalclub/2018/04/29/allele_surfing.html">&lt;p&gt;Continuing my lonely journal club, I stumbled on this paper today:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gilbert, K.J., Sharp, N.P., Angert, A.L., Conte, G.L., Draghi, J.A., Guillaume, F., Hargreaves, A.L., Matthey-Doret, R., Whitlock, M.C., 2018.
-Local Adaptation Interacts with Expansion Load during Range Expansion: Maladaptation Reduces Expansion Load.
-The American Naturalist 189, no 4
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And as I am quite interested in the population genetics of local adaptation and adaptation to climate change I took a look. While reading, an interesting concept previously unknown to me (or at least the term to describe it was unknown to me) was discussed, for which the term ‘&lt;strong&gt;allele surfing&lt;/strong&gt;’ has been coined (Klopfstein &lt;em&gt;et al.&lt;/em&gt; 2006). Quoting Gilbert &lt;em&gt;et al.&lt;/em&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“[…] This leads to the process of allele surfing (Klopfstein &lt;em&gt;et al.&lt;/em&gt; 2006), whereby a deleterious mutation that arises at the range edge is more likely to drift to high frequency than it would if it arose in the denser core of the species range. Because selection is inefficient, strongly deleterious alleles may persist and reach higher frequencies than expected in a population at equilibrium (Peischl and Excoffier 2015). Theoretical work shows that allele surfing is the main cause of increased deleterious allele frequency within recently expanded populations (Excoffier &lt;em&gt;et al.&lt;/em&gt; 2009). The reduction in fitness due to the accumulation of these deleterious alleles is termed expansion load (Peischl &lt;em&gt;et al.&lt;/em&gt; 2013; Peischl and Excoffier 2015).”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This statement connects the process of allele surfing to the concept of &lt;strong&gt;expansion load&lt;/strong&gt;, which might affect a population when undergoing range displacement as a response to environmental change. Indeed, while tracking its climatic optimum, a population resists global extinction but induces successive founder events, with a smaller effective population size in the newly entered range and stronger drift as a result.&lt;/p&gt;
-
-&lt;p&gt;The paper by Gilbert &lt;em&gt;et al.&lt;/em&gt; is concerned with the interplay of this process with the problem of genetic swamping, which I have examined to quite some extent before. This is the process whereby maladaptive gene flow from the more populous center of the species’ range counteracts (‘swamps’) local adaptation at the range margins. This process can also be viewed in terms of load as a ‘migrational load’. How do the combined effects of maladaptive gene flow (causing migrational load) and allele surfing (causing expansion load) affect a population that is expanding (or displacing)? These are the questions addressed by Gilbert &lt;em&gt;et al.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Another cool paper on allele surfing and expansion load is the following&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Peischl, S., Kirkpatrick, M., Excoffier, L., 2015.
-Expansion Load and the Evolutionary Dynamics of a Species Range.
-The American Naturalist 185, E81–E93. https://doi.org/10.1086/680220
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;In which they have a real cool figure of surfing alleles in asexual populations!&lt;/p&gt;</content><author><name></name></author><summary type="html">Continuing my lonely journal club, I stumbled on this paper today:</summary></entry><entry><title type="html">The infinitesimal model</title><link href="http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel.html" rel="alternate" type="text/html" title="The infinitesimal model" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel</id><content type="html" xml:base="http://localhost:4000/qgen%20popgen%20evolution/2018/02/24/infmodel.html">&lt;p&gt;Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-basic-infinitesimal-model&quot;&gt;The basic infinitesimal model&lt;/h2&gt;
-
-&lt;p&gt;We assume a large outcrossing population, and a purely additive quantitative trait with phenotype $z$, determined only by a genetic component for now. Denote $z_{ij}$ as the phenotype of offspring of a cross of parents $i$ and $j$ then&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;z_{ij} \sim N(\bar{z}_{i,j}, V_0)&lt;/script&gt;
-
-&lt;p&gt;&lt;em&gt;i.e.&lt;/em&gt; the offspring phenotype follows a Normal distribution around the mean of the parents phenotypes with fixed variance $V_0$ independent of the parental phenotypes.&lt;/p&gt;
-
-&lt;p&gt;Under random mating, this implies that the distribution of trait values of population as a whole converges to a Normal distribution with variance $2V_0$. If we denote the variance of $z$ in the parental population as $V_1$, the variance of the offspring is given by $\frac{V_1}{2}$. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables&quot;&gt;Bienaymé formula&lt;/a&gt; states that the variance of the sum of $n$ uncorrelated random variables is just the sum of the variances. Under random mating the parental phenotypes are just two uncorrelated random variables with variance $V_1$, the variance of the offspring trait value (which is just the mean of the parental values) is thus given by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Var(\bar{z}_{i,j}) = Var\Big(\frac{1}{2}(z_i + z_j)\Big) = \frac{1}{4}Var(z_i + z_j) = \frac{1}{4}2V_1 = \frac{V_1}{2}&lt;/script&gt;
-
-&lt;p&gt;The variance in the offspring generation is thus&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_1' = \frac{V_1}{2} + V_0&lt;/script&gt;
-
-&lt;p&gt;Where the first term can be seen as the within family variance, and the second as the between family variance. At equilibrium, where $V_1’ = V_1$, $V_1$ is given by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{eqnarray}
-\frac{V_1}{2} + V_0 &amp;=&amp; V_1  \\
-                V_1 &amp;=&amp; 2V_0 \\
-\end{eqnarray} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;This means that half of the variance is &lt;em&gt;between&lt;/em&gt; families and half &lt;em&gt;within&lt;/em&gt; families (this can be seen when substituting $V_1$ for $2V_0$ in the expression for $V_1’$ above).&lt;/p&gt;
-
-&lt;p&gt;So in summary, under the basic, phenotypically defined, infinitesimal model the phenotypic value of offspring is distributed around the parental midpoint with fixed variance independent of the parental phenotypes. The model converges to a state where the total variance is distributed equally over between and within family variance.&lt;/p&gt;
-
-&lt;h2 id=&quot;selection&quot;&gt;Selection&lt;/h2&gt;
-
-&lt;p&gt;When selection is operating on the trait value (&lt;em&gt;i.e.&lt;/em&gt; the trait is correlated with relative fitness), arbitrary distributions of trait values can form. However the within-family trait value distributions will remain Gaussian! This seems to be a key property of the infinitesimal model, which Barton &lt;em&gt;et al.&lt;/em&gt; like to stress.&lt;/p&gt;
-
-&lt;h2 id=&quot;inbreeding&quot;&gt;Inbreeding&lt;/h2&gt;
-
-&lt;p&gt;Barton &lt;em&gt;et al.&lt;/em&gt; next discuss how to incorporate inbreeding in what is now a purely phenotypically defined model. They stress that this still does not require any modern insights in ‘genes’, and that in theory only inbreeding coefficients ($F_{i,j}$) are required which can be estimated from pedigrees. However, for ease of explanation they proceed using modern terminology.&lt;/p&gt;
-
-&lt;p&gt;In the current model, the expected value of the offspring is the midpoint of the parental trait values. Variation between siblings is induced by random segregation during meiosis. The variance induced by segregation is obviously reduced when the parental genomes are similar, this is of course to say that there is inbreeding if parents are not unrelated.&lt;/p&gt;
-
-&lt;p&gt;For haploid individuals $i$ and $j$, the relationship, derived from a pedigree is described by $F_{i,j}$, which is the probability of identity by descent (IBD) of two genes from these individuals. The variance among offspring of these two parental haploid individuals is just $V_0(1-F_{i,j})$.&lt;/p&gt;
-
-&lt;p&gt;In a diploid individual, meiosis induces segregation variance among gametes proportional to $(1-F_{i,i})$, with $F_{i,i}$ the probability that two genes of a diploid pair are IBD. To form a gamete in individual $i$, we start with two independently sampled ancestral genes within the diploid individual, with variance among these $2V_0$ (since the variance of the sum of two uncorrelated random variables is just the sum of their variances) and probability of IBD $F_{i,i}$. The variance at the gametic level, conditioning on the genes sampled not being IBD, is derived as the variance of the average of two independent draws from the base population. This gives an overall segregational variance for a mating of diploid parent $i$ and $j$ described by&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{4}(1-F_{i,i})2V_0 + \frac{1}{4}(1-F_{j,j})2V_0 =
-V_0\Bigg(1 - \frac{(F_{i,i} + F_{j,j})}{2}\Bigg)&lt;/script&gt;
-
-&lt;p&gt;Where the possibility of IBD has been incorporated. At this moment, Barton &lt;em&gt;et al.&lt;/em&gt; note that the infinitesimal is now defined in terms of a constant genetic variance $V_0$ and a matrix of giving the probability of IBD for every individual. The probability of IBD is given by a set of recursion equations driven by a &lt;em&gt;pedigree matrix&lt;/em&gt; $P_{i,k}(t)$ which gives the probability that a gene $i$ came from parent $k$ in generation $t$.&lt;/p&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;Barton, N. H., Etheridge, A. M., &amp;amp; Véber, A. (2017). The infinitesimal model: Definition, derivation, and implications. Theoretical Population Biology, 118, 50–73. https://doi.org/10.1016/j.tpb.2017.06.001&lt;/p&gt;</content><author><name></name></author><summary type="html">Barton, Etheridge &amp;amp; Véber (2017) have given us a nice and in-depth paper on the infinitesimal model in quantitative genetics, and discuss its very interesting possibilities in evolutionary genetics. Here I document a reading of this paper, mostly reproducing their math with some additional notes and comments. I do this kind of stuff as exercises, basically to become more fluent in mathematical aspects of evolutionary biology.</summary></entry><entry><title type="html">Selection on a single diallelic locus</title><link href="http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection.html" rel="alternate" type="text/html" title="Selection on a single diallelic locus" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection</id><content type="html" xml:base="http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection.html">&lt;p&gt;We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:&lt;/p&gt;
+&lt;p&gt;This is I think the core theory of inbreeding and basic population genetics in finite populations which one should always be able to reproduce on demand.&lt;/p&gt;</content><author><name></name></author><summary type="html">Finite idealized population</summary></entry><entry><title type="html">Selection on a single diallelic locus</title><link href="http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection.html" rel="alternate" type="text/html" title="Selection on a single diallelic locus" /><published>2018-02-24T16:04:50+01:00</published><updated>2018-02-24T16:04:50+01:00</updated><id>http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection</id><content type="html" xml:base="http://localhost:4000/notes/popgen/evolution/2018/02/24/single_locus_selection.html">&lt;p&gt;We consider the effect of selection on the allele frequency at a single locus. We restrict ourselves to the diallelic case. We denote the relative reproductive advantage of one genotype over another by the relative fitness $w$. These relative fitness derive from differential selection of genotypes, governed by some selection coefficient $s$. The basic formula for the allele frequency after one generation of selection is the following:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;p' = \frac{p^2 w_{AA} + p(1-p) w_{Aa}}{p^2 w_{AA} + 2p(1-p)w_{Aa} + (1-p)^2w_{aa}}&lt;/script&gt;
 
