@@ -14,12 +14,6 @@ layout: default
 </script>
 
 <!-- POSTS -->
-<div class="w3-col s12 m9 l4 w3-padding vb-posts">
-    {{ content }}
-</div>
-<div class="w3-col s12 m9 l4 w3-padding vb-posts">
-    <center><img src="{{ "/assets/schapen.jpg" | absolute_url }} " width='100%'></center>
-</div>
 <div class="w3-col s12 m9 l9 w3-padding vb-posts">
   {% if site.posts.size > 0 %}
     {% for post in site.posts %}
@@ -27,4 +21,7 @@ layout: default
       <li>{{ post.date | date: date_format }} | <a href="{{ post.url | relative_url }}">{{ post.title | escape | truncate: 70}}</a></li>
       {% endfor %}
   {% endif %}
+</div>
+<div class="w3-col s12 m3 l3 w3-padding vb-posts">
+    {{ content }}
 </div>

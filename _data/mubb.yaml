@@ -1,0 +1,51 @@
+items:
+  - author: Robert Ashley
+    title: Private Parts
+    year: 1978
+    tags: opera, avant garde
+    img: https://img.discogs.com/OvAm4ZQz9T4qI76aWM_vXjFcCkE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-436672-1113241857.jpg.jpg
+    column: 1
+
+  - author: Hans Otte
+    title: Das Buch der Kl&auml;nge
+    year: 1984
+    tags: tonal minimalism, piano
+    img: https://img.discogs.com/3Ih6KgD2yzGOE1IBEbCnGAh2_uM=/fit-in/469x464/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4968641-1401481174-3234.jpeg.jpg
+    column: 1
+    content: 
+
+  - author: Luciano Cilio
+    title: Dell'Universo Assente
+    year: 1977
+    tags: minimalism, classical
+    img: https://img.discogs.com/0mbwN6ca3GgR9DRv1ws5N7HnGao=/fit-in/500x525/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2184304-1325992481.jpeg.jpg
+    column: 1
+    content: 
+
+  - author: Dominique Lawalree
+    title: Clandestin
+    year: 1982
+    tags: minimalism, avant garde, ambient
+    img: https://img.discogs.com/Y8o_NhqUrrcxNJE1PGGs_tQYREY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2000988-1392126655-7399.jpeg.jpg
+    column: 1
+  
+  - author: Dennis Johnson
+    title: November
+    year: 2013
+    tags: minimalism, piano
+    img: https://f4.bcbits.com/img/a3973552418_10.jpg
+    column: 2
+  
+  - author: Don Cherry 
+    title: Mu 
+    year: 1970
+    tags: jazz, free jazz
+    img: https://img.discogs.com/C9JkKNjr-HvW6EM2-zVT3iT1L7E=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-369033-1288702429.jpeg.jpg
+    column: 2
+
+  - author: Alice Coltrane
+    title: Turiya Sings
+    img: https://img.discogs.com/kMoDYhe2UUJJyQMa4R3Ok-jdxik=/fit-in/600x577/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-3747456-1410906293-5736.jpeg.jpg
+    tags: ambient, jazz, spiritual
+    year: 1982
+    column: 2

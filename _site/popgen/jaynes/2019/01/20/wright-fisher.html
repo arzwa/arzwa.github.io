@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>jaynesian probability - the wright-fisher model | bb</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="jaynesian probability - the wright-fisher model" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model." />
+<meta property="og:description" content="This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model." />
+<link rel="canonical" href="http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html" />
+<meta property="og:url" content="http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html" />
+<meta property="og:site_name" content="bb" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-20T00:00:00+01:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html"},"@type":"BlogPosting","url":"http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html","headline":"jaynesian probability - the wright-fisher model","dateModified":"2019-01-20T00:00:00+01:00","datePublished":"2019-01-20T00:00:00+01:00","description":"This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="bb" />
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">bb</a>
+
+    <!--
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/mubb.html">mubb</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    -->
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="w3-col l6 m12 s12">
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header" style="text-align:left;">
+    <h1 class="post-title p-name" itemprop="name headline">jaynesian probability - the wright-fisher model</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-01-20T00:00:00+01:00" itemprop="datePublished">
+        
+        Jan 20, 2019
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model.</p>
+
+<p>Assume we have a population of $N$ diploid individuals, which randomly mate to form a new population of $N$ diploid individuals that replaces the old one. We follow one locus which starts with $2N$ different alleles. Random mating entails that every new individual has two alleles for the focal locus that are randomly drawn with replcement from the parental population. This process is repeated for an indefinite number of dicrete generations. Every generation we pick two genes from the population (irrespective of the individual, <em>i.e.</em> we treat the population as an urn from which we draw with replacement). Consider the following propositions:</p>
+
+<script type="math/tex; mode=display">A \equiv \mathrm{pick\ exactly\ the\ same\ gene\ copy\ two\ times}</script>
+
+<script type="math/tex; mode=display">B \equiv \mathrm{the\ two\ genes\ are\ identical\ by\ descent,\ i.e.\ they\ are\ the\ same\ allele}</script>
+
+<p>Assume futher that we ssummarize all our knowledge about the world and the problem $X$ (the prior). We are now interested in the probability of picking two genes identical by descent in generation $t$, that is $P(B_t|X)$.</p>
+
+<p>First, we note that, by the principle of indifference (<em>i.e.</em> we do not discriminate between individual gene copies) and since we are drawing with replacement $P(A_t|X) = 1/2N$ for all $t$. Of course $P(\bar{A_t} | X) = (1 - 1/2N)$. We have the proposition</p>
+
+<script type="math/tex; mode=display">B_1 = A_1 + \bar{A_1}B_0</script>
+
+<p>saying, that the proposition “the two picked genes in generation 1 are identical by descent” is the same as the logical disjunction of “the two picked genes are the same gene picked twice” and “the two picked genes are different gene copies that were already identical by descent in generation 0”. Now, we define $B_0$ as false, since we do not perform the sapling in generation 0, we only start picking our pairs of genes in generation 1.</p>
+
+<p>As a result we have</p>
+
+<script type="math/tex; mode=display">P(B_1|X) = P(A_1 + \bar{A_1}B_0|X) = P(A_1|X) + P(\bar{A_1}|B_0X) P(B_0|X) = P(A_1|X) = \frac{1}{2N}</script>
+
+<p>For generation 2, we get</p>
+
+<script type="math/tex; mode=display">P(B_2|X) = P(A_2 + \bar{A_2}B_1|X) = P(A_2|X) + P(\bar{A_2}|B_1X)P(B_1|X) = \frac{1}{2N} + \bigg(1 - \frac{1}{2N}\bigg)P(B_1|X)</script>
+
+<p>in general we have the recursion</p>
+
+<script type="math/tex; mode=display">P(B_t|X) = \frac{1}{2N} + \bigg(1 - \frac{1}{2N}\bigg)P(B_{t-1}|X)</script>
+
+<p>where we call $P(B_t|X)$ the inbreeding coefficient in generation $t$.</p>
+
+<script type="math/tex; mode=display">1 - P(B_t| X) = \bigg(1-\frac{1}{2N}\bigg)(1 - P(B_{t-1}|X))</script>
+
+<p>which gives</p>
+
+<script type="math/tex; mode=display">1- P(B_t|X) = \bigg(1 - \frac{1}{2N}\bigg)^tP(B_0|X)</script>
+
+<p>So it seemed to have worked.</p>
+
+  </div>
+
+  
+
+  <div class="post-categories">
+    
+    
+        <a href="/categories/#popgen">popgen</a>
+    &nbsp;
+    
+        <a href="/categories/#jaynes">jaynes</a>
+    
+    
+  </div>
+  <a class="u-url" href="/popgen/jaynes/2019/01/20/wright-fisher.html" hidden></a>
+</article>
+
+</div>
+
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript" ></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "AMS" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+      </div>
+    </main>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+{% include head.html %}
+<body style='font-size:12px;'>
+<script type="text/javascript" src="{{ "/assets/js/jquery-3.2.1.min.js" }}"></script>
+<style media="screen">
+.header {
+  background-color:#cccccc;
+  padding: 2px;
+  cursor: pointer;
+  margin-top: 2px;
+  width: 100%;
+}
+.content {
+    width:100%;
+}
+
+
+</style>
+
+<div class='w3-col s12 m6 l3' style='padding:1px;'>
+  {% for item in site.data.mubb.items %}
+  {% if item.column == 1 %}
+  <div class="header">{{ item.author }} - {{ item.title }} ({{ item.year }})</div>
+  <div class="content">
+    <img style="width:100%;" src=" {{ item.img }} ">
+    {{ item.content }}
+    <i>{{ item.tags }}</i>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<div class='w3-col s12 m6 l3' style='padding:1px;'>
+  {% for item in site.data.mubb.items %}
+  {% if item.column == 2 %}
+  <div class="header">{{ item.author }} - {{ item.title }} ({{ item.year }})</div>
+  <div class="content">
+    <img style="width:100%;" src=" {{ item.img }} ">
+    {{ item.content }}
+    <i>{{ item.tags }}</i>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<div class='w3-col s12 m6 l3' style='padding:1px;'>
+  {% for item in site.data.mubb.items %}
+  {% if item.column == 3 %}
+  <div class="header">{{ item.author }} - {{ item.title }} ({{ item.year }})</div>
+  <div class="content">
+    <img style="width:100%;" src=" {{ item.img }} ">
+    {{ item.content }}
+    <i>{{ item.tags }}</i>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<div class='w3-col s12 m6 l3' style='padding:1px;'>
+  {% for item in site.data.mubb.items %}
+  {% if item.column == 4 %}
+  <div class="header">{{ item.author }} - {{ item.title }} ({{ item.year }})</div>
+  <div class="content">
+    <img style="width:100%;" src=" {{ item.img }} ">
+    {{ item.content }}
+    <i>{{ item.tags }}</i>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $(".content").hide();
+});
+
+$(".header").click(function () {
+    $header = $(this);
+    //getting the next element
+    $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.slideToggle(500, function () {
+        //do domething
+    });
+});
+</script>
+
+
+
+</body>
+</html>

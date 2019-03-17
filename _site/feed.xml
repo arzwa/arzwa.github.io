@@ -1,1 +1,147 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-07T15:26:51+01:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-17T22:32:18+01:00</updated><id>http://localhost:4000/</id><title type="html">bb</title><subtitle>Take a moment to describe yourself</subtitle><entry><title type="html">casella &amp;amp; berger exercise 1.25</title><link href="http://localhost:4000/2019/02/03/cb-1.25.html" rel="alternate" type="text/html" title="casella &amp; berger exercise 1.25" /><published>2019-02-03T00:00:00+01:00</published><updated>2019-02-03T00:00:00+01:00</updated><id>http://localhost:4000/2019/02/03/cb-1.25</id><content type="html" xml:base="http://localhost:4000/2019/02/03/cb-1.25.html">&lt;blockquote&gt;
+  &lt;p&gt;“The Smiths have two children. At least one of them is a boy. What is the
+probability that both children are boys?”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This problem is very clear from a Jaynesian perspective, define the following
+propositions:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;B_1 \equiv \text{the first child is a boy}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;B_2 \equiv \text{the second child is a boy}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C \equiv \text{at least one of them is a boy}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;X \equiv \text{everything we know about the Smiths and the human species}&lt;/script&gt;
+
+&lt;p&gt;We know $P(B_1|X) = P(B_2|X) = P(B_1|B_2X) = P(B_2|B_1X) = 1/2$. We have by the product rule&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_1B_2|CX) = \frac{P(B_1B_2C|X)}{P(C|X)}&lt;/script&gt;
+
+&lt;p&gt;with $P(B_1B_2C|X) = P(B_1B_2|X)$ of course since $B_1B_2 \implies C$ and&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_1B_2|X) = P(B_1|B_2X)P(B_2|X) = 1/4&lt;/script&gt;
+
+&lt;p&gt;We also have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(C|X) = P(B_1 + B_2|X) = P(B_1|X) + P(B_2|X) - P(B_1B_2|X)&lt;/script&gt;
+
+&lt;p&gt;by the sum and product rule which gives $1/2 + 1/2 - 1/4 = 3/4$ 
+We have thus&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_1B_2|CX) = 1/4 \times 4/3 = 1/3&lt;/script&gt;</content><author><name></name></author><summary type="html">“The Smiths have two children. At least one of them is a boy. What is the probability that both children are boys?”</summary></entry><entry><title type="html">jaynesian probability - the wright-fisher model</title><link href="http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html" rel="alternate" type="text/html" title="jaynesian probability - the wright-fisher model" /><published>2019-01-20T00:00:00+01:00</published><updated>2019-01-20T00:00:00+01:00</updated><id>http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher</id><content type="html" xml:base="http://localhost:4000/popgen/jaynes/2019/01/20/wright-fisher.html">&lt;p&gt;This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model.&lt;/p&gt;
+
+&lt;p&gt;Assume we have a population of $N$ diploid individuals, which randomly mate to form a new population of $N$ diploid individuals that replaces the old one. We follow one locus which starts with $2N$ different alleles. Random mating entails that every new individual has two alleles for the focal locus that are randomly drawn with replcement from the parental population. This process is repeated for an indefinite number of dicrete generations. Every generation we pick two genes from the population (irrespective of the individual, &lt;em&gt;i.e.&lt;/em&gt; we treat the population as an urn from which we draw with replacement). Consider the following propositions:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;A \equiv \mathrm{pick\ exactly\ the\ same\ gene\ copy\ two\ times}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;B \equiv \mathrm{the\ two\ genes\ are\ identical\ by\ descent,\ i.e.\ they\ are\ the\ same\ allele}&lt;/script&gt;
+
+&lt;p&gt;Assume futher that we ssummarize all our knowledge about the world and the problem $X$ (the prior). We are now interested in the probability of picking two genes identical by descent in generation $t$, that is $P(B_t|X)$.&lt;/p&gt;
+
+&lt;p&gt;First, we note that, by the principle of indifference (&lt;em&gt;i.e.&lt;/em&gt; we do not discriminate between individual gene copies) and since we are drawing with replacement $P(A_t|X) = 1/2N$ for all $t$. Of course $P(\bar{A_t} | X) = (1 - 1/2N)$. We have the proposition&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;B_1 = A_1 + \bar{A_1}B_0&lt;/script&gt;
+
+&lt;p&gt;saying, that the proposition “the two picked genes in generation 1 are identical by descent” is the same as the logical disjunction of “the two picked genes are the same gene picked twice” and “the two picked genes are different gene copies that were already identical by descent in generation 0”. Now, we define $B_0$ as false, since we do not perform the sapling in generation 0, we only start picking our pairs of genes in generation 1.&lt;/p&gt;
+
+&lt;p&gt;As a result we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_1|X) = P(A_1 + \bar{A_1}B_0|X) = P(A_1|X) + P(\bar{A_1}|B_0X) P(B_0|X) = P(A_1|X) = \frac{1}{2N}&lt;/script&gt;
+
+&lt;p&gt;For generation 2, we get&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_2|X) = P(A_2 + \bar{A_2}B_1|X) = P(A_2|X) + P(\bar{A_2}|B_1X)P(B_1|X) = \frac{1}{2N} + \bigg(1 - \frac{1}{2N}\bigg)P(B_1|X)&lt;/script&gt;
+
+&lt;p&gt;in general we have the recursion&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(B_t|X) = \frac{1}{2N} + \bigg(1 - \frac{1}{2N}\bigg)P(B_{t-1}|X)&lt;/script&gt;
+
+&lt;p&gt;where we call $P(B_t|X)$ the inbreeding coefficient in generation $t$.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;1 - P(B_t| X) = \bigg(1-\frac{1}{2N}\bigg)(1 - P(B_{t-1}|X))&lt;/script&gt;
+
+&lt;p&gt;which gives&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;1- P(B_t|X) = \bigg(1 - \frac{1}{2N}\bigg)^tP(B_0|X)&lt;/script&gt;
+
+&lt;p&gt;So it seemed to have worked.&lt;/p&gt;</content><author><name></name></author><summary type="html">This is an attempt to apply principles from Jaynes’ book on population genetics/evolutionary biology. This is perhaps one of the simplest poible applications, inbreeding in a Wright-Fisher population model.</summary></entry><entry><title type="html">the robertson-price identity</title><link href="http://localhost:4000/2018/10/21/robertson_price.html" rel="alternate" type="text/html" title="the robertson-price identity" /><published>2018-10-21T00:00:00+02:00</published><updated>2018-10-21T00:00:00+02:00</updated><id>http://localhost:4000/2018/10/21/robertson_price</id><content type="html" xml:base="http://localhost:4000/2018/10/21/robertson_price.html">&lt;p&gt;Consider the change in population mean $S = \mu_s - \mu$ due to selection on a
+character $z$, where $\mu_s$ denotes the population mean after selection but
+&lt;em&gt;before&lt;/em&gt; reproduction.  Let $p(z)$ and $p_s(z)$ denote the frequency of
+phenotype $z$ before and after selection respectively and $W(z)$ the abolute
+fitness associated with the trait value $z$.  By definition of the mean we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_s = \int_z z p_s(z) dz&lt;/script&gt;
+
+&lt;p&gt;We need to find an expression for $p_s(z)$ to get further. $p_s(z)$ is of
+course equal to $W(z)p(z)/\int_zW(z)p(z)dz$, where the denominator ensures that
+$\int_z p_s(z) dz = \bar{W} = 1$ to form a proper density. We can define the
+relative fitness as $w(z) = W(z) / \bar{W}$ so that we can write&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p_s(z) = w(z) p(z)&lt;/script&gt;
+
+&lt;p&gt;Which is a very intuitive expression relating the phenotypic distribution
+before and after selection. We can now rewrite the expression for $mu_s$ as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_s = \int_z z w(z) p(z) dz = \mathrm{E}(z w(z))&lt;/script&gt;
+
+&lt;p&gt;Note that by definition $\mathrm{E}(w(z)) = \bar{w} = 1$ so that we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+ S &amp;=&amp; \mu_s - \mu \\
+   &amp;=&amp; \mathrm{E}(z w(z)) - \mathrm{E}(z) \\
+   &amp;=&amp; \mathrm{E}(z w(z)) - \mathrm{E}(z) \mathrm{E}(w(z)) \\
+   &amp;=&amp; \sigma(z, w(z)) 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;that is, &lt;em&gt;the selection differential&lt;/em&gt; $S$ &lt;em&gt;is equal to the covariance of trait
+value with relative fitness&lt;/em&gt;. This result is known as the Robertson-Price
+identity.&lt;/p&gt;
+
+&lt;p&gt;We now go to the offsping generation to investigate the effect of the selection
+procedure.  We are interested in $\mu_o - \mu$, that is the change in trait
+mean in the offspring generation due to selection. Considering the regression
+of offspring trait values on the parent trait values with coefficient $\beta$,
+we have that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta\mu = \mu_o - \mu = \beta(\mu_s - \mu) = \beta S&lt;/script&gt;
+
+&lt;p&gt;which is known as the Breeder’s equation.&lt;/p&gt;</content><author><name></name></author><summary type="html">Consider the change in population mean $S = \mu_s - \mu$ due to selection on a character $z$, where $\mu_s$ denotes the population mean after selection but before reproduction. Let $p(z)$ and $p_s(z)$ denote the frequency of phenotype $z$ before and after selection respectively and $W(z)$ the abolute fitness associated with the trait value $z$. By definition of the mean we have</summary></entry><entry><title type="html">the expected time of coalescence</title><link href="http://localhost:4000/2018/08/10/coal.html" rel="alternate" type="text/html" title="the expected time of coalescence" /><published>2018-08-10T00:00:00+02:00</published><updated>2018-08-10T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/10/coal</id><content type="html" xml:base="http://localhost:4000/2018/08/10/coal.html">&lt;p&gt;The probability that two lineages coalesce in generation $t$ in an idealized
+Wright-Fisher population is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P_c(t) = \Big(\frac{1}{2N}\Big)\Big(1 - \frac{1}{2N}\Big)^{t-1}&lt;/script&gt;
+
+&lt;p&gt;which defines a geometric distribution with ‘success’ probability $1/2N$. One
+can derive a whole load of nice applied math from there on. A particularly nice
+result is the mean time of coalescence of two lineages, which is by definition
+of the mean&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}(t_c(2)) = \sum_{t=1}^{\infty}tP_c(t)&lt;/script&gt;
+
+&lt;p&gt;and then they say that this is $2N$ because that is the expected valeu for
+the geometric distribution with parameter $1/2N$, but why? Well, we know 
+that the series&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{\infty} x^k = \frac{1}{1-x}&lt;/script&gt;
+
+&lt;p&gt;is absolutely convergent for $|x| &amp;lt; 1$. This implies we can take the derivative&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray} 
+\frac{d}{dx}\sum_{t=0}^{\infty} x^t &amp;=&amp; \sum_{t=0}^{\infty} \frac{dx^t}{dx} \\ 
+                                    &amp;=&amp; \sum_{t=0}^{\infty} tx^{t-1} 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which must equal $\frac{d}{dx}\frac{1}{1-x} = \frac{1}{(1-x)^2}$. So applying
+this to our case where $x = (1-1/2N)$ we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray} 
+\mathbb{E}(t_c(2)) &amp;=&amp; \sum_{t=1}^{\infty}t \frac{1}{2N} \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &amp;=&amp; \frac{1}{2N} \sum_{t=1}^{\infty} t \Big(1 - \frac{1}{2N}\Big)^{t-1} \\ 
+                   &amp;=&amp; \frac{1}{2N} \Bigg(\frac{1}{(1-1+\frac{1}{2N})^2}\Bigg) \\ 
+                   &amp;=&amp; 2N 
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which is neat.&lt;/p&gt;</content><author><name></name></author><summary type="html">The probability that two lineages coalesce in generation $t$ in an idealized Wright-Fisher population is given by</summary></entry></feed>
