@@ -231,9 +231,9 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccccccccccccc" />
     <path
-       sodipodi:nodetypes="cccccccccccccc"
+       sodipodi:nodetypes="ccccccccccccc"
        inkscape:connector-curvature="0"
-       d="m 272.06662,228.35109 -2.46094,-26.13287 9.0236,-16.49598 -9.0236,16.49598 -7.41531,-15.49345 7.41531,15.49345 2.46094,26.13287 -24.25992,-9.80133 -8.57507,-15.05924 8.57507,15.05924 -20.34509,-0.60273 c -15.54379,-9.27723 -15.54379,-9.27723 0,0 l 20.34509,0.60273 24.25992,9.80133"
+       d="m 272.06662,228.35109 -2.46094,-26.13287 9.0236,-16.49598 -9.0236,16.49598 -7.41531,-15.49345 7.41531,15.49345 2.46094,26.13287 -24.25992,-9.80133 -8.57507,-15.05924 8.57507,15.05924 -20.34509,-0.60273 c 0,0 7.61179,0.2255 20.34509,0.60273 l 24.25992,9.80133"
        style="fill:none;fill-opacity:1;stroke:#f49b28;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4729-99-4" />
     <path
