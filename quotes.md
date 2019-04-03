@@ -2,6 +2,10 @@
 layout: post
 ---
 
+>"Bayesians are frequentists. What I mean is, the Bayesian prior distribution corresponds to the frequentist sample space: it’s the set of problems for which a particular statistical model or procedure will be applied."
+
+Andrew Gelman (17 June 2018, https://statmodeling.stat.columbia.edu/2018/06/17/bayesians-are-frequentists/)
+
 >"We hebben immers gezien dat dit [het natuurkundige wereldbeeld] weliswaar in principe geen realiteiten behoeft te loochenen die daar tot dusver geen plaats in hebben gevonden, maar dat het toch voortdurend moet vechten tegen de verleiding om dat wel te doen."
 
 C. F. von Weisz&auml;cker - Het wereldbeeld in de fysica (p. 23)
