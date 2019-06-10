@@ -2,6 +2,12 @@
 layout: post
 ---
 
+>"An experimental science is supposed to perform experiments that find generalities. It's not just supposed to tally up a long list of individual cases and their unique life histories. That's butterfly collecting." ~ Richard Lewontin
+
+>"So is data analysis the most fundamental thing? Maybe so, but what method of data analysis? Last I heard, there are many schools. Bayesian data analysis, perhaps? Not so clear; what’s the motivation for modeling everything probabilistically? Sure, it’s coherent—but so is some mental patient who thinks he’s Napoleon and acts daily according to that belief. "
+
+ - Andrew Gelman:  Several reviews of Deborah Mayo’s new book, Statistical Inference as Severe Testing: How to Get Beyond the Statistics Wars (12/04/19)
+
 >"Bayesians are frequentists. What I mean is, the Bayesian prior distribution corresponds to the frequentist sample space: it’s the set of problems for which a particular statistical model or procedure will be applied."
 
 Andrew Gelman (17 June 2018, https://statmodeling.stat.columbia.edu/2018/06/17/bayesians-are-frequentists/)

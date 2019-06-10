@@ -6,6 +6,13 @@ items:
     img: https://img.discogs.com/OvAm4ZQz9T4qI76aWM_vXjFcCkE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-436672-1113241857.jpg.jpg
     column: 1
 
+  - author: Alan Sorrenti
+    title: Figli Delle Stelle
+    year: 1977
+    tags: pop, italo
+    img: https://img.discogs.com/5KLQY0_VIFw-Da9aGsoLMcCJpf0=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1728992-1520871482-4753.jpeg.jpg
+    column: 1
+
   - author: Hans Otte
     title: Das Buch der Kl&auml;nge
     year: 1984
@@ -13,6 +20,37 @@ items:
     img: https://img.discogs.com/3Ih6KgD2yzGOE1IBEbCnGAh2_uM=/fit-in/469x464/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4968641-1401481174-3234.jpeg.jpg
     column: 1
     content: 
+  
+  - author: Brian Eno
+    title: Discreet Music
+    year: 1975
+    tags: ambient
+    img: https://img.discogs.com/o6GIH12Ff9tVDf8ewUZKnr461pE=/fit-in/600x591/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1560347-1477225186-6544.jpeg.jpg
+    column: 1
+    content: 
+
+  - author: John Coltrane
+    title: Ascension
+    year: 1965
+    tags: free jazz
+    img: https://img.discogs.com/8eU0sDHBGJPfFUXvtVDbCIN3t_E=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-961080-1528646477-4830.jpeg.jpg
+    column: 3
+    content: 
+  
+  - author: Ryuichi Sakamoto & David Sylvian
+    title: Forbidden Colours
+    year: 1983
+    tags: ambient, pop
+    img: https://img.discogs.com/ZAsC92JXfdFsrBx-qjNMo9IE3TE=/fit-in/440x446/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-28564-1106061458.jpg.jpg
+    column: 3
+    content: 
+
+  - author: Jefre Cantu-Ledesma
+    title: Bloodstream Sermon
+    year: 2010
+    tags: drone, ambient
+    img: https://img.discogs.com/5lANjRmGjdpdoc564q0efA1-o1g=/fit-in/192x300/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2162794-1267381151.jpeg.jpg
+    column: 3
 
   - author: Luciano Cilio
     title: Dell'Universo Assente
@@ -22,6 +60,14 @@ items:
     column: 1
     content: 
 
+  - author: Oren Ambarchi
+    title: Grapes From The Estate
+    year: 2006
+    tags: ambient, electronic, minimal
+    img: https://img.discogs.com/mcWkEtR4F5OiDSQRWgJfev7i_TQ=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-746874-1329890641.jpeg.jpg
+    column: 1
+    content:
+
   - author: Dominique Lawalree
     title: Clandestin
     year: 1982
@@ -29,6 +75,13 @@ items:
     img: https://img.discogs.com/Y8o_NhqUrrcxNJE1PGGs_tQYREY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2000988-1392126655-7399.jpeg.jpg
     column: 1
   
+  - author: Bill Evans Trio
+    title: Sunday at the Village Vanguard
+    year: 1961
+    tags: jazz, trio
+    img: https://img.discogs.com/osyw3mWqYGhRBUnzgMMK_1dL42s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2559027-1505740217-3372.jpeg.jpg
+    column: 2
+
   - author: Dennis Johnson
     title: November
     year: 2013
@@ -49,3 +102,108 @@ items:
     tags: ambient, jazz, spiritual
     year: 1982
     column: 2
+
+  - author: Jefre Cantu-Ledesma
+    title: Floating Weeds
+    year: 2006
+    img: https://img.discogs.com/VO5rFTsFz-E7cgEY3v3RS-QbOCc=/fit-in/390x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1046754-1352656324-4535.jpeg.jpg
+    tags: ambient, drone
+    column: 2
+
+  - author: Andrew Chalk
+    title:  彼岸 / 悲しき配分 
+    year: 2016
+    tags: ambient, drone
+    img: https://img.discogs.com/AaVXshpBEKVvYjc72ksqjpM1NRY=/fit-in/600x586/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-8531450-1463857734-6993.png.jpg
+    column: 1
+
+  - author: Marvin Gaye
+    title: Here, My Dear 
+    img: https://img.discogs.com/_NemJfa7jQWgMf7c1X9ujWGNTyI=/fit-in/600x589/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1524121-1351089479-7802.jpeg.jpg
+    year: 1978
+    tags: soul
+    column: 3
+  
+  - author: John Coltrane
+    title: A Love Supreme
+    year: 1964
+    tags: jazz, free jazz, modal
+    img: https://img.discogs.com/53L5Mwt3zwASgcHA6XLDGCuQQpc=/fit-in/476x483/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-857505-1398955836-9431.jpeg.jpg
+    column: 1
+
+  - author: Raul Lovisoni/Francesco Messina
+    title: Prati Bagnati Del Monte Analogo
+    img: https://img.discogs.com/V98qgsPNhi8sr3RFVeNHhmS_rBI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2308884-1390240531-2176.jpeg.jpg
+    year: 1979
+    tags: electronic, ambient, italo
+    column: 3
+
+  - author: Jack Jutson
+    title: Mother Official Volume II
+    year: 2013
+    img: https://img.discogs.com/b9xAHOiEN0Go09-peNohfziwY9Q=/fit-in/600x384/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5090346-1404046719-1892.jpeg.jpg
+    tags: ambient, electronic
+    column: 1
+
+  - author: Parachutes
+    title: Parachutes
+    year: 2003
+    img: https://f4.bcbits.com/img/a0749513208_10.jpg
+    tags: ambient
+    column: 3
+
+  - author: Grachan Moncur III
+    title: Evolution
+    year: 1963
+    img: https://img.discogs.com/Puk4W6APrWGk23dayYZ1ZtyL_BA=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-3376786-1327969109.jpeg.jpg
+    tags: jazz, avant-garde jazz
+    column: 3
+
+  - author: Ignatz
+    title: I Hate This City
+    year: 2011
+    img: https://img.discogs.com/njqxVE9W5PHkqFgyoEP-SFhkCHo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2665015-1449655744-5165.jpeg.jpg
+    tags: experimental, ambient, blues
+    column: 4
+
+  - author: Taylor Deupree
+    title: Faint
+    year: 2012
+    img: https://img.discogs.com/LIy3jzNCEkHvJYxUsjV93ZYWWpE=/fit-in/590x590/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4066145-1354102025-5157.jpeg.jpg
+    tags: ambient, electronic
+    column: 2
+
+  - author: Asher
+    title: Landscape Studies
+    year: 2009
+    img: https://img.discogs.com/igz5FjWmKvsO4Cv-2LHu7GYZxT8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1963027-1357111055-9334.jpeg.jpg
+    tags: ambient, drone
+    column: 4
+
+  - author: Santo & Johnny
+    title: Hawaii
+    year: 1961
+    img: https://img.discogs.com/OXAXKjLzkJ2BshH0ug8Xu_PPEx8=/fit-in/600x609/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1480046-1534697985-7204.jpeg.jpg
+    tags: pop, hawaii, exotica
+    column: 1
+
+  - author: Michael Nyman
+    title: Decay Music
+    year: 1976
+    img: https://img.discogs.com/zTQi7ua9JC3NzBKlgcG6fo9uMzU=/fit-in/600x634/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-356312-1351101826-7655.jpeg.jpg
+    tags: classical, minimal, piano
+    column: 2
+
+  - author: Will Long
+    title: Long Trax
+    year: 2016
+    img: https://img.discogs.com/AgQipzESH16tFRFsP3YUpXaeIZA=/fit-in/600x615/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-9066827-1477005047-8863.jpeg.jpg
+    tags: indifference, house
+    column: 1
+
+  - author: Simon Wickham-Smith
+    title: A Hidden Life
+    year: 2014
+    img: https://img.discogs.com/mqn4nWolU1zUOXRPUIIiuwf_nJ8=/fit-in/405x405/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6830624-1468440644-2904.jpeg.jpg
+    tags: opera, experimental, electronic
+    column: 3

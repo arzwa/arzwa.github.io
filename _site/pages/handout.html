@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Evolutionary analysis - phylogenetic tree inference using maximum likelihood and Bayesian inference | bb</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Evolutionary analysis - phylogenetic tree inference using maximum likelihood and Bayesian inference" />
+<meta name="author" content="Arthur Zwaenepoel" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Take a moment to describe yourself" />
+<meta property="og:description" content="Take a moment to describe yourself" />
+<link rel="canonical" href="http://localhost:4000/pages/handout.html" />
+<meta property="og:url" content="http://localhost:4000/pages/handout.html" />
+<meta property="og:site_name" content="bb" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"Evolutionary analysis - phylogenetic tree inference using maximum likelihood and Bayesian inference","url":"http://localhost:4000/pages/handout.html","author":{"@type":"Person","name":"Arthur Zwaenepoel"},"description":"Take a moment to describe yourself","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="bb" />
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" rel="author" href="/">bb</a>
+
+    <!--
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/pages/handout.html">Evolutionary analysis - phylogenetic tree inference using maximum likelihood and Bayesian inference</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/mubb.html">mubb</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    -->
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="w3-col l6 m12 s12">
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header" style="text-align:left;">
+    <h1 class="post-title p-name" itemprop="name headline">Evolutionary analysis - phylogenetic tree inference using maximum likelihood and Bayesian inference</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="" itemprop="datePublished">
+        
+        
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Arthur Zwaenepoel</span></span>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="software-requirements">Software requirements</h1>
+
+<ul>
+  <li>IQ-TREE 1.6 (<a href="http://www.iqtree.org/">http://www.iqtree.org/</a>)</li>
+  <li>MrBayes 3.2.6 (<a href="http://nbisweden.github.io/MrBayes/download.html">http://nbisweden.github.io/MrBayes/</a>)</li>
+  <li>RevBayes 1.0 (<a href="https://revbayes.github.io/software">https://revbayes.github.io/</a>)</li>
+</ul>
+
+<h1 id="notation">Notation</h1>
+
+<ul>
+  <li>$P(A)$: probability of event $A$</li>
+  <li>$P(A|B)$: probability of event $A$ conditional on event $B$</li>
+  <li>$p(X)$: <strong>probability mass/density function</strong> (pmf/pdf) of the <strong>discrete random variable</strong> $X$ (note normally a pmf is denoted using $p$ and a pdf with $f$, but here we will lump the two together)</li>
+  <li>$\mathcal{L}(\theta|D,\mathcal{M})$ <strong>likelihood</strong> of <strong>parameter</strong> (vector) $\theta$ given observed <strong>data set</strong> $D$ and the <strong>model</strong> $\mathcal{M}$</li>
+</ul>
+
+<h1 id="maximum-likelihood">Maximum Likelihood</h1>
+
+<h2 id="statistical-principles">Statistical principles</h2>
+
+<ul>
+  <li>$\mathcal{L}(\theta|D,\mathcal{M}) = P(D|\theta,\mathcal{M})$</li>
+  <li>Discrete case: e.g. coin tossing</li>
+  <li>Continuous case: e.g. mean and standard deviation of a Normal distribution</li>
+</ul>
+
+<h2 id="phylogenetic-likelihood">Phylogenetic likelihood</h2>
+
+<ul>
+  <li>The rate matrix $Q$, and its relationship to the exponential distribution</li>
+  <li>Markov models and the transition probability matrix $P = e^{Qt}$</li>
+  <li>Felsenstein’s pruning algorithm</li>
+</ul>
+
+<h2 id="heuristic-tree-search-under-the-maximum-likelihood-principle">Heuristic tree search under the maximum likelihood principle</h2>
+
+<ul>
+  <li>IQ-TREE</li>
+</ul>
+
+<h2 id="model-selection">Model selection</h2>
+
+<ul>
+  <li>LRT, AIC, BIC (IQ-TREE)</li>
+</ul>
+
+<h1 id="bayesian-inference">Bayesian inference</h1>
+
+<h2 id="statistical-principles-1">Statistical principles</h2>
+
+<ul>
+  <li>$p()</li>
+</ul>
+
+  </div>
+
+  
+
+  <div class="post-categories">
+    
+    
+  </div>
+  <a class="u-url" href="/pages/handout.html" hidden></a>
+</article>
+
+</div>
+
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript" ></script>
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "AMS" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+      </div>
+    </main>
+
+
+  </body>
+
+</html>
