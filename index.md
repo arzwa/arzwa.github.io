@@ -2,15 +2,16 @@
 layout: home
 ---
 
-[posts](posts)
-[quotes](quotes)
-[μ](mubb)
-[links](links)
+[posts](pages/posts)
+[quotes](pages/quotes)
+[μ](pages/mubb)
+[links](pages/links)
+[photos](pages/photos)
 
 My name is Arthur (Zwaenepoel). Eschewing modern social media, and awaiting
 general recognition in the form of a wikipedia page, I grant you the privilege
 to find here my spot on the www. Being a huge fan of the personal webpage,
-epecially of the academic type (find some of my favourite examples
+especially of the academic type (find some of my favourite examples
 [here](links)), I could not resist embarking on this wonderful vanity project.
 
 My main occupation is currently studying and doing research in the field of
