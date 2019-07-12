@@ -1,7 +1,7 @@
 
 
-[dr&oslash;bak 2018](drobak)
-[arran 2019](arran)
+[dr&oslash;bak 2018](photos/drobak)
+[arran 2019](photos/arran)
 
 ![](/assets/misc/panda-duffel.jpg)
 
