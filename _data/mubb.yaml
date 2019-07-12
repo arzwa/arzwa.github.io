@@ -164,7 +164,7 @@ items:
     year: 2011
     img: https://img.discogs.com/njqxVE9W5PHkqFgyoEP-SFhkCHo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2665015-1449655744-5165.jpeg.jpg
     tags: experimental, ambient, blues
-    column: 4
+    column: 3
 
   - author: Taylor Deupree
     title: Faint
@@ -178,7 +178,7 @@ items:
     year: 2009
     img: https://img.discogs.com/igz5FjWmKvsO4Cv-2LHu7GYZxT8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1963027-1357111055-9334.jpeg.jpg
     tags: ambient, drone
-    column: 4
+    column: 2
 
   - author: Santo & Johnny
     title: Hawaii
