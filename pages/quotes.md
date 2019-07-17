@@ -2,6 +2,10 @@
 layout: post
 ---
 
+>"I’d like to hold fast to the idea that identification, to the extent it means anything, must be defined as a function of model + data, not just of the model. Sure, with a probability model, you can say that asymptotically you’ll get identification, but asymptotically we’re all dead, and in the meantime we have sparseness and separation and all sorts of other issues."
+
+Andrew Gelman ([12 Feb 2014](https://statmodeling.stat.columbia.edu/2014/02/12/think-identifiability-bayesian-inference/))
+
 >"An experimental science is supposed to perform experiments that find generalities. It's not just supposed to tally up a long list of individual cases and their unique life histories. That's butterfly collecting." 
 
 Richard Lewontin
@@ -12,7 +16,7 @@ Andrew Gelman:  Several reviews of Deborah Mayo’s new book, Statistical Infere
 
 >"Bayesians are frequentists. What I mean is, the Bayesian prior distribution corresponds to the frequentist sample space: it’s the set of problems for which a particular statistical model or procedure will be applied."
 
-Andrew Gelman (17 June 2018, https://statmodeling.stat.columbia.edu/2018/06/17/bayesians-are-frequentists/)
+Andrew Gelman ([17 June 2018](https://statmodeling.stat.columbia.edu/2018/06/17/bayesians-are-frequentists/))
 
 >"We hebben immers gezien dat dit [het natuurkundige wereldbeeld] weliswaar in principe geen realiteiten behoeft te loochenen die daar tot dusver geen plaats in hebben gevonden, maar dat het toch voortdurend moet vechten tegen de verleiding om dat wel te doen."
 
