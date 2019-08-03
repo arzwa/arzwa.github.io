@@ -2,6 +2,14 @@
 layout: post
 ---
 
+>"Het armzalige gepruts dat we overal aantreffen, heet in deze eeuw 'wetenschap'"
+
+Imre Kertesz - Kaddisj voor een niet geboren kind (p. 92)
+
+>"[...] maar in dat gezag was geen spoor te vinden van het respect dat men voor waardevolle eigenschappen behoort te hebben, *het berustte, zoals elke vorm van gezag, alleen op een goed georganiseerde intimidatie.*"
+
+Imre Kertesz - Kaddisj voor een niet geboren kind (p. 98)
+
 >"I’d like to hold fast to the idea that identification, to the extent it means anything, must be defined as a function of model + data, not just of the model. Sure, with a probability model, you can say that asymptotically you’ll get identification, but asymptotically we’re all dead, and in the meantime we have sparseness and separation and all sorts of other issues."
 
 Andrew Gelman ([12 Feb 2014](https://statmodeling.stat.columbia.edu/2014/02/12/think-identifiability-bayesian-inference/))
