@@ -2,6 +2,25 @@
 layout: post
 ---
 
+>"As long as I am drawing
+
+>breath, the world still exists,
+
+>but when
+
+>I 
+
+>die,
+
+>everything will vanish"
+
+Mount Eerie - Planets (Sauna)
+
+>"The two of us are planets crashing through separate lives [...]. I don't know you and you never will know me.
+From inside my bubble I think I see you [...].
+
+Mount Eerie - Planets (Sauna)
+
 >"Het armzalige gepruts dat we overal aantreffen, heet in deze eeuw 'wetenschap'"
 
 Imre Kertesz - Kaddisj voor een niet geboren kind (p. 92)
