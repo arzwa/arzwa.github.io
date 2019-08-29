@@ -12,6 +12,13 @@ items:
     tags: pop, italo
     img: https://img.discogs.com/5KLQY0_VIFw-Da9aGsoLMcCJpf0=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1728992-1520871482-4753.jpeg.jpg
     column: 1
+    
+  - author: Jaco Pastorius
+    title: Jaco Pastorius
+    year: 1976
+    tags: jazz, fusion
+    img: https://img.discogs.com/5ObUTQUdMo5SX8dpjcDDzECDhTM=/fit-in/600x602/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2781435-1308404376.jpeg.jpg
+    column: 2
 
   - author: Hans Otte
     title: Das Buch der Kl&auml;nge
