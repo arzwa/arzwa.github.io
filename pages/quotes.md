@@ -2,17 +2,11 @@
 layout: post
 ---
 
->"As long as I am drawing
+>"The depth of my ignorance even in the areas I am supposedly an expert after more than 30 years in the field never ceases to astonish me. There are two ways of dealing with this: (1) Humility and collaboration. (2) Impostor syndrome.
 
->breath, the world still exists,
+Dmitri Petrov (Twitter 28 Aug 2019)
 
->but when
-
->I 
-
->die,
-
->everything will vanish"
+>"As long as I am drawing - breath, the world still exists - but when - I - die, - everything will vanish"
 
 Mount Eerie - Planets (Sauna)
 
