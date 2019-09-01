@@ -16,6 +16,10 @@ A list of links, in particular, but not exclusively, belonging to the category
 [De ronde tafel](http://www.astrovdm.com/Rota.htm)  
 [Famous pipe smokers](http://josephcrusejohnson.blogspot.com/)  
 [Ziheng Yang](http://abacus.gene.ucl.ac.uk/ziheng/ziheng.html)  
-[Miklós Csűrös](https://www.iro.umontreal.ca/~csuros/)
-[Christopher Fuchs](https://perimeterinstitute.ca/personal/cfuchs/)
+[Miklós Csűrös](https://www.iro.umontreal.ca/~csuros/)  
+[Christopher Fuchs](https://perimeterinstitute.ca/personal/cfuchs/)  
+[Luc Devroye](luc.devroye.org) waar ik onderstaande parel vond:
+![assez de frites](http://luc.devroye.org/FRITE.JPG)
+
+
 
