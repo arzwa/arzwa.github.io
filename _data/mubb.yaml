@@ -35,6 +35,20 @@ items:
     img: https://img.discogs.com/o6GIH12Ff9tVDf8ewUZKnr461pE=/fit-in/600x591/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1560347-1477225186-6544.jpeg.jpg
     column: 1
     content: 
+    
+  - author: Karl Van Deun
+    title: Almadies
+    year: 2019
+    tags: jazz, guitar, solo
+    img: https://img.discogs.com/GqOq1FXodqUeeYDEJqK8XuPKF8g=/fit-in/600x574/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-13562676-1556560658-2426.jpeg.jpg
+    column: 1
+    
+  - author: Alex Ross
+    title: The Rest is Noise
+    year: 2007
+    tags: history, nonfiction, music, book
+    img: https://alexrossmusic.typepad.com/photos/uncategorized/2008/08/25/pb_cover_6.jpg
+    column: 2
 
   - author: John Coltrane
     title: Ascension
@@ -66,6 +80,13 @@ items:
     img: https://img.discogs.com/0mbwN6ca3GgR9DRv1ws5N7HnGao=/fit-in/500x525/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2184304-1325992481.jpeg.jpg
     column: 1
     content: 
+    
+  - author: Sohrab
+    title: A Hidden Place
+    year: 2010
+    tags: ambient, field-recording, electronic
+    img: https://img.discogs.com/WTZ8Oz7wHLX7-0vornmpWomLQEo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2559244-1290422613.jpeg.jpg
+    column: 3
 
   - author: Oren Ambarchi
     title: Grapes From The Estate
@@ -88,12 +109,40 @@ items:
     tags: jazz, trio
     img: https://img.discogs.com/osyw3mWqYGhRBUnzgMMK_1dL42s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-2559027-1505740217-3372.jpeg.jpg
     column: 2
+    
+  - author: James Taylor
+    title: Greatest Hits
+    year: 1976
+    tags: rock, folk, singer-sonngwriter
+    img: https://img.discogs.com/gA9B2RbrH7iQUdmCSLgXk0Mer78=/fit-in/456x450/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1819077-1389863058-1626.jpeg.jpg
+    column: 3
+    
+  - author: Mount Eerie
+    title: Sauna
+    year: 2015
+    tags: rock, singer-songwriter, indie
+    img: https://img.discogs.com/2S9-QJQq0CzjWu80hQpGdyW7evU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6609557-1426460398-5455.jpeg.jpg
+    column: 2
 
   - author: Dennis Johnson
     title: November
     year: 2013
     tags: minimalism, piano
     img: https://f4.bcbits.com/img/a3973552418_10.jpg
+    column: 2
+    
+  - author: Fennesz
+    title: Venice
+    year: 2004
+    tags: ambient, electronic
+    img: https://img.discogs.com/FWImKweRWS4Ey2Q8sfEBJ6PddLU=/fit-in/600x536/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-252767-1563355245-2945.jpeg.jpg
+    column: 3
+    
+  - author: John Cage
+    title: In A Landscape
+    year: 1994
+    tags: classical, minimalism, piano
+    img: https://img.discogs.com/RB6L6fsXTNsT5d_BPIm4f6UlvUI=/fit-in/598x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-481021-1430977038-6459.jpeg.jpg
     column: 2
   
   - author: Don Cherry 
@@ -116,6 +165,27 @@ items:
     img: https://img.discogs.com/VO5rFTsFz-E7cgEY3v3RS-QbOCc=/fit-in/390x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1046754-1352656324-4535.jpeg.jpg
     tags: ambient, drone
     column: 2
+    
+  - author: Mount Eerie
+    title: No Flashlight, Songs of the Fulfilled Night
+    year: 2005
+    img: https://img.discogs.com/59Z0WdHPfI3fUuXyk4k-_OyK4DA=/fit-in/327x300/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-497719-1155535453.jpeg.jpg
+    tags: folk, rock, indie, singer-songwriter
+    column: 1
+    
+  - author: Mount Eerie
+    title: Dawn
+    year: 2008
+    img: https://img.discogs.com/IfnfEW9p1OxEkPLkm7gBOS_r1RI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1433287-1219326552.jpeg.jpg
+    tags: singer-songwriter
+    column: 2
+
+  - author: Mount Eerie
+    title:  Seven New Songs Of Mount Eerie 
+    year: 2004
+    img: https://img.discogs.com/8UH_nMVkLF_suRGx0nfbN4q45l8=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-760234-1156005757.jpeg.jpg
+    tags: singer-songwriter, rock
+    column: 1
 
   - author: Andrew Chalk
     title:  彼岸 / 悲しき配分 
