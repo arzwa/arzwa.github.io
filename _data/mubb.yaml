@@ -1,4 +1,19 @@
 items:
+  - author: Eric Dolphy
+    title: Out to lunch!
+    year: 1964
+    tags: avant-garde, jazz
+    column: 2
+    img: https://img.discogs.com/psVXX63uvNVrHabm84jV80DtpuI=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-1464211-1444522051-7696.jpeg.jpg
+  
+  - author: Joni Mitchell
+    title: Mingus
+    year: 1979
+    tags: jazz
+    img: https://img.discogs.com/SogB60KrLlmdtEAfDu14yf2iO_8=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1394115-1339107279-7376.jpeg.jpg
+    column: 1
+    content: With wonderful electric bass playing by Jaco Pastorius.
+  
   - author: Robert Ashley
     title: Private Parts
     year: 1978
@@ -27,6 +42,13 @@ items:
     img: https://img.discogs.com/3Ih6KgD2yzGOE1IBEbCnGAh2_uM=/fit-in/469x464/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4968641-1401481174-3234.jpeg.jpg
     column: 1
     content: 
+    
+  - author: Tom Waits
+    title: Swordfishtrombones
+    year: 1983
+    img: https://img.discogs.com/X7WKjO10zb0oFKbSI2VPP52eRcI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-566852-1364860289-1048.jpeg.jpg
+    tags: rock
+    column: 2
   
   - author: Brian Eno
     title: Discreet Music
