@@ -2,6 +2,10 @@
 layout: post
 ---
 
+>"If the hallowed maximum likelihood principle leads us to difficulties, maybe some other principle will save us. There is indeed such a principle. It is as follows: *Basic Principle 0*. Don’t trust any principle. This applies in particular to the principles and recommendations listed below and should be kept in mind any time one encounters a problem worth studying. Anyway, here are some other principles [... insert 8 other principles ...]. Counting the Basic Principle, this makes a total of nine. Confucius had many more, but I tire easily." 
+
+Lucien Le Cam - Maximum likelihood: an introduction
+
 >"Bloße Tatsachenwissenschaften machen bloße Tatsachenmenschen." (mere fact-sciences make mere fact-people)
 
 Edmund Husserl - Die Krisis (section I.2)
