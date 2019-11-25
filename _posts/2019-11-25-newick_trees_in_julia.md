@@ -6,11 +6,11 @@ tags: julia, phylogenetics
 ---
 
 Normally, writing a function in some programming language to parse a newick
-tree is kind of a tedious task, and when you're doning it you wonder why
-Felsenstein came up with such a format in thefirst place. Today I found that in
-julia, you can simply parse them using simple metaprogramming tools. Moreover,
-the `AbstractTrees.jl` library enables to treat trees *really* abstractly.
-Check this:
+tree is kind of a tedious task, and when you're doing it you wonder why
+Felsenstein came up with such a format in the first place. Today I found that
+in julia, you can simply parse them using simple metaprogramming tools.
+Moreover, the `AbstractTrees.jl` library enables to treat trees *really*
+abstractly.  Check this:
 
 ```
 julia> using AbstractTree
