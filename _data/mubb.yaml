@@ -306,3 +306,26 @@ items:
     img: https://img.discogs.com/mqn4nWolU1zUOXRPUIIiuwf_nJ8=/fit-in/405x405/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6830624-1468440644-2904.jpeg.jpg
     tags: opera, experimental, electronic
     column: 3
+    
+  - author: Archie Shepp & Mal Waldron
+    title: Left Alone Revisited
+    year: 2002
+    img: https://img.discogs.com/PGy7LGzdxg1OpMBD6fg6H1Cr4uc=/fit-in/600x530/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1191991-1527494924-3334.jpeg.jpg
+    tags: jazz
+    column: 3
+    
+  - author: Burial
+    title: Untrue
+    year: 2007
+    img: https://img.discogs.com/roSPsEQaatMKtO5yt3Z3mwWyzkA=/fit-in/597x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1125096-1195520889.jpeg.jpg
+    tags: electronic
+    column: 2
+    
+  - author: Terry Callier
+    title: What Color Is Love
+    year: 1972
+    img: https://img.discogs.com/8BtmXVTS4780a8xan27BpcYcOqs=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-1134621-1436273965-4780.jpeg.jpg
+    tags: elec soul
+    column: 1
+    
+
