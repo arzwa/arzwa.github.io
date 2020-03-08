@@ -3,11 +3,11 @@ Add here global page variables to use throughout your
 website.
 The website_* must be defined for the RSS to work
 ------------------------------------------------------->
-@def website_title = "Franklin Template"
-@def website_descr = "Example website using Franklin"
-@def website_url   = "https://tlienart.github.io/FranklinTemplates.jl/"
+@def website_title = "ʕ •㉨• ʔ"
+@def website_descr = "ʕ •㉨• ʔ"
+@def website_url   = ""
 
-@def author = "Septimia Zenobia"
+@def author = "Arthur Zwaenepoel"
 
 <!-----------------------------------------------------
 Add here global latex commands to use throughout your
@@ -17,7 +17,7 @@ For instance:
 ------------------------------------------------------->
 \newcommand{\R}{\mathbb R}
 \newcommand{\scal}[1]{\langle #1 \rangle}
-
+\newcommand{\ks}{K_\mathrm{S}}
 
 <!-- Put a box around something and pass some css styling to the box
 (useful for images for instance) e.g. :
