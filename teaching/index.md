@@ -2,7 +2,7 @@
 These are some extra notes, code examples and exercises on phylogenetic inference. Some of the material here is more directed to those interested in bioinformatics and statistics, other material is directed to a general biological audience.
 
 1. [Substitution models and distances](submod)
-2. [Distance-based phylogeny inference]()
+2. [Distance-based phylogeny inference](distance)
 3. [Maximum likelihood in phylogenetics]()
 4. [Model selection for ML-based phylogenetics]()
 5. [Exercise - HIV and the dentist]()[^1]

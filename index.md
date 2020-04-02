@@ -2,9 +2,8 @@
 @def hasmath = true
 @def hascode = true
 
-[computing $\ks$ distributions with wgd](pages/ksd) | 
-[photos](pages/photos) | 
-[links](pages/links) | 
+[photos](pages/photos) |
+[links](pages/links) |
 [music](pages/mu)
 
 **Arthur Zwaenepoel** (Ghent, Belgium) -- while waiting for general recognition

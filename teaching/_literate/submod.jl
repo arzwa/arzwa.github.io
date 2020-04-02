@@ -1,5 +1,5 @@
-# \toc
 # [back](/teaching/)
+# \toc
 # # Substitution models for molecular phylogenetics
 # If you've had a look at prof Van de Peer's course notes, you should have an
 # idea already of the main approaches people have used to infer phylogenies
