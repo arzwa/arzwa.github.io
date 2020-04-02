@@ -197,7 +197,7 @@ end
 matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
 neighbor_joining(matrix, taxa)
 
-# You can check this against FastME's NJ iplementation, it should be correct.
+# You can check this against FastME's NJ implementation, it should be correct.
 
 # >**Exercise**: For the diehards, try to understand the code and perhaps reimplement it in your programming language of choice.
 
