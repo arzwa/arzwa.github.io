@@ -140,6 +140,23 @@ savefig(p, "_assets/teaching/distance/gamma.svg") # hide
 
 # ## Extra: implementing Neighbor-Joining
 
+# Assume we have a matrix like this
+df = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
+taxa = names(df)
+matrix = Matrix(df)
+
+function get_neighbors_to_join(matrix)
+    r = size(matrix)[1]
+    minindex = (0, 0)
+    minscore = Inf
+    for i=1:r, j=1:i
+        score = (r-2)*matrix[i,j] - sum([matrix[i,k] + matrix[j,k] for k=1:r])
+        min_indices = score < minscore ? (i, j) : minindex
+    end
+    return minindex
+end
+
+
 # ------------------------------------------------------------------------------
 
 # [^fastmeonline]: Note that you can also run FastME online [here](http://www.atgc-montpellier.fr/fastme/).
