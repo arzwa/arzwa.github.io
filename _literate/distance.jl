@@ -21,16 +21,16 @@
 
 # 3. We will use two small 'tree of life' data sets. One [18SrRNA data set with 20 taxa](/assets/teaching/data/18SrRNA_20.phy) and another [18SrRNA data set with 45 taxa](/assets/teaching/data/18SrRNA_45.phy).
 
-# ## FastME
+# ## Computing distance matrices: FastME
 
-# FastME is probably the fastest implementation of distance-based phylogenetics methods available today. It is a software tool that can both be used to compute distance matrices and infer trees using **Neighbor-Joining**, **least-squares**, **minimum evolution** and related distance matrix based methods.
+# While you could easily implement a little program to generate a distnce matrix under the Jukes and Cantor model (see the formula's for the distance in the section on [substitution models](../submod)), this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using **Neighbor-Joining**, **least-squares**, **minimum evolution** and related distance matrix based methods.
 
 # There are two ways to run FastME. There is an interactive mode (inherited from the influential [PHYLIP software package](http://evolution.genetics.washington.edu/phylip.html)) and a command line mode. Personally, I find the command line mode much more convenient. First get a look at the help message
 # ```
 # fastme -help
 # ```
 
-# If you have read the course notes from prof. Van de Peer, most of the options listed there (but not all, no worries) should make some sense to you. To infer a distance matrix with the Jukes & Cantor model you can run something like this from the command line[^commandline]:
+# If you have read the course notes from prof. Van de Peer, most of the options listed there (but not all, no worries) should make some sense to you. To infer a distance matrix with the Jukes & Cantor model you can run something like this from the command line[^commandline] :
 # ```
 # fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -dJC69
 # ```
@@ -44,7 +44,7 @@ function readmatrix(file)  # little function to read the FastME distance matrix
     matrix, names, length(names)
 end
 
-matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCmatrix.txt"))
+matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCmatrix.txt")
 heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
 savefig("_assets/teaching/distance/hm1.svg") # hide
 
@@ -86,7 +86,7 @@ savefig("_assets/teaching/distance/wpgma.svg") # hide
 # fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g
 # ```
 
-matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
+matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
 hcl = hclust(matrix, linkage=:average)
 
 plot(
@@ -125,7 +125,7 @@ savefig("_assets/teaching/distance/wpgma2.svg") # hide
 # fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -g -m NJ
 # ```
 
-# >**Question**: What (if anything) is changing? Experiment with the $\alpha$ parameter of the Gamma distribution by using for instance `-g0.5` in the FastME command. What happens? Below you can see a graph of the Gamma distribution for different values of $\alpha$ to help you interpret the results.
+# >**Question**: What (if anything) is changing? Experiment with the $\alpha$ parameter of the Gamma distribution by using for instance `-g0.5` in the FastME command. What happens? How doe the inference for different values of $\alpha$ relate to the inference with Gamma distances? (FYI: below you can see a graph of the Gamma distribution for different values of $\alpha$ to help you interpret the results.)
 
 using Distributions
 p = plot(title="The Gamma distribution with mean 1")
@@ -138,24 +138,74 @@ savefig(p, "_assets/teaching/distance/gamma.svg") # hide
 
 # ## Extra: implementing Neighbor-Joining
 
-# Assume we have a matrix like this
-matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
-matrix, taxa, ntaxa = readmatrix(joinpath("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
+# Implementing the neighbor-joining algorithm is fairly easy (at least if we don't care *too* much about efficiency). The code below is a fairly minimal implementation of the NJ algorithm (generating the tree directly in Newick format on the go):
 
-function get_neighbors_to_join(matrix)
-    r = size(matrix)[1]
-    minindex = (0, 0, Inf)
-    for i=1:r-1, j=i+1:r
-        score = (r-2)*matrix[i,j] - sum(matrix[i,:] + matrix[j,:])
-        minindex = score < minindex[3] ? (i, j, score) : minindex
+function neighbor_joining(matrix, taxa)
+    clades = copy(taxa)
+    nodes = collect(1:length(taxa))
+    n = length(nodes)
+    while length(nodes) > 1
+        ## get the next neighbors to join
+        (i, j, a, b, di, dj), new_dist = get_neighbors_to_join(matrix, nodes)
+        ## join the chosen nodes to  new clade
+        push!(clades, "($(clades[i]):$di,$(clades[j]):$dj)")
+        ## update the nodes that are still left to join
+        nodes[a] = n + 1
+        deleteat!(nodes, b)
+        ## update the matrix with the new node
+        matrix = [[matrix ; new_dist[1:end-1]'] new_dist]
+        ## increment internal node counter
+        n += 1
     end
-    
-    return minindex
+    clades[end]
 end
 
+function get_neighbors_to_join(matrix, nodes)
+    r = length(nodes)
+    minindex = (0, 0, 0, 0, Inf)
+    for a=1:r, b=a+1:r
+        i = nodes[a]
+        j = nodes[b]
+        ## This is the neighbor joining optimality criterion, the two nodes that
+        ## lead to the lowest value of `x` below are chosen in this iteration
+        ## of the NJ algorithm to join and for an internal node of the tree.
+        x = (r-2)*matrix[i,j] - sum([matrix[i,k] + matrix[j,k] for k in nodes])
+        minindex = x < minindex[end] ? (i, j, a, b, x) : minindex
+    end
+    i = minindex[1]
+    j = minindex[2]
+    di, dj, new_distances = get_nj_distance(matrix, nodes, i, j, r)
+    return (i, j, minindex[3], minindex[4], di, dj), new_distances
+end
+
+function get_nj_distance(matrix, nodes, i, j, r)
+    ## This is the formula to compute the branch
+    a = sum([matrix[i,k] for k in nodes])
+    b = sum([matrix[j,k] for k in nodes])
+    if r != 2  # we are not joining the two last nodes (root)
+        di = 0.5*matrix[i,j] + 1.0/(2r - 4)*(a - b)
+        dj = 0.5*matrix[i,j] + 1.0/(2r - 4)*(b - a)
+    else  # we are joining the two last nodes (generating the root)
+        di = matrix[i,j]
+        dj = 0.
+    end
+    new_distances = 0.5 .* (matrix[i,:] .- di .+ matrix[j,:] .- dj)
+    return di, dj, [new_distances ; 0.]
+end
+
+# Then, given a distance matrix, we can use the code like this
+matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
+neighbor_joining(matrix, taxa)
+
+# You can check this against FastME's NJ iplementation, it should be correct.
+
+# >**Exercise**: For the diehards, try to understand the code and perhaps reimplement it in your programming language of choice.
 
 # ------------------------------------------------------------------------------
 
 # [^fastmeonline]: Note that you can also run FastME online [here](http://www.atgc-montpellier.fr/fastme/).
 
-# [^commandline]: For those unfamiliar with the command line, it will probably be easiest to put the FastME executable for your operating system (for windows this is the `fastme.exe` file) together with the data files in a separate new folder. On windows, you can then from within your file explorer application do `Shift+right click` and click on `open command window here` or `open PowerShell window here`. Then you should be able to run the `fastme.exe` executable, e.g. `fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -d JC` provided the data file `18SrRNA_20.phy` is in the same directory as the `fastme.exe` executable. For Mac and linux users I would recommend a similar approach, make a directory where you put the executable and the data files, and open a terminal in that directory (Linux users, you know how to do this, MacOS users, I can't help you, but google i your friend).
+# [^commandline]: For those unfamiliar with the command line, it will probably be easiest to put the FastME executable for your operating system (for windows this is the `fastme.exe` file) together with the data files in a separate new folder. On windows, you can then from within your file explorer application do `Shift+right click` and click on `open command window here` or `open PowerShell window here`. Then you should be able to run the `fastme.exe` executable, e.g. `fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -d JC` provided the data file `18SrRNA_20.phy` is in the same directory as the `fastme.exe` executable. For Mac and linux users I would recommend a similar approach, make a directory where you put the executable and the data files, and open a terminal in that directory (Linux users, you know how to do this, MacOS users, I can't help you, but google is your friend).
+
+# using Literate #src
+# Literate.markdown(@__FILE__, "teaching", documenter=false) #src

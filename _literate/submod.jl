@@ -440,7 +440,7 @@ savefig("_assets/teaching/submod/lhood3.svg") # hide
 
 # $$\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)$$
 
-# We can use this formula to verify our graphical maximum likelihood approach above
+# Where $p$ is the proportion of different sites in the two aligned sequences. We can use this formula to verify our graphical maximum likelihood approach above
 
 distance_JC(p) = -0.75 * log(1. - 4p/3)
 p = mapreduce(!=, +, seqa, seqb)/length(seqa)
@@ -486,3 +486,6 @@ savefig("_assets/teaching/submod/lhood4.svg") # hide
 # [^generator]: In the Markov chain literature this is often referred to as the *infinitesimal generator*, but in phylogenetics it's commonly reffered to simply as the rate matrix.
 
 # [^solution]: Note that if you forget for a while that $P(t)$ and $Q$ represent matrices, and just look at this as a simple ordinary differential equation (ODE) of the form $$\frac{df(t)}{dt} = af(t)$$ the solution is very straightforward (you might recognize this form of ODE from population growth or radioactive decay models). If we bring $f(t)$ from the right hand side to the left, and integrate on both sides from $t_0$ to $t$, we get the very familiar solution $f(t) = f(t_0)e^{at}$. If we would naively apply this to our case we would have $P(t) = P(0)e^{Qt}$ and since we have $P(0) = I$ this happens to be the actual form of the solution.
+
+# using Literate #src
+# Literate.markdown(@__FILE__, "teaching", documenter=false) #src
