@@ -2,9 +2,9 @@
 @def hasmath = true
 @def hascode = true
 
-[photos](pages/photos) |
-[links](pages/links) |
-[music](pages/mu)
+[photos](/pages/photos) |
+[links](/pages/links) |
+[music](/pages/mu)
 
 **Arthur Zwaenepoel** (Ghent, Belgium) -- while waiting for general recognition
 in the form of a wikipedia page, you can find my spot on the www here. I am a
@@ -16,4 +16,4 @@ phylogenetic methods. Here I have come to prefer a Bayesian approach towards
 modeling and inference. Besides these scientific interests and occupations, I
 enjoy philosophy, coding, music, literature, cycling and running.
 
-![](assets/schapen.jpg)
+![](/assets/schapen.jpg)
