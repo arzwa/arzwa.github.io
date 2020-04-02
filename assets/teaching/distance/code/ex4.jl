@@ -1,7 +1,12 @@
 # This file was generated, do not modify it. # hide
-using Distributions
-p = plot(title="The Gamma distribution with mean 1")
-for α in [0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.]
-    plot!(p, Gamma(α, 1/α), label="\\alpha = $α", xlim=(0,5), ylim=(0,5))
+using Plots
+function readmatrix(file)  # little function to read the FastME distance matrix
+    lines = [split(l) for l in readlines(file)[2:end] if l != ""]
+    matrix = hcat([map(x->parse(Float64, x), l[2:end]) for l in lines]...)
+    names = [l[1] for l in lines]
+    matrix, names, length(names)
 end
-savefig(p, "_assets/teaching/distance/gamma.svg") # hide
+
+matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCmatrix.txt")
+heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
+savefig("_assets/teaching/distance/hm1.svg") # hide

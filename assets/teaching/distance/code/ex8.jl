@@ -1,56 +1,4 @@
-# This file was generated, do not modify it.
-
-seqa = "ATCGGGCTAGC"
-seqb = "TTCGGCTTACC";
-
-p = mapreduce(!=, +, seqa, seqb)/length(seqa)
-
-d = -0.75 * log(1. - 4p/3)
-
-using Plots
-function readmatrix(file)  # little function to read the FastME distance matrix
-    lines = [split(l) for l in readlines(file)[2:end] if l != ""]
-    matrix = hcat([map(x->parse(Float64, x), l[2:end]) for l in lines]...)
-    names = [l[1] for l in lines]
-    matrix, names, length(names)
-end
-
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCmatrix.txt")
-heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
-savefig("_assets/teaching/distance/hm1.svg") # hide
-
-using Clustering, StatsPlots
-hcl = hclust(matrix, linkage=:average)
-plot(
-    plot(hcl, xticks=false),
-    heatmap(matrix[hcl.order,hcl.order], colorbar=false,
-        yticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xrotation=45),
-    layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
-
-savefig("_assets/teaching/distance/wpgma.svg") # hide
-
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
-hcl = hclust(matrix, linkage=:average)
-
-plot(
-    plot(hcl, xticks=false),
-    heatmap(matrix[hcl.order,hcl.order], colorbar=false,
-        yticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xrotation=45),
-    layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
-
-savefig("_assets/teaching/distance/wpgma2.svg") # hide
-
-using Distributions
-p = plot(title="The Gamma distribution with mean 1")
-for α in [0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.]
-    plot!(p, Gamma(α, 1/α), label="\\alpha = $α", xlim=(0,5), ylim=(0,5))
-end
-savefig(p, "_assets/teaching/distance/gamma.svg") # hide
-
+# This file was generated, do not modify it. # hide
 function neighbor_joining(matrix, taxa)
     clades = copy(taxa)
     nodes = collect(1:length(taxa))
@@ -103,7 +51,3 @@ function get_nj_distance(matrix, nodes, i, j, r)
     new_distances = 0.5 .* (matrix[i,:] .- di .+ matrix[j,:] .- dj)
     return di, dj, [new_distances ; 0.]
 end
-
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
-neighbor_joining(matrix, taxa)
-
