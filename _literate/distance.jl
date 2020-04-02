@@ -4,9 +4,24 @@
 
 # >**Questions** will be marked in blocks like this, try to formulate a brief answer to them.
 
-# Distance-based phylogenetic methods proceed by computing a **pairwise distance matrix** for an input alignment based on a [substitution model](../submod). Usually the estimated distance is the maximum likelihood estimate (MLE) of the pairwise distance under the assumed substitution model. After computing the distance matrix, a tree is inferred by using some sort of clustering algorithm or least-squares estimation step. Distance-based phylogenetic inference is thus essentially a two-step process:
+# Distance-based phylogenetic methods proceed by computing a **pairwise distance matrix** for an input alignment based on a [substitution model](../submod), i.e. an assumed **model of evolution** for molecular sequences. Usually these estimated distances are the maximum likelihood estimates (MLE) of the pairwise distance under the assumed substitution model. For instance, consider two sequences, for an observed proportion of different sites $p$, the maximum likelihood estimate of the distance between the two sequences under the Jukes & Cantor substitution model is
+# $$\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)$$
+# So for instance for the alignment
 
-# 1. Compute distances
+seqa = "ATCGGGCTAGC"
+seqb = "TTCGGCTTACC";
+
+# The proportion of different sites is
+p = mapreduce(!=, +, seqa, seqb)/length(seqa)
+
+# and the distance is
+d = -0.75 * log(1. - 4p/3)
+
+# The interpretation of this distance is **the expected number of substitutions per site** separating the two sequences. Note that the distance is a product of two other evolutionary variables: the **substitution rate** and the **divergence time**. If we have $n$ sequences, we can apply the distance formula to obtain an $n \times n$ **distance matrix**. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the [notes on substitution models](../submod).
+
+# After computing the distance matrix, a tree is inferred by using some sort of clustering algorithm or least-squares estimation step. Distance-based phylogenetic inference is thus essentially a two-step process:
+
+# 1. Compute pairwise distances
 # 2. Infer the tree, assuming the distances
 
 # This two step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with $n$ sequences and $m$ sites in a single $n \times n$ matrix it dramatically reduces the data, making tree inference coputationally very fast. However, by reducing the rich sequence data to a matrix of numbers it throws away a lot of potentially interesting evolutionary information. Another issue is that when using distance-based methods the estimated distances from step 1 *are treated as observed data* in step 2. However, distances are themselves estimates, associated with some uncertainty (a distance estimate has a variance for instance), and this uncertainty in the distances is neglected in step 2. Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost.
@@ -17,7 +32,7 @@
 
 # 1. Download the **FastME** software at [http://www.atgc-montpellier.fr/fastme](http://www.atgc-montpellier.fr/fastme/binaries.php) (on the bottom of the page, click the download button). In the downloaded folder you will find a binaries directory, identify the binary (executable) for your operating system and put it in some folder of your convenience.[^fastmeonline]
 
-# 2. To view trees, I recommend the [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above (`.zip` file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is something for Mc OSX users(?))
+# 2. To view trees, I recommend the [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above (`.zip` file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is something for Mac OSX users(?))
 
 # 3. We will use two small 'tree of life' data sets. One [18SrRNA data set with 20 taxa](/assets/teaching/data/18SrRNA_20.phy) and another [18SrRNA data set with 45 taxa](/assets/teaching/data/18SrRNA_45.phy).
 
@@ -80,7 +95,7 @@ savefig("_assets/teaching/distance/wpgma.svg") # hide
 
 # >**Question**: How do you interpret the branch lengths, what is the associated length 'unit'?
 
-# Now let's infer a tree using $\Gamma$ **distributed rates across sites** (i.e. $\Gamma$ of 'Gamma' distances), still using the Jukes-Cantor substitution model.
+# Now let's infer a tree using $\Gamma$ **distributed rates across sites** (i.e. $\Gamma$ or 'Gamma' distances), still using the Jukes-Cantor substitution model.
 
 # ```
 # fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g
@@ -105,7 +120,7 @@ savefig("_assets/teaching/distance/wpgma2.svg") # hide
 
 # ## Neighbor-joining
 
-# Neighbor-joining (NJ) is another method for distance-based phylogenetics. It is also a clustering method, but one that does not produce ultrametric trees. The default output of FastME includes a tree inferred using NJ (in the `.nwk` file). To run tree inference with NJ for an input alignment or distance matrix, run `fastme` with the `-o` option. For instance
+# Neighbor-joining (NJ) is another method for distance-based phylogenetics. It is also a clustering method, but one that does not produce ultrametric trees. To run tree inference with NJ for an input alignment or distance matrix, run `fastme` with the `-o <output_file>` and `-m NJ` options. For instance
 
 # ```
 # fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -m NJ
@@ -135,6 +150,8 @@ end
 savefig(p, "_assets/teaching/distance/gamma.svg") # hide
 
 # ![](/assets/teaching/distance/gamma.svg)
+
+# >**Exercise**: Perform phylogenetic analysis using distance based methods for the second data set with more species. Explore the other substitution models available in FastME.
 
 # ## Extra: implementing Neighbor-Joining
 
@@ -197,7 +214,7 @@ end
 matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
 neighbor_joining(matrix, taxa)
 
-# You can check this against FastME's NJ implementation, it should be correct.
+# You can check this against FastME's NJ implementation, it should be correct. We have everything in place to start building our own extremely redundant phylogenetics library.
 
 # >**Exercise**: For the diehards, try to understand the code and perhaps reimplement it in your programming language of choice.
 
