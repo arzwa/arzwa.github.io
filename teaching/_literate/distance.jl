@@ -138,6 +138,8 @@ savefig(p, "_assets/teaching/distance/gamma.svg") # hide
 
 # ![](/assets/teaching/distance/gamma.svg)
 
+# ## Extra: implementing Neighbor-Joining
+
 # ------------------------------------------------------------------------------
 
 # [^fastmeonline]: Note that you can also run FastME online [here](http://www.atgc-montpellier.fr/fastme/).
