@@ -36,18 +36,16 @@
 # ```
 # Try to run this command and see whether you manage to make it work. The above command should generate a distance matrix. Let's make a heatmap to visualize it:
 
-using Plots, DataFrames
+using Plots
 function readmatrix(file)  # little function to read the FastME distance matrix
     lines = [split(l) for l in readlines(file)[2:end] if l != ""]
-    DataFrame((;[Symbol(l[1])=>map(x->parse(Float64, x), l[2:end]) for l in lines]...))
+    matrix = hcat([map(x->parse(Float64, x), l[2:end]) for l in lines]...)
+    names = [l[1] for l in lines]
+    matrix, names, length(names)
 end
 
-df = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCmatrix.txt"))
-matrix = Matrix(df)
-ntaxa = size(matrix)[1]
-taxa = string.(names(df))
-heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa),
-    xrotation=45, size=(700,650))
+matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCmatrix.txt"))
+heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
 savefig("_assets/teaching/distance/hm1.svg") # hide
 
 # ![](/assets/teaching/distance/hm1.svg)
@@ -88,7 +86,7 @@ savefig("_assets/teaching/distance/wpgma.svg") # hide
 # fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g
 # ```
 
-matrix = Matrix(readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")))
+matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
 hcl = hclust(matrix, linkage=:average)
 
 plot(
@@ -141,18 +139,17 @@ savefig(p, "_assets/teaching/distance/gamma.svg") # hide
 # ## Extra: implementing Neighbor-Joining
 
 # Assume we have a matrix like this
-df = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
-taxa = names(df)
-matrix = Matrix(df)
+matrix, taxa, ntaxa = readmatrix(joinpath(@__DIR__, "_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
+matrix, taxa, ntaxa = readmatrix(joinpath("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt"))
 
 function get_neighbors_to_join(matrix)
     r = size(matrix)[1]
-    minindex = (0, 0)
-    minscore = Inf
-    for i=1:r, j=1:i
-        score = (r-2)*matrix[i,j] - sum([matrix[i,k] + matrix[j,k] for k=1:r])
-        min_indices = score < minscore ? (i, j) : minindex
+    minindex = (0, 0, Inf)
+    for i=1:r-1, j=i+1:r
+        score = (r-2)*matrix[i,j] - sum(matrix[i,:] + matrix[j,:])
+        minindex = score < minindex[3] ? (i, j, score) : minindex
     end
+    
     return minindex
 end
 
