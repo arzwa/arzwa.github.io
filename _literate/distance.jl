@@ -14,7 +14,7 @@ seqb = "TTCGGCTTACC";
 # The proportion of different sites is
 p = mapreduce(!=, +, seqa, seqb)/length(seqa)
 
-# and the distance is
+# and the estimated distance is
 d = -0.75 * log(1. - 4p/3)
 
 # The interpretation of this distance is **the expected number of substitutions per site** separating the two sequences. Note that the distance is a product of two other evolutionary variables: the **substitution rate** and the **divergence time**. If we have $n$ sequences, we can apply the distance formula to obtain an $n \times n$ **distance matrix**. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the [notes on substitution models](../submod).
