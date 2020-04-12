@@ -3,51 +3,28 @@
 
 \toc
 
-In this exercise, we will have a look at the phylogenetic position of the human
-coronavirus SARS-CoV-2 that is currently causing the outbreak of COVID-19. The
-goal of this exercise is to go through a complete workflow for phylogenetic 
-analysis. 
+In this exercise, we will have a look at the phylogenetic position of the human coronavirus SARS-CoV-2 that is currently causing the outbreak of COVID-19. The goal of this exercise is to go through a complete workflow for phylogenetic analysis.
 
-**Disclaimer:** I am in no way experienced with viral phylogenomics. I know
-nothing about the available data, little about viral evolutionary
-relationships, and barely anything about viral genomes. 
+**Disclaimer:** I am in no way experienced with viral phylogenomics. I know nothing about the available data, little about viral evolutionary relationships, and barely anything about viral genomes. Also the data used below is in no way optimal for addressing questions about SARS-CoV-2 evolution, for which the [GISAID](https://www.gisaid.org/) database is probably more appropriate (but requires registration and prohibits secondary sharing of dt with unregistered individuals).
 
 ## Obtaining data
 
 ### Viral genomes
 
-As armchair biologists, we tend not to go look for our data out there in the
-wild (especially during a pandemic), but download it from some database.  Here
-I describe how I got the data set we will be analyzing later. This is not
-really part of the practical, but rather then providing you a data set
-rightaway, it can be informative to see the typical annoying bits of
-bioinformatics that necessarily come first. 
+As armchair biologists, we tend not to go look for our data out there in the wild (especially during a pandemic), but download it from some database.  Here I describe how I got the data set we will be analyzing later. This is not really part of the practical, but rather then providing you a data set rightaway, it can be informative to see the typical annoying bits of bioinformatics that necessarily come first.
 
-To get the data, I first did a search in the NCBI 'Nucleotide' database
-using the following search term:
+To get the data, I first did a search in the NCBI 'Nucleotide' database using the following search term:
 
 ```
-("Alphacoronavirus"[Organism] OR "Betacoronavirus"[Organism] OR 
+("Alphacoronavirus"[Organism] OR "Betacoronavirus"[Organism] OR
  "Gammacoronavirus"[Organism]) AND (viruses[filter] AND refseq[filter])
 ```
 
-I restrict the sequence data to the RefSeq database, which is a collection of
-non-redundant and well-annotated sequences. As I am no expert in viral
-phylogenomics, I considered this the best idea, since it would not be feasible
-for me to assess data quality and redundancy efficiently. This provided me with
-44 corona virus genome sequences.
+I restrict the sequence data to the RefSeq database, which is a collection of non-redundant and well-annotated sequences. As I am no expert in viral phylogenomics, I considered this the best idea, since it would not be feasible for me to assess data quality and redundancy efficiently. This provided me with 44 corona virus genome sequences.
 
-I sent the results to a file, using the 'Complete record' option and the
-GenBank format. Note that the reference sequence for nCov-2019 is the Wuhan
-isolate apparently, with the following [genbank
-entry](https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2?report=genbank&to=29903).
+I sent the results to a file, using the 'Complete record' option and the GenBank format. Note that the reference sequence for nCov-2019 is the Wuhan isolate apparently, with the following [genbank entry](https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2?report=genbank&to=29903).
 
-Now we could work with the entire genomes, aligning them and trying to do tree 
-inference for the full viral genome alignments. Alternatively, we could analyze
-the different viral proteins separetely. Besides being computationally less
-involved, this has also the advantage of being somewhat clearer to work with.
-I wrote the following little script using Biopython to obtain the coding DNA
-sequences (CDS) and associated amino-acid (AA) sequences for each viral genome:
+Now we could work with the entire genomes, aligning them and trying to do tree inference for the full viral genome alignments. Alternatively, we could analyze the different viral proteins separetely. Besides being computationally less involved, this has also the advantage of being somewhat clearer to work with. I wrote the following little script using Biopython to obtain the coding DNA sequences (CDS) and associated amino-acid (AA) sequences for each viral genome:
 
 ```py
 from Bio import SeqIO
@@ -67,7 +44,7 @@ for rec in SeqIO.parse(sys.argv[1], "genbank"):
     if rec.features:
         gid = rec.annotations["organism"].replace(" ", "_").replace("/", "_")
         recs = [SeqRecord(
-            seq=ft.location.extract(rec).seq, 
+            seq=ft.location.extract(rec).seq,
             id=ft.qualifiers['protein_id'][0],
             description="") for ft in rec.features if ft.type == "CDS"]
         SeqIO.write(recs, os.path.join(path_nt, gid + ".fasta"), "fasta")
@@ -81,8 +58,7 @@ The script above can be run as follows:
 python3 getdata.py sequence.gb genomes
 ```
 
-Which gives us two directories, one with all CDS sequences for each genome and
-one with all associated amino-acid sequences.
+Which gives us two directories, one with all CDS sequences for each genome and one with all associated amino-acid sequences.
 
 ```
 tree genomes-aa
@@ -134,32 +110,22 @@ genomes-aa
 └── Wencheng_Sm_shrew_coronavirus.fasta
 ```
 
-The genomes seem to have between 5 and 14 genes, as can be quickly inspected 
-using `grep -c '>' genomes-aa/* | cut -d':' -f2 | sort | uniq`.
+The genomes seem to have between 5 and 14 genes, as can be quickly inspected using `grep -c '>' genomes-aa/* | cut -d':' -f2 | sort | uniq`.
 
 ### Gene families
 
-With these viral genomes nicely in their respective files, we do not have our
-gene families of interest yet. Since these are RefSeq records, we could
-probably get gene families (e.g. the S-protein) for each genome directly by
-looking at the gene names, but this is tricky (what if the names are not
-consistent for instance?). I'd rather take a more general approach. We'll make
-a blast database for our genomes, and fish out sequences using a bait gene of
-interest (for instance the S-protein from SARS-CoV-2).
+With these viral genomes nicely in their respective files, we do not have our gene families of interest yet. Since these are RefSeq records, we could probably get gene families (e.g. the S-protein) for each genome directly by looking at the gene names, but this is tricky (what if the names are not consistent for instance?). I'd rather take a more general approach. We'll make a blast database for our genomes, and fish out sequences using a bait gene of interest (for instance the S-protein from SARS-CoV-2).
 
-Well, actually, I'll use [diamond](https://github.com/bbuchfink/diamond)
-instead of blast, which is way faster. First I make a diamond database:
+Well, actually, I'll use [diamond](https://github.com/bbuchfink/diamond) instead of blast, which is way faster. First I make a diamond database:
 
 ```
 cat genomes-aa/* > aa.fa
 diamond makedb --in aa.fa --db aa
 ```
 
-Now we fish for the S-protein (spike glycoprotein). This is the sequence of the
-Wuhan isolate reference genome of SARS-Cov-2 (which you can easily parse out
-the genbank entry linked to above):
+Now we fish for the S-protein (spike glycoprotein). This is the sequence of the Wuhan isolate reference genome of SARS-Cov-2 (which you can easily parse out the genbank entry linked to above):
 
-``` 
+```
 >spike-SARS-CoV-2
 MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFS
 NVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIV
@@ -191,8 +157,7 @@ Run diamond using the above protein as query:
 diamond blastp --db aa.dmnd -q spike-sarscov2.fasta > spike.hits
 ```
 
-Now we obtain the relevant sequences using the following script
-(I saved it as `gethits.py`)
+Now we obtain the relevant sequences using the following script (I saved it as `gethits.py`)
 
 ```
 import sys
@@ -214,7 +179,7 @@ if __name__ == "__main__":
                 newid = "{}__{}".format(f.split(".")[0], seq.id)
                 if newid in seqs: logging.warning("duplicate!")
                 seqs[newid] = seq        
-    if len(seqs) < len(df.index): 
+    if len(seqs) < len(df.index):
         logging.warning("Found {}/{} sequences".format(
 			len(seqs), len(df.index)))
     for (k,v) in seqs.items():
@@ -223,7 +188,7 @@ if __name__ == "__main__":
 
 ```
 
-Use it as follows: 
+Use it as follows:
 
 ```
 python3 gethits.py ./spike.hits ./genomes-aa > spike.aa.fasta
@@ -235,27 +200,19 @@ and to get the CDS sequences:
 python3 gethits.py ./spike.hits ./genomes-nt > spike.nt.fasta
 ```
 
-Clearly, you can use this approach to get other genes from the viral genome
-database we assembled. Now we can do phylogenetics using the `spike.aa.fasta`
-and/or `spike.nt.fasta` files.
- 
+Clearly, you can use this approach to get other genes from the viral genome database we assembled. Now we can do phylogenetics using the `spike.aa.fasta` and/or `spike.nt.fasta` files.
+
 ## Multiple sequence alignment
 
-In order to do phylogenetic inference, we need to have a hypothesis of
-homology, that is to say, we need to know which characters in a bunch of
-sequences trace back to a common ancestral character. Sadly, this is not 
-given, and we have to infer this from the data. This is of course the 
-problem of multiple sequence alignment (MSA).
+In order to do phylogenetic inference, we need to have a hypothesis of homology, that is to say, we need to know which characters in a bunch of sequences trace back to a common ancestral character. Sadly, this is not given, and we have to infer this from the data. This is of course the problem of multiple sequence alignment (MSA).
 
 In practice, inferring a MSA couldn't be easier:
 
 ```
-mafft spike.aa.fasta > spike.aa.msa 
+mafft spike.aa.fasta > spike.aa.msa
 ```
 
-And we can have a look at this alignment using for instance the
-[`alv`](https://github.com/arvestad/alv) program. Here's a little piece 
-of the output of `alv spike.aa.msa`:
+And we can have a look at this alignment using for instance the [`alv`](https://github.com/arvestad/alv) program. Here's a little piece of the output of `alv spike.aa.msa`:
 
 ```
 Human_coronavirus_NL63__YP_003767.1                                  --IISVVFVVLLSLLVFCCLSTGC-CGCCNCLTSSMRGCCDC-----
@@ -285,19 +242,8 @@ BtMr-AlphaCoV_SAX2011__YP_009199609.1                                --IIVLVLILF
 Betacoronavirus_HKU24__YP_009113025.1                                --LIGLAGVAVLVLLFFVCCCTGCGSSCFK----KCGSCCDD-----
  ```
 
-This however hides the crucial fact that *multiple sequence alignment is one
-of the most important open problems in statistical phylogenetics*. Since every
-inference is associated with uncertainty, ideally we'd like to obtain an idea
-of the uncertainty in our inferred MSA, and take this uncertainty into account
-in our phylogenetic analyses. In a Bayesian framework this is possible by
-jointly inferring the alignment and phylogeny under a model of sequence
-evolution that includes insertions and deletions (the TKF or Thorne - Kishino -
-Felsenstein model for instance), which is what the program
-[BAli-Phy](http://bali-phy.org/) does. However this is computationally very,
-very expensive.
+This however hides the crucial fact that *multiple sequence alignment is one of the most important open problems in statistical phylogenetics*. Since every inference is associated with uncertainty, ideally we'd like to obtain an idea of the uncertainty in our inferred MSA, and take this uncertainty into account in our phylogenetic analyses. In a Bayesian framework this is possible by jointly inferring the alignment and phylogeny under a model of sequence evolution that includes insertions and deletions (the TKF or Thorne - Kishino - Felsenstein model for instance), which is what the program [BAli-Phy](http://bali-phy.org/) does. However this is computationally very, very expensive.
 
-In the following we will rely on our MAFFT-based MSAs, but it is important to keep 
-in mind that in all the following statistical phylogenetic analyses, we *are making
-the terrible assumption that the MSA is known without error.*
+In the following we will rely on our MAFFT-based MSAs, but it is important to keep  in mind that in all the following statistical phylogenetic analyses, we *are making the terrible assumption that the MSA is known without error.*
 
 ## Phylogenetic inference using Maximum likelihood
