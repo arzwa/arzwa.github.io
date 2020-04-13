@@ -1,5 +1,5 @@
 <!--This file was generated, do not modify it.-->
-[back](/teaching/)
+[back](/phylocourse/)
 \toc
 # Substitution models for molecular phylogenetics
 If you've had a look at prof Van de Peer's course notes, you should have an
@@ -282,10 +282,10 @@ using Plots
 plot(probs[1,:], probs[2,:],
     xlabel="p", ylabel="P(data|p)",
     grid=false, legend=false, color=:black)
-savefig("_assets/teaching/submod/lhood1.svg") # hide
+savefig("_assets/phylocourse/submod/lhood1.svg") # hide
 ```
 
-![](/assets/teaching/submod/lhood1.svg)
+![](/assets/phylocourse/submod/lhood1.svg)
 
 Incidentally, the value $P(\text{data}|p)$ viewed as a function of $p$ for a fixed data set is called the likelihood function of $p$. The maximum likelihood estimate using this naive brute force approach is
 
@@ -308,7 +308,7 @@ For instance $\pi_A p_{TA}(n) = \pi_T p_{AT}(n)$. Here $\pi_i$ is the probabilit
 1. A sequence `ATTTCATG` evolving over $2n$ time steps into the sequence `TTGGGATG`
 2. An unknown ancestral sequence evolving independently into the sequences `ATTTCATG` and `TTGGGATG` over a time $t$
 
-![](/assets/teaching/submod/rev.png)
+![](/assets/phylocourse/submod/rev.png)
 
 In other words, from the point of view of the model, both scenario's are indistinguishable. Almost all commonly used substitution models in phylogenetics are reversible.
 
@@ -475,20 +475,20 @@ p = heatmap(0.1:0.02:2, 0.1:0.02:2, size=(400,350),
 for a=0.1:0.25:5
     plot!(p, x->a/x, ylim=(0.1,2), xlim=(0.1,2), legend=false, color=:black)
 end
-savefig("_assets/teaching/submod/lhood2.svg") # hide
+savefig("_assets/phylocourse/submod/lhood2.svg") # hide
 ```
 
-![](/assets/teaching/submod/lhood2.svg)
+![](/assets/phylocourse/submod/lhood2.svg)
 
 One can clearly see a boomerang shaped area in the likelihood surface corresponding to parameter region with high likelihood. We are unable to obtain a unique maximum likelihood estimate (MLE) for both $t$ and $\lambda$. However, we could try to obtain an estimate of the product of $\lambda$ and $t$ (i.e. the distance).
 
 ```julia:ex24
 plot(0:0.01:1, d->ctmc_probability(seqa, seqb, d, 1/3),
     color=:black, legend=false, xlabel="distance", ylabel="log-likelihood")
-savefig("_assets/teaching/submod/lhood3.svg") # hide
+savefig("_assets/phylocourse/submod/lhood3.svg") # hide
 ```
 
-![](/assets/teaching/submod/lhood3.svg)
+![](/assets/phylocourse/submod/lhood3.svg)
 What we've done here is fix the *total* substitution rate for each state at $1$ (i.e. $\lambda = 1/3$, giving a total substitution rate of $3\lambda = 1$) and then estimate the time $t$. In other words, we are estimating time, but on a *different time scale*, namely a scale of expected number of substitutions per site (i.e. one unit of this rescaled time corresponds to one expected substitution per site). This amounts to the same as estimating the product $\lambda t$ or in other wordss the **distance**.
 
 This example show how we can estimate distances for *any substitution model* (so also more coplicated one than the JC model introduced above) given a rate matrix $Q$ that is scaled such that the average total substitution rate for each state is 1. We simply obtain the maximum likelihood estimate for the time parameter of the CTMC model keeping the rate matrix fixed using the transition probabilities of the CTMC and the observed data. However, as you might expect (or recall from the course notes), there is a simple formula for the distance under the JC model
@@ -511,10 +511,10 @@ plot(0:0.01:1, d->ctmc_probability(seqa, seqb, d, 1/3),
 dist = distance_JC(p)
 vline!([dist])
 hline!([ctmc_probability(seqa, seqb, dist, 1/3)])
-savefig("_assets/teaching/submod/lhood4.svg") # hide
+savefig("_assets/phylocourse/submod/lhood4.svg") # hide
 ```
 
-![](/assets/teaching/submod/lhood4.svg)
+![](/assets/phylocourse/submod/lhood4.svg)
 
 Of course it worked. More on distances and distance-based phylogenetic inference in the [next section](../distance)!
 
@@ -523,7 +523,7 @@ Of course it worked. More on distances and distance-based phylogenetic inference
 ## Exercises
 
 1. Consider the figure below showing evolutionary histories for a single nucleotide site for a set of three taxa. Compute numerically or write down symbolically the probability of the observed evolutionary history in (1) and (2).
-![](/assets/teaching/submod/ex1.png)
+![](/assets/phylocourse/submod/ex1.png)
 
 2. I guess most of you have knowledge of some programming language, but likely not julia. A good exercise -- for those who feel like it -- would be to implement some of the bits of simulation and inference code above in your programming language of choice (Python, R, Perl, ...).
 

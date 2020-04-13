@@ -83,7 +83,7 @@ using Plots
 plot(probs[1,:], probs[2,:],
     xlabel="p", ylabel="P(data|p)",
     grid=false, legend=false, color=:black)
-savefig("_assets/teaching/submod/lhood1.svg") # hide
+savefig("_assets/phylocourse/submod/lhood1.svg") # hide
 
 themax, index = findmax(probs[2,:])
 println("Maximum likelihood value: P(data|̂p) = $themax")
@@ -149,11 +149,11 @@ p = heatmap(0.1:0.02:2, 0.1:0.02:2, size=(400,350),
 for a=0.1:0.25:5
     plot!(p, x->a/x, ylim=(0.1,2), xlim=(0.1,2), legend=false, color=:black)
 end
-savefig("_assets/teaching/submod/lhood2.svg") # hide
+savefig("_assets/phylocourse/submod/lhood2.svg") # hide
 
 plot(0:0.01:1, d->ctmc_probability(seqa, seqb, d, 1/3),
     color=:black, legend=false, xlabel="distance", ylabel="log-likelihood")
-savefig("_assets/teaching/submod/lhood3.svg") # hide
+savefig("_assets/phylocourse/submod/lhood3.svg") # hide
 
 distance_JC(p) = -0.75 * log(1. - 4p/3)
 p = mapreduce(!=, +, seqa, seqb)/length(seqa)
@@ -164,5 +164,5 @@ plot(0:0.01:1, d->ctmc_probability(seqa, seqb, d, 1/3),
 dist = distance_JC(p)
 vline!([dist])
 hline!([ctmc_probability(seqa, seqb, dist, 1/3)])
-savefig("_assets/teaching/submod/lhood4.svg") # hide
+savefig("_assets/phylocourse/submod/lhood4.svg") # hide
 

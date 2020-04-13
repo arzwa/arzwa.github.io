@@ -1,5 +1,5 @@
 <!--This file was generated, do not modify it.-->
-[back](/teaching/)
+[back](/phylocourse/)
 \toc
 # Distance-based phylogenetic inference
 
@@ -43,7 +43,7 @@ Because of their speed, distance methods are still quite often used. Some ML tre
 
 2. To view trees, I recommend the [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above (`.zip` file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is something for Mac OSX users(?))
 
-3. We will use two small 'tree of life' data sets. One [18SrRNA data set with 20 taxa](/assets/teaching/data/18SrRNA_20.phy) and another [18SrRNA data set with 45 taxa](/assets/teaching/data/18SrRNA_45.phy).[^ancientdata]
+3. We will use two small 'tree of life' data sets. One [18SrRNA data set with 20 taxa](/assets/phylocourse/data/18SrRNA_20.phy) and another [18SrRNA data set with 45 taxa](/assets/phylocourse/data/18SrRNA_45.phy).[^ancientdata]
 
 ## Computing distance matrices: FastME
 
@@ -69,12 +69,12 @@ function readmatrix(file)  # little function to read the FastME distance matrix
     matrix, names, length(names)
 end
 
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCmatrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCmatrix.txt")
 heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
-savefig("_assets/teaching/distance/hm1.svg") # hide
+savefig("_assets/phylocourse/distance/hm1.svg") # hide
 ```
 
-![](/assets/teaching/distance/hm1.svg)
+![](/assets/phylocourse/distance/hm1.svg)
 
 >**Question**: does this distance matrix make sense to you? Can you spot clades of more closely related species already?
 
@@ -93,10 +93,10 @@ plot(
         xrotation=45),
     layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
 
-savefig("_assets/teaching/distance/wpgma.svg") # hide
+savefig("_assets/phylocourse/distance/wpgma.svg") # hide
 ```
 
-![](/assets/teaching/distance/wpgma.svg)
+![](/assets/phylocourse/distance/wpgma.svg)
 
 A pretty figure in my humble opinion.
 
@@ -115,7 +115,7 @@ fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g
 ```
 
 ```julia:ex6
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
 hcl = hclust(matrix, linkage=:average)
 
 plot(
@@ -126,10 +126,10 @@ plot(
         xrotation=45),
     layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
 
-savefig("_assets/teaching/distance/wpgma2.svg") # hide
+savefig("_assets/phylocourse/distance/wpgma2.svg") # hide
 ```
 
-![](/assets/teaching/distance/wpgma2.svg)
+![](/assets/phylocourse/distance/wpgma2.svg)
 
 >**Question**: did the topology change? Did the branch lengths change? Why?
 
@@ -163,10 +163,10 @@ p = plot(title="The Gamma distribution with mean 1")
 for α in [0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.]
     plot!(p, Gamma(α, 1/α), label="\\alpha = $α", xlim=(0,5), ylim=(0,5))
 end
-savefig(p, "_assets/teaching/distance/gamma.svg") # hide
+savefig(p, "_assets/phylocourse/distance/gamma.svg") # hide
 ```
 
-![](/assets/teaching/distance/gamma.svg)
+![](/assets/phylocourse/distance/gamma.svg)
 
 >**Exercise**: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC+Γ model, and vary the shpe of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down (we will compare them later with maximum-likelihood results).
 
@@ -234,7 +234,7 @@ end
 Then, given a distance matrix, we can use the code like this
 
 ```julia:ex9
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
 neighbor_joining(matrix, taxa)
 ```
 
