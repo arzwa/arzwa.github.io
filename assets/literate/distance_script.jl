@@ -15,9 +15,9 @@ function readmatrix(file)  # little function to read the FastME distance matrix
     matrix, names, length(names)
 end
 
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCmatrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCmatrix.txt")
 heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
-savefig("_assets/teaching/distance/hm1.svg") # hide
+savefig("_assets/phylocourse/distance/hm1.svg") # hide
 
 using Clustering, StatsPlots
 hcl = hclust(matrix, linkage=:average)
@@ -29,9 +29,9 @@ plot(
         xrotation=45),
     layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
 
-savefig("_assets/teaching/distance/wpgma.svg") # hide
+savefig("_assets/phylocourse/distance/wpgma.svg") # hide
 
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
 hcl = hclust(matrix, linkage=:average)
 
 plot(
@@ -42,14 +42,14 @@ plot(
         xrotation=45),
     layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
 
-savefig("_assets/teaching/distance/wpgma2.svg") # hide
+savefig("_assets/phylocourse/distance/wpgma2.svg") # hide
 
 using Distributions
 p = plot(title="The Gamma distribution with mean 1")
 for α in [0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.]
     plot!(p, Gamma(α, 1/α), label="\\alpha = $α", xlim=(0,5), ylim=(0,5))
 end
-savefig(p, "_assets/teaching/distance/gamma.svg") # hide
+savefig(p, "_assets/phylocourse/distance/gamma.svg") # hide
 
 function neighbor_joining(matrix, taxa)
     clades = copy(taxa)
@@ -104,6 +104,6 @@ function get_nj_distance(matrix, nodes, i, j, r)
     return di, dj, [new_distances ; 0.]
 end
 
-matrix, taxa, ntaxa = readmatrix("_assets/teaching/distance/18SrRNA_20_JCGamma_matrix.txt")
+matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
 neighbor_joining(matrix, taxa)
 
