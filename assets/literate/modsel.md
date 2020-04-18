@@ -10,11 +10,11 @@ Whereas maximum likelihood (ML) allows us to infer a phylogenetic tree and the p
 
 Of course, this problem is only natural, after all, when we -- the scientists -- are modeling something we have to decide on our modeling assumptions!  Nevertheless, given a candidate set of substitution models, one could reason that we simply extend the ML principle, and choose the model which gives the highest likelihood.
 
-This is however problematic, since more complicated models will always result in a higher likelihood, so the ML principle when applied to models will always result in the selection of the biggest, most complicated and most flexible model. Again, this is a general issue in statistics, known as **overfitting**. The key issue is that we actually want to know whether some complex model fits the data *significantly* better than a more simpler model. As an example of overfitting consider the following hypothetical regression example:
+This is however problematic, since more complicated models will always result in a higher likelihood, so the ML principle when applied to models will always result in the selection of the biggest, most complicated and most flexible model. Again, this is a general issue in statistics, known as **overfitting**. The key issue is that we actually want to know whether some complex model fits the data *significantly* better than a more simpler model. As an example of overfitting consider the following hypothetical regression example:[^figoverfit]
 
 ![](/assets/phylocourse/img/overfitting.png)
 
-The first model fits a flat line $y = a$, i.e. a constant (or intercept if you will), to the data and involves a single parameter. This model is clearly underfitting as it does not capture any trend in the data. The second model is a linear model $y = a + bx$ and involves two parameters ($a$ and $b$). The third model fits a quadratic function and involves three parameters $y = a + bx +cx^2$. The second and third model both look fairly reasonable for the amount of data we have. The fourth model is an exceedingly complex fit (it isn't even a proper function of $x$!) And is clearly overfitting the data. Now we wish to find a quantitative criterion for assessing this fitting trade-off and preferably one that involves the likelihood, because that is something we can compute in a phylogenetics context.
+The first model fits a flat line $y = a$, i.e. a constant (or intercept if you will), to the data and involves a single parameter. This model is clearly underfitting as it does not capture any trend in the data. The second model is a linear model $y = a + bx$ and involves two parameters ($a$ and $b$). The third model fits a quadratic function and involves three parameters $y = a + bx +cx^2$. The second and third model both look fairly reasonable for the amount of data we have. The fourth model is an exceedingly complex fit (it isn't even a proper function of $x$!) and is clearly overfitting the data. Now we wish to find a quantitative criterion for assessing this fitting trade-off and preferably one that involves the likelihood, because that is something we can compute in a phylogenetics context.
 
 Luckily, since this is a common (but challenging nevertheless) problem in statistics, there exist devices that can be used to select models of varying complexity[^mlbayes]. The three main methods that are used for model selection in a ML setting are:
 
@@ -49,7 +49,7 @@ Specifically $l_1$ is the likelihood for the more parameter-rich model (e.g. K2P
 I randomly simulated a sequence alignment from the JC model. Using the IQ-Tree program (see [the exercises on ML inference](../mliqtree)) I get a maximum log-likelihood value of -2740.380 for the JC model. For the K2P model, the likelihood value obtained is -2738.879.
 
 ```julia:ex1
-lrt(ℓ_1, ℓ_0) = 2(ℓ_1 - ℓ_0)
+lrt(ℓ₁, ℓ₀) = 2(ℓ₁ - ℓ₀)
 lrt(-2738.879,-2740.380)
 ```
 
@@ -81,6 +81,8 @@ When models are not nested, other tools (derived from information theory) can be
 Model selection does not have to be restricted to the substitution model. We may wish to use different substitution models for different sites of the alignment (for instance the codon positions), or we may wish to analyze a concatenated alignment of multiple genes, but might want to have a different substitution model for each gene. These are called partitions of the data. Partitioning the data in such ways also increases the complexity of the statistical model and may lead again to overfitting, so here we may also wish to perform model selection. We can do this using the same techniques as outlined above.
 
 --------------------
+[^figoverfit]: I saved this figure at some point but don't know who to credit for it. I think it might be Asif Tamuri, but I'm not sure.
+
 [^mlbayes]: The notes in this page will be exclusively concerned with maximum likelihood based statistical inference. The model selection problem can be tackled in a very different (and in my opinion more natural and elegant) approach when one adopts a Bayesian framework for statistical inference.
 
 [^allmodels]: Please do note that *better* does [not necessarily mean *good*](https://en.wikipedia.org/wiki/All_models_are_wrong).
