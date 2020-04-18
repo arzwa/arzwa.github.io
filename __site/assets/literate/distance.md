@@ -5,6 +5,8 @@
 
 >**Questions** will be marked in blocks like this, try to formulate a brief answer to them.
 
+>**Note** that there are some blocks with `julia` code included below. This is just for illustrating things in a way such that those who are interested in that can actually see how these illustrations (numerical or visual) were actually generated. Don't let them scare you.
+
 Distance-based phylogenetic methods proceed by computing a **pairwise distance matrix** for an input alignment based on a [substitution model](../submod), i.e. an assumed **model of evolution** for molecular sequences. Usually these estimated distances are the maximum likelihood estimates (MLE) of the pairwise distance under the assumed substitution model. For instance, consider two sequences, for an observed proportion of different sites $p$, the maximum likelihood estimate of the distance between the two sequences under the Jukes & Cantor substitution model is
 $$\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)$$
 So for instance for the alignment
@@ -39,7 +41,7 @@ Because of their speed, distance methods are still quite often used. Some ML tre
 
 ## Software and data
 
-1. Download the **FastME** software at [http://www.atgc-montpellier.fr/fastme](http://www.atgc-montpellier.fr/fastme/binaries.php) (on the bottom of the page, click the download button). In the downloaded folder you will find a binaries directory, identify the binary (executable) for your operating system and put it in some folder of your convenience.[^fastmeonline]
+1. Download the **FastME** software at [http://www.atgc-montpellier.fr/fastme](http://www.atgc-montpellier.fr/fastme/binaries.php) (on the bottom of the page, click the download button). In the downloaded folder you will find a binaries directory, identify the binary (executable) for your operating system and put it in some folder of your convenience.[^fastmeonline] For some additional guidance with installing FastME on Windows, have a look [here](/phylocourse/install-windows).
 
 2. To view trees, I recommend the [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above (`.zip` file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is something for Mac OSX users(?))
 
@@ -47,7 +49,7 @@ Because of their speed, distance methods are still quite often used. Some ML tre
 
 ## Computing distance matrices: FastME
 
-While you could easily implement a little program to generate a distnce matrix under the Jukes and Cantor model (see the formula's for the distance in the section on [substitution models](../submod)), this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using **Neighbor-Joining**, **least-squares**, **minimum evolution** and related distance matrix based methods.
+While you could easily implement a little program to generate a distance matrix under the Jukes and Cantor model (see the formula's for the distance in the section on [substitution models](../submod)), this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using **Neighbor-Joining**, **least-squares**, **minimum evolution** and related distance matrix based methods.
 
 There are two ways to run FastME. There is an interactive mode (inherited from the influential [PHYLIP software package](http://evolution.genetics.washington.edu/phylip.html)) and a command line mode. Personally, I find the command line mode much more convenient. First get a look at the help message
 ```
@@ -155,7 +157,7 @@ Now infer a tree using $\Gamma$ distances
 fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -g -m NJ
 ```
 
->**Question**: What (if anything) is changing? Experiment with the $\alpha$ parameter of the Gamma distribution by using for instance `-g0.5` in the FastME command. What happens? How doe the inference for different values of $\alpha$ relate to the inference with Gamma distances? (FYI: below you can see a graph of the Gamma distribution for different values of $\alpha$ to help you interpret the results.)
+>**Question**: What (if anything) is changing? Experiment with the $\alpha$ parameter of the Gamma distribution by using for instance `-g0.5` in the FastME command. What happens? How does the inference for different values of $\alpha$ relate to the inference without Gamma distances? (FYI: below you can see a graph of the Gamma distribution for different values of $\alpha$ to help you interpret the results.)
 
 ```julia:ex7
 using Distributions
@@ -168,7 +170,7 @@ savefig(p, "_assets/phylocourse/distance/gamma.svg") # hide
 
 ![](/assets/phylocourse/distance/gamma.svg)
 
->**Exercise**: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC+Γ model, and vary the shpe of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down (we will compare them later with maximum-likelihood results).
+>**Exercise**: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC+Γ model, and vary the shape of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down (we will compare them later with maximum-likelihood results).
 
 >**Optional**: Explore some of the other substitution models available in FastME.
 
@@ -248,5 +250,5 @@ You can check this against FastME's NJ implementation, it should be correct. We 
 
 [^ancientdata]: These data sets are from rather ancient days in phylogenetics, and are stored in the so-called PHYLIP format. In the original [PHYLIP format](http://evolution.genetics.washington.edu/phylip/doc/main.html#inputfiles), taxon names were restricted to 10 characters, hence the weird truncated names for the sequences.
 
-[^commandline]: For those unfamiliar with the command line, it will probably be easiest to put the FastME executable for your operating system (for windows this is the `fastme.exe` file) together with the data files in a separate new folder. On windows, you can then from within your file explorer application do `Shift+right click` and click on `open command window here` or `open PowerShell window here`. Then you should be able to run the `fastme.exe` executable, e.g. `fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -d JC` provided the data file `18SrRNA_20.phy` is in the same directory as the `fastme.exe` executable. For Mac and linux users I would recommend a similar approach, make a directory where you put the executable and the data files, and open a terminal in that directory (Linux users, you know how to do this, MacOS users, I can't help you, but google is your friend).
+[^commandline]: For those unfamiliar with the command line, it will probably be easiest to put the FastME executable for your operating system (for windows this is the `fastme.exe` file) together with the data files in a separate new folder. On windows, you can then from within your file explorer application do `Shift+right click` and click on `open command window here` or `open PowerShell window here`. Then you should be able to run the `fastme.exe` executable, e.g. `fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -d JC` provided the data file `18SrRNA_20.phy` is in the same directory as the `fastme.exe` executable. For Mac and linux users I would recommend a similar approach, make a directory where you put the executable and the data files, and open a terminal in that directory (Linux users, you know how to do this, MacOS users, I can't help you, but google is your friend). See also some notes [here](/phylocourse/install-windows)
 

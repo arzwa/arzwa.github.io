@@ -9,4 +9,6 @@ These are some extra notes, code examples and exercises on phylogenetic inferenc
 7. [Exercise - Where did SARS-CoV-2 (COVID19) come from?](cov)
 8. Bayesian phylogenetics
 
+Some extra guidance on how to install and run command-line based programs on Microsoft Windows can be found [here](install-windows). (Linux users probably need no help with that, and since I don't have a mac PC at my disposal, the apple people will have to google a bit).
+
 [^1]: Note that there are exercises *en passant* in parts 1-4 as well, it's just that section 5 & 6 do not introduce new theory.

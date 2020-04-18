@@ -19,17 +19,17 @@ We [already saw a bit](../submod) of how the ML principle can be used to estimat
 
 > For a given substitution model, the likelihood of a multiple sequence alignment is fully specified by the tree topology $\Psi$ that describes the relationship between the sequences, the branch lengths $b$, and the parameters of the substitution model $\theta$.
 
-What this means is that the quantity $p(\Psi, b, \theta |D)$ is a well defined thing. And *if we were abe to compute this quantity* we could try to adopt the ML principle *to estimate* $\Psi, b$ and $\theta$.
+What this means is that the quantity $p(\Psi, b, \theta |D)$ is a well defined thing. And *if we were able to compute this quantity* we could try to adopt the ML principle *to estimate* $\Psi, b$ and $\theta$ by searchin for those topologies and those parameter values that make $p(\Psi, b, \theta|D)$ maximal for the given data $D$.
 
-We know how to do this for the case our alignment consists of two sequences. In that case, there is no tree topology, and what we're left with is the problem of estimating the distances (and parameters of the substitution model), which we already did [here](../submod) and [here](../distance). So the next question is how to compute the likelihood of a larer alignment, where the sequences are related by a tree.
+We know how to do this in the case where our alignment consists of two sequences. In that case, there is no tree topology, and what we're left with is the problem of estimating the distances (and parameters of the substitution model), which we already did [here](../submod) and [here](../distance). So the next question is *how to compute the likelihood of a larger alignment, where the sequences are related by a tree.*
 
 ## Computing the likelihood on a tree
 
-Luckily, there exists an efficient algorithm to do just that: **Felsenstein's pruning algorithm**.[^pgm] TO DO.
+Luckily, there exists an efficient algorithm to do just that: **Felsenstein's pruning algorithm**.[^pgm] More to be added soon (I'm very sorry).
 
 ## Searching tree space
 
-So we know how to compute the likelihood given a tree $\Psi$, branch lengths $b$ and parameters $\theta$. For numerical parameters (i.e. $b$ and $\theta$), we may use standard techniques from mathematical optimization to find the ML estimates. To find the tree topology that leads to the maximal likelihood value is however an untractable problem that requires a **heuristic** optimization. The basic approach is the following:
+So we know how to compute the likelihood given a tree $\Psi$, branch lengths $b$ and parameters $\theta$. Now we still have to maximize it with respect to the topologies and parameters of interest. This is a very tough **optimization poblem**. For numerical parameters (i.e. $b$ and $\theta$), we may use standard techniques from mathematical optimization to find the ML estimates. To find the tree topology that leads to the maximal likelihood value is however an untractable problem that requires a **heuristic** optimization. The basic approach is the following:
 
 1. start with an initial tree topology $\Psi$
 2. set $l_{best}$ to the maximum likelihood value for $\Psi$
@@ -38,10 +38,10 @@ So we know how to compute the likelihood given a tree $\Psi$, branch lengths $b$
 5. if $l' > l_{best}$, set $\Psi$ to $\Psi'$ and set $l_{best}$ to $l'$
 6. repeat from (3) until there is no improveent in $l_{best}$
 
-This is however a computationally very costly procedure when executed naively, and that's where it is vital to have efficient software such as RaxML, IQ-TREE and PhyML!
+This is however a computationally very costly procedure when executed naively (note for instance that doing this as written above would involve a separate  optimization of the parameters $\theta$ and branch lengths $b$ for each topology we try out, so essentially a complete optimization problem in its own right at each iteration!), and that's where it is vital to have efficient software implementing clever heuristics such as RaxML, IQ-TREE and PhyML!
 
 # Exercises: ML tree inference with IQ-TREE
-For the exercises, we will use the computationally *very* efficient software IQ-TREE (Nguyen *et al.* 2015). This is a command line program, similar to the FastME or PHYLIP programs but not interactive. Please download IQ-TREE for your operating system at [http://www.iqtree.org/](http://www.iqtree.org/).
+For the exercises, we will use the computationally *very* efficient software IQ-TREE (Nguyen *et al.* 2015). This is a command line program, similar to the FastME or PHYLIP programs but not interactive. Please download IQ-TREE for your operating system at [http://www.iqtree.org/](http://www.iqtree.org/). To install on windows, you can follow the same [guidelines](/phylocourse/install-windows) as for FastME.
 
 Once you obtain the program, I'd recommend to put the executable in some dedicated directory[^dir] along with the data files. In this section, we'll use the 18S rRNA data sets for [20 taxa](/assets/phylocourse/data/18SrRNA_20.phy) and [45 taxa](/assets/phylocourse/data/18SrRNA_45.phy) again. But feel free to follow along with any data set you like. For a note on using command line programs in Windows, see [the footnote here](../distance/#fndef:commandline).
 
@@ -89,6 +89,8 @@ iqtree -s 18SrRNA_45.phy -m JC+G -bb 1000 -pre JCG_BSV
 > - Are there any nodes for which you find low support?
 > - Are the clades which were problematic in the distance-based analyses well-supported in the ML trees?
 
+> **Extra:** Using the `-wbt` option when doing bootstrapping with IQ-TREE will write the bootstrap trees to a file (with `ufboot` extension). You can explore the different bootstrap trees by loading that file in FigTree and using the `next` and `previous` controls. Alternatively you can try out the software [DensiTree](https://www.cs.auckland.ac.nz/~remco/DensiTree/) to visualize sets of tree topologies for the same taxa.
+
 Now let us have a look at some other substitution models.
 
 ## The K2P model
@@ -109,7 +111,7 @@ iqtree -s 18SrRNA_45.phy -m F81 -pre F81
 
 >- What is the difference between the F81 model and the JC model?
 
-Now we've performed phylogeny inference under a bunch of different substitution models, but how can we know which odel we should use? This problem is for instance similar to a well-studied issue in typical statistics courses: we fitted a linear regression with a bunch of parameters, how can we know which parameters are meaningful to include? This is a problem of **model selection**, which will be discussed in the [next section](../modsel).
+Now we've performed phylogeny inference under a bunch of different substitution models, but how can we know which model we should use? This problem is for instance similar to a well-studied issue in typical statistics courses: we fitted a linear regression with a bunch of parameters, how can we know which parameters are meaningful to include? This is a problem of **model selection**, which will be discussed in the [next section](../modsel).
 
 ----------------------------------------------------------------------
 [^pgm]: For the machine learning/AI aficionados, this algorithm is essentially the same as what is reffered to by 'variable elimination' in the probabilistic graphical modeling literature.
