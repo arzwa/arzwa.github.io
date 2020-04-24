@@ -5,9 +5,9 @@ These are some extra notes, code examples and exercises on phylogenetic inferenc
 2. [Distance-based phylogeny inference](distance)
 3. [Maximum likelihood in phylogenetics](mliqtree)
 4. [Model selection for ML-based phylogenetics](modsel)
-6. [Exercise - HIV and the dentist](hiv)[^1]
-7. [Exercise - Where did SARS-CoV-2 (COVID19) come from?](cov)
-8. Bayesian phylogenetics
+5. [Exercise - HIV and the dentist](hiv)[^1]
+6. [Exercise - Where did SARS-CoV-2 (COVID19) come from?](cov)
+7. Bayesian phylogenetics [not yet here]
 
 Some extra guidance on how to install and run command-line based programs on Microsoft Windows can be found [here](install-windows). (Linux users probably need no help with that, and since I don't have a mac PC at my disposal, the apple people will have to google a bit).
 
