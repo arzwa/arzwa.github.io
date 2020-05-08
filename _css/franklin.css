@@ -4,6 +4,8 @@
 
 html {
     font-family: Fira code, Arial, sans-serif;
+	/*font-family: Tahoma, Geneva, sans-serif;*/
+	line-height: 200%;
     font-size  : 17px;
     color: #1c1c1c;
 }
