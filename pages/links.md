@@ -20,6 +20,8 @@ A list of links, in particular, but not exclusively, belonging to the category
 | [Luc Devroye](luc.devroye.org) waar ik o.m. [deze parel](http://luc.devroye.org/FRITE.JPG) vond
 | [Charles Geyer](http://users.stat.umn.edu/~geyer//)
 | [Edward Nelson](https://web.math.princeton.edu/~nelson/)
+| [Lee Altenberg](https://dynamics.org/Altenberg/)
 
+![](/assets/auvergne/1.jpg)
 
 
