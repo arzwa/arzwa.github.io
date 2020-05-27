@@ -1,3 +1,7 @@
+"The texture of Space is not that of Time, and the piebald four-dimensional
+sport that is bred by relativists is a quadruped with one leg replaced by the
+ghost of a leg." Nabokov - Ada or Ardor p.423
+
 "The format is deliberately space-delimited (rather than tab-delimited) and
 justified into aligned columns, so these files are suitable both for automated
 parsing and for human examination. I feel that tab-delimited data files are

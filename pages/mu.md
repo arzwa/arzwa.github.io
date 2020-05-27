@@ -8,6 +8,5 @@
 [irritable hedgehog](https://irritablehedgehog.com/) | 
 [el negocito](http://www.elnegocitorecords.com/) | 
 [aspen edities](https://aspenedities.com/news) |
-[$\mu\mu$](/pages/mumu)
 
 ![](/assets/auvergne/2.jpg)
