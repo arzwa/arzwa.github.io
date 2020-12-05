@@ -12,9 +12,13 @@ phylogenetic methods for the inference of genome duplications from comparative
 genomic data and modeling of gene family evolution, where I have come to prefer
 a Bayesian approach towards statistics. More broadly, my main research
 interests are (theoretical) evolutionary genetics and probabilistic modeling in
-biology. Besides my aspirations in evolutionary biology, I take a strong
-interest in philosophy, music and literature. I enjoy computer programming,
-playing music, long(ish)-distance running and traveling by bicycle.
+biology. Besides my aspirations in science, I take a strong interest in
+philosophy, music and literature. I enjoy computer programming, playing music,
+long(ish)-distance running and traveling by bicycle.
+
+[publications](#publications) | 
+[code](#code) |
+[other](#other)
 
 ---
 
@@ -51,7 +55,7 @@ MorphDB: prioritizing genes for specialized metabolism pathways and gene ontolog
 
 ---
 
-## Software
+## Code
 
 [Whale](https://github.com/arzwa/Whale.jl): Flexible Bayesian gene tree
 reconciliation using amalgamated likelihood estimation and probabilistic
@@ -87,11 +91,9 @@ Other biographic trivia:
 - No driver's license, strongly opposed to all cars
 - Favorite programming language: `julia`
 - Favorite software tools: `pandoc`, `vim`, `cmus`
-- Favorite authors: W. F. Hermans, Hugo Claus, Nabokov, Kundera
+- Favorite authors (literature): W. F. Hermans, Hugo Claus, Vladimir Nabokov, Milan Kundera
 - Cat person, dogs are OK
-
-some collected [quotes](quotes.html)
 
 ---
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>.
