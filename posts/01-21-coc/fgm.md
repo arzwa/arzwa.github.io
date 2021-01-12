@@ -319,9 +319,10 @@ $$ \frac{d \nz}{dt} = - 2  \nz \times P_a \times \Ex[\Delta z| \text{adv}]
 Now the somewhat more tedious part is to find $\Ex[\Delta z| \text{adv}]$ and
 $\Ex[\Delta z| \text{fix}]$. These can be found from the properties of FGM.
 $\Ex[\Delta z| \text{adv}]$ can be straightforwardly obtained by integrating
-$i\Delta z$ over advantageous mutations. For clarity of the probabilistic
-concepts, I'll write a mutation being advantageous as a binary random variable
-$A = \mathbb{1}_\text{adv}$ 
+$\Delta z$ over advantageous mutations. For clarity of the probabilistic
+aspects, I'll write a mutation being advantageous as a binary random variable
+$A = \mathbb{1}_\text{adv}$, and probability density functions are denoted
+by $p(\cdot)$
 
 \begin{align*}
 \Ex[\delz|A=1] &= \int_{\delz} \delz p(\delz|A=1) d\delz \\
