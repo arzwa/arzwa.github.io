@@ -325,7 +325,7 @@ $A = \mathbb{1}_\text{adv}$
 
 \begin{align*}
 \Ex[\delz|A=1] &= \int_{\delz} \delz p(\delz|A=1) d\delz \\
-    &= \frac{1}{P_a}\int_{\delz} p(\delz, A=1) d\delz 
+    &= \frac{1}{P_a}\int_{\delz} \delz p(\delz, A=1) d\delz 
 \end{align*}
 
 Note that
@@ -335,7 +335,7 @@ $$p(\delz, A=1) = \begin{cases} 0 & \delz < 0 \\ p(\delz) & \delz \ge 0\end{case
 so that
 
 \begin{align*}
-\Ex[\delz|A=1] &= \frac{1}{P_a}\int_0^\infty p(\delz) d\delz \\
+\Ex[\delz|A=1] &= \frac{1}{P_a}\int_0^\infty \delz p(\delz) d\delz \\
     &= \frac{r}{\sqrt{n}} \frac{\int_{x}^\infty (y - x) \exp(-y^2/2) dy}
         {\int_x^\infty \exp(-y^2/2)dy} 
 \end{align*}

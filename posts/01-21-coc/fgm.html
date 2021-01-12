@@ -14,7 +14,7 @@
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
   </style>
-  <link rel="stylesheet" href="../css/bb.css" />
+  <link rel="stylesheet" href="../../css/bb-stix.css" />
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -139,13 +139,13 @@
 <p>Now the somewhat more tedious part is to find <span class="math inline">\(\mathbb{E}[\Delta z| \text{adv}]\)</span> and <span class="math inline">\(\mathbb{E}[\Delta z| \text{fix}]\)</span>. These can be found from the properties of FGM. <span class="math inline">\(\mathbb{E}[\Delta z| \text{adv}]\)</span> can be straightforwardly obtained by integrating <span class="math inline">\(i\Delta z\)</span> over advantageous mutations. For clarity of the probabilistic concepts, I’ll write a mutation being advantageous as a binary random variable <span class="math inline">\(A = \mathbb{1}_\text{adv}\)</span></p>
 <p><span class="math display">\[\begin{align*}
 \mathbb{E}[\Delta z|A=1] &amp;= \int_{\Delta z} \Delta zp(\Delta z|A=1) d\Delta z\\
-    &amp;= \frac{1}{P_a}\int_{\Delta z} p(\Delta z, A=1) d\Delta z
+    &amp;= \frac{1}{P_a}\int_{\Delta z} \Delta zp(\Delta z, A=1) d\Delta z
 \end{align*}\]</span></p>
 <p>Note that</p>
 <p><span class="math display">\[p(\Delta z, A=1) = \begin{cases} 0 &amp; \Delta z&lt; 0 \\ p(\Delta z) &amp; \Delta z\ge 0\end{cases}\]</span></p>
 <p>so that</p>
 <p><span class="math display">\[\begin{align*}
-\mathbb{E}[\Delta z|A=1] &amp;= \frac{1}{P_a}\int_0^\infty p(\Delta z) d\Delta z\\
+\mathbb{E}[\Delta z|A=1] &amp;= \frac{1}{P_a}\int_0^\infty \Delta zp(\Delta z) d\Delta z\\
     &amp;= \frac{r}{\sqrt{n}} \frac{\int_{x}^\infty (y - x) \exp(-y^2/2) dy}
         {\int_x^\infty \exp(-y^2/2)dy} 
 \end{align*}\]</span></p>

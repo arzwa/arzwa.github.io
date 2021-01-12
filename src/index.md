@@ -74,7 +74,7 @@ things to unveil ancient WGD events.
 
 ## Notes 
 
-[Fisher's geometric model and the cost of complexity](01-2021-cost-of-complexity/fgm.html)
+[Fisher's geometric model and the cost of complexity](posts/01-21-coc/fgm.html)
 
 ---
 
