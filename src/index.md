@@ -16,9 +16,16 @@ biology. Besides my aspirations in science, I take a strong interest in
 philosophy, music and literature. I enjoy computer programming, playing music,
 long(ish)-distance running and traveling by bicycle.
 
+[notes](#notes) |
 [publications](#publications) | 
 [code](#code) |
 [other](#other)
+
+---
+
+## Notes 
+
+[Fisher's geometric model and the cost of complexity](posts/01-21-coc/fgm.html)
 
 ---
 
@@ -69,12 +76,6 @@ $K_\mathrm{S}$ distributions, synteny analyses and visualization of these
 things to unveil ancient WGD events.
 
 ... and more on [github](https://github.com/arzwa/wgd)
-
----
-
-## Notes 
-
-[Fisher's geometric model and the cost of complexity](posts/01-21-coc/fgm.html)
 
 ---
 

@@ -501,4 +501,4 @@ equal. Much to think about here.
 *Note:* I am of course aware of R.A. Fisher's reputation as a particular 
 virulent eugenicist. The fact that I study his work (like his book "The genetical 
 theory of natural selection", of which the second half is concerned with human
-genetics and eugenics) does not mean I value his eugenic theories.
+genetics and eugenics) does not mean I value his eugenic thought.
