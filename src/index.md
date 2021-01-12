@@ -72,6 +72,12 @@ things to unveil ancient WGD events.
 
 ---
 
+## Notes 
+
+[Fisher's geometric model and the cost of complexity](01-2021-cost-of-complexity/fgm.html)
+
+---
+
 ## Other
 
 [bruine beer](https://bruinebeer.bandcamp.com/), featured on bandcamp
