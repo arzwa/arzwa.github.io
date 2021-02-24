@@ -10,7 +10,7 @@ theoretical aspects of evolutionary biology at Ghent University.
 **Where?** Due to an ongoing pandemic, the meetings take place virtually.
 
 **When?** The idea is to have *biweekly* meetings, starting from January 2021.
-When exactly still needs to be decided.
+When exactly is currently not fixed.
 
 **Format?** We'll have a max. 40 minutes presentation by the enthusiast who
 picked the topic, followed by a discussion.
