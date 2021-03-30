@@ -1,18 +1,25 @@
 # # Brief probability recap
 #
-# We will need some basic notions of probability theory in order to be able to
-# discuss models and methods in statistical phylogenetics. Here I provide a
-# *very* brief and *informal* recap of some important aspects of probability
-# theory. Needless to say, this neither does justice to the philosophical
-# subtlety of notions such as 'probability', 'plausibility', 'chance' or
-# randomness, nor does it to the mathematically sophisticated formal theory
-# of probability.
+# Consider a *proposition* $A$, that is, a sentence which is either true or
+# false (it has a definite truth value). $A$ can be anything, like "a coin toss
+# lands heads", "tomorrow it will rain", "the curtains turn yellow", "I will go to
+# the toilet in the next four hours", "there is a magpie in my garden right now"
+# you name it.
 #
-# There are multiple ways of thinking about probabilities, and this is a source
-# of endless controversy, debate and confusion. Intuitively, we may consider
-# two not unrelated notions:
+# Although all of these proposition have a definite truth value, *we* are faced
+# with a situation of uncertainty. We do not know the truth or falsity of many
+# propositions, and are often in a position that it is impossible for us to
+# figure out the truth or falsity of some proposition. Now, we may have some
+# judgement on the relative *plausibilities* of these propositions. For
+# instance, although I cannot know whether "this coin toss will land heads" is
+# a true statement I do believe this proposition to be more plausible than the
+# proposition "the next five coin tosses will all land heads". Similarly I
+# am firmly convinced that the proposition "the dice throw will result in a
+# value lower than 5" is more plausible than the proposition "the dice will
+# land on a 6".
 #
-# 1. The probability of an *event* is the *relative frequency* of that event
-#    in a large number of trials.
-# 2. The probability of a proposition is the degree of belief some rational 
-#    agent has that the proposition is true
+# Probability theory provides *a* way to reason in the face of uncertainty.
+# This is not the only conception of what probability theory deals with, nor is
+# it the only way to deal with uncertainty.
+#
+# 

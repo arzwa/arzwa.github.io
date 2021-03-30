@@ -1,2 +1,0 @@
-setdiff("ATCG", 'A') = ['T', 'C', 'G']
-rand(setdiff("ATCG", 'A')) = 'G'
