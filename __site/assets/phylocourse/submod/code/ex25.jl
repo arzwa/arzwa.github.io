@@ -1,4 +1,4 @@
 # This file was generated, do not modify it. # hide
-distance_JC(p) = -0.75 * log(1. - 4p/3)
-p = mapreduce(!=, +, seqa, seqb)/length(seqa)
-distance_JC(p)
+plot(0:0.01:1, d->ctmc_probability(seqa, seqb, d, 1/3),
+    color=:black, legend=false, xlabel="distance", ylabel="log-likelihood")
+savefig("_assets/phylocourse/submod/lhood3.svg") # hide

@@ -1,4 +1,6 @@
 # This file was generated, do not modify it. # hide
-themax, index = findmax(probs[2,:])
-println("Maximum likelihood value: P(data|̂p) = $themax")
-println("ML estimate: ̂p = $(probs[1,index])")
+using Plots
+plot(first.(l), last.(l),
+    xlabel="p", ylabel="P(data|p)",
+    grid=false, legend=false, color=:black)
+savefig("_assets/phylocourse/submod/lhood1.svg") # hide

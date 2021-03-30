@@ -1,1 +1,2 @@
-(X(0) = A, X(1) = A, X(2) = A, X(3) = A, X(4) = C, X(5) = G)
+setdiff("ATCG", 'A') = ['T', 'C', 'G']
+rand(setdiff("ATCG", 'A')) = 'G'

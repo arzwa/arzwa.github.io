@@ -1,12 +1,17 @@
 /* ==================================================================
     DEFAULT FONT AND LAYOUT
 ================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 html {
-    font-family: Fira code, Arial, sans-serif;
+    /*font-family: Fira code, Arial, sans-serif;
 	/*font-family: Tahoma, Geneva, sans-serif;*/
+    background-color: #fffff8;
+    font-family: 'Roboto', sans-serif;
+    text-align: justify;
 	line-height: 200%;
-    font-size  : 17px;
+    font-size: 16px;
+    font-size  : 16px;
     color: #1c1c1c;
 }
 
@@ -92,13 +97,13 @@ html {
 
 .franklin-content h1 {
     padding-bottom: 0.5em;
-    border-bottom: 3px double lightgrey;
+    border-bottom: 3px lightgrey;
     margin-top: 1.5em;
     margin-bottom: 1em; }
 
 .franklin-content h2 {
     padding-bottom: 0.3em;
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px lightgrey;
     margin-top: 2em;
     margin-bottom: 1em; }
 
@@ -163,21 +168,20 @@ html {
 
 .franklin-content table.fndef  {
     margin: 0;
-    margin-bottom: 10px;}
+    margin-bottom: 0;}
 .franklin-content .fndef tr, td {
     padding: 0;
     border: 0;
-    text-align: left;}
+    text-align: justify;}
 .franklin-content .fndef tr {
-    border-left: 2px solid lightgray;
     }
 .franklin-content .fndef td.fndef-backref {
     vertical-align: top;
     font-size: 70%;
-    padding-left: 5px;}
+    padding-left: 0px;}
 .franklin-content .fndef td.fndef-content {
     font-size: 80%;
-    padding-left: 10px;}
+    padding-left: 0px;}
 
 /* ==================================================================
     IMAGES in CONTENT
@@ -186,6 +190,10 @@ html {
 .franklin-content img {
     width: 100%;
     text-align: left;
+    padding-left: 0%; }
+
+.franklin-content .img-def img {
+    text-align: center;
     padding-left: 0%; }
 
 .franklin-content .img-small img {

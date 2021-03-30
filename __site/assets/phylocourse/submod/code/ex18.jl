@@ -1,2 +1,7 @@
 # This file was generated, do not modify it. # hide
-theP = exp(theQ*1.2)
+Q(λ) = [-3λ   λ   λ   λ ;
+          λ -3λ   λ   λ ;
+          λ   λ -3λ   λ ;
+          λ   λ   λ -3λ ]
+
+theQ = Q(0.2)

@@ -1,14 +1,9 @@
 # This file was generated, do not modify it. # hide
-function test_different_λs(seqa, seqb, t)
-    probs = []
-    for λ=0.:0.01:10.
-        push!(probs, [λ, ctmc_probability(seqa, seqb, t, λ)])
-    end
-    return hcat(probs...)
+function ctmc_probability(seqa, seqb, t, λ)
+    x = translate(seqa)
+    y = translate(seqb)
+    Pt = exp(Q(λ)*t)
+    sum(log.([Pt[j,i] for (i,j) in zip(x,y)]))
 end
 
-probs = test_different_λs("TTAT", "TTGG", 1.4)
-
-themax, index = findmax(probs[2,:])
-println("Maximum likelihood value: P(data|̂λ) = $themax")
-println("ML estimate: ̂λ = $(probs[1,index])")
+ctmc_probability("TTAT", "TTGG", 0.1, 1.)

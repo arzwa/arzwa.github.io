@@ -1,25 +1,19 @@
 # This file was generated, do not modify it.
 
 function simulate(site, n, p)
-    print(site, " ")
+    print(site)
     for i=1:n
-        site = rand() < p ? rand(setdiff("ATCG", site)) : site
-        print("⟶  $site ")
+        if rand() < p
+            site = rand(setdiff("ATCG", site))
+        end
+        print(" --> ", site)
     end
 end
+
+@show setdiff("ATCG", 'A')
+@show rand(setdiff("ATCG", 'A'))
 
 simulate('A', 10, 0.4)
-
-function simulate(site, n, p)
-    print("(X(0) = $site")
-    for i=1:n
-        site = rand() < p ? rand(setdiff("ATCG", site)) : site
-        print(", X($i) = $site")
-    end
-    print(")")
-end
-
-simulate('A', 5, 0.4)
 
 Pmatrix(p) = [1-p p/3 p/3 p/3 ;
               p/3 1-p p/3 p/3 ;
@@ -27,17 +21,18 @@ Pmatrix(p) = [1-p p/3 p/3 p/3 ;
               p/3 p/3 p/3 1-p ]
 P = Pmatrix(0.2)
 
-p₀ = [0. 1. 0. 0.]'
+f0 = [0, 1, 0, 0.];
 
-p₁ = P*p₀
+f1 = P*f0
 
-P^10*p₀
+P^10*f0
 
-for i in [1, 2, 5, 10, 20, 50, 100]
-    @show round.(P^i*p₀, digits=3)
+for n in [1, 2, 5, 10, 20, 50, 100, 200]
+    fn = P^n*f0
+    println(round.(fn, digits=3))
 end
 
-P*[0.25 0.25 0.25 0.25]'
+P*[0.25, 0.25, 0.25, 0.25]
 
 using Distributions
 ntoi = Dict(n=>i for (i,n) in enumerate("ATCG"))
@@ -46,20 +41,20 @@ translate(seq::String) = [ntoi[n] for n in seq]
 translate(seq::Vector{Int}) = join([iton[i] for i in seq])
 
 function simulate(seq, P, n)
-    x = translate(seq)
+    x = translate(seq)   # translate nucleotides to integers
     Pn = P^n
     x = map(i->rand(Categorical(Pn[:,i])), x)
-    return translate(x)
+    return translate(x)  # translate integers back to nucleotides
 end
 
-original = "ATCGGGCGGGATTATTACGGAT"
+original = "ATCGGGCGGGATTATTACGG"
 evolved  = simulate(original, Pmatrix(0.05), 10)
 diffs = join([original[i] == evolved[i] ? "|" : " " for i=1:length(original)])
 println(original, "\n", diffs, "\n", evolved)
 
-Pn = Pmatrix(0.05)^10  # get the 10-step transition probabilities
 x = translate(original)
-y = translate(evolved)
+y = translate(evolved);
+Pn = Pmatrix(0.05)^10  # get the 10-step transition probabilities
 site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
 sequence_probability = prod(site_probabilities)
 
@@ -68,39 +63,39 @@ sum(log.(site_probabilities))
 println(join(x), "\n", join(y))
 
 function test_different_ps(x, y, n)
-    probs = []
-    for p=0.:0.001:1.
+    l = []
+    for p=0.0:0.001:1.0
         Pn = Pmatrix(p)^n
         site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
-        push!(probs, [p,sum(log.(site_probabilities))])
+        push!(l, (p,sum(log.(site_probabilities))))
     end
-    return hcat(probs...)
+    return l
 end
 
-probs = test_different_ps(x, y, 10)
+l = test_different_ps(x, y, 10);
 
 using Plots
-plot(probs[1,:], probs[2,:],
+plot(first.(l), last.(l),
     xlabel="p", ylabel="P(data|p)",
     grid=false, legend=false, color=:black)
 savefig("_assets/phylocourse/submod/lhood1.svg") # hide
 
-themax, index = findmax(probs[2,:])
-println("Maximum likelihood value: P(data|̂p) = $themax")
-println("ML estimate: ̂p = $(probs[1,index])")
+themax, index = findmax(last.(l))
+println("Maximum likelihood value: P(data|p=p̂) = $themax")
+println("ML estimate: ̂p = $(l[index])")
 
 using Printf
-randexp(λ) = -log(rand())/λ  # generate a random number from the exponentil ditribution with rate λ
+randexp(λ) = -log(rand())/λ  # generate a random number from the exponential distribution with rate λ
 
 function simulate(site, λ, t)
-    @printf "  X(%.2f) = %s\n" 0. site
+    @printf "X(%.2f) = %s\n" 0. site
     curr_t = randexp(λ)  # time of the first substitution event
     while curr_t < t
         site = rand(setdiff("ATCG", site))  # change state
-        @printf "↪ X(%.2f) = %s\n" curr_t site
+        @printf "X(%.2f) = %s\n" curr_t site
         curr_t += randexp(λ)  # get time of next substitution event
     end
-    @printf "↪ X(%.2f) = %s\n" t site
+    @printf "X(%.2f) = %s\n" t site
 end
 
 simulate('A', 10., 1.)
@@ -128,18 +123,18 @@ end
 ctmc_probability("TTAT", "TTGG", 0.1, 1.)
 
 function test_different_λs(seqa, seqb, t)
-    probs = []
+    l = []
     for λ=0.:0.01:10.
-        push!(probs, [λ, ctmc_probability(seqa, seqb, t, λ)])
+        push!(l, (λ, ctmc_probability(seqa, seqb, t, λ)))
     end
-    return hcat(probs...)
+    return l
 end
 
-probs = test_different_λs("TTAT", "TTGG", 1.4)
+l = test_different_λs("TTAT", "TTGG", 1.4)
 
-themax, index = findmax(probs[2,:])
+themax, index = findmax(last.(l))
 println("Maximum likelihood value: P(data|̂λ) = $themax")
-println("ML estimate: ̂λ = $(probs[1,index])")
+println("ML estimate: ̂λ = $(l[index])")
 
 seqa = "TTTATCGACCTATTC"
 seqb = "TAAAACGAACTATAC"

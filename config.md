@@ -6,7 +6,6 @@ The website_* must be defined for the RSS to work
 @def website_title = "ʕ •㉨• ʔ"
 @def website_descr = "ʕ •㉨• ʔ"
 @def website_url   = "https://arzwa.github.io"
-
 @def author = "Arthur Zwaenepoel"
 
 <!-----------------------------------------------------

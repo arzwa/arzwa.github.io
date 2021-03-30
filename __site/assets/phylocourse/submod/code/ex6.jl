@@ -1,2 +1,2 @@
 # This file was generated, do not modify it. # hide
-P^10*p₀
+f1 = P*f0
