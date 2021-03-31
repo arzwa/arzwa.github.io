@@ -414,7 +414,7 @@ println(original, "\n", diffs, "\n", evolved)
 
 Now to obtain the probability that one sequence evolves into another we can
 simply multiply the probabilities of the corresponding site-wise
-probabilities because of our independence assumption
+probabilities because of our independence assumption.
 
 ```julia:ex11
 x = translate(original)
@@ -424,10 +424,13 @@ site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
 sequence_probability = prod(site_probabilities)
 ```
 
-In mathematical notation, the probability `sequence_probability` computed above
-could be written as
+If $\ell_i$ denotes the probability that the nucleotide at position $i$ in
+sequence $x$ evolved into the nucleotide at position $i$ in sequence $y$ over
+10 time steps, then the probability `sequence_probability` in the example
+above could be written formally as
 
-$$P(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x,p=0.05)$$
+$$P\big(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x, p=0.05\big) = \ell_1 \ell_2 \dots \ell_n
+    = \prod_{i=1}^n \ell_i$$
 
 Make sure you understand what this means!
 

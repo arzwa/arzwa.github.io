@@ -17,7 +17,7 @@
   </header>
 
 <!-- Content appended here -->
-<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#distance-based_phylogenetic_inference">Distance-based phylogenetic inference</a><ol><li><a href="#software_and_data">Software and data</a></li><li><a href="#computing_distance_matrices_using_fastme">Computing distance matrices using FastME</a></li><li><a href="#clustering_methods">Clustering methods</a></li><li><a href="#neighbor-joining">Neighbor-joining</a></li><li><a href="#extra_implementing_neighbor-joining">Extra: implementing Neighbor-Joining</a></li></ol></li></ol></div></p>
+<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#distance-based_phylogenetic_inference">Distance-based phylogenetic inference</a></li><li><a href="#software_and_data">Software and data</a></li><li><a href="#distance-based_phyogenetics_with_fastme">Distance-based phyogenetics with FastME</a><ol><li><a href="#computing_distance_matrices_using_fastme">Computing distance matrices using FastME</a></li><li><a href="#clustering_methods">Clustering methods</a></li><li><a href="#neighbor-joining">Neighbor-joining</a></li></ol></li><li><a href="#extra_implementing_neighbor-joining">Extra: implementing Neighbor-Joining</a></li></ol></div></p>
 <h1 id="distance-based_phylogenetic_inference"><a href="#distance-based_phylogenetic_inference" class="header-anchor">Distance-based phylogenetic inference</a></h1>
 <blockquote>
 <p><strong>Questions</strong> and <strong>Exercises</strong> will be marked in blocks like this, try to formulate a brief answer to them.</p>
@@ -31,8 +31,11 @@
 <pre><code class="language-julia">seqa &#61; &quot;ATCGGGCTAGC&quot;
 seqb &#61; &quot;TTCGGCTTACC&quot;;</code></pre>
 <p>The proportion of different sites is</p>
-<pre><code class="language-julia">differences &#61; sum&#40;&#91;seqa&#91;i&#93; &#33;&#61; seqb&#91;i&#93; for i&#61;1:length&#40;seqa&#41;&#93;&#41;
-x &#61; differences/length&#40;seqa&#41;</code></pre><pre><code class="plaintext">0.36363636363636365</code></pre>
+<pre><code class="language-julia">differences &#61; &#91;seqa&#91;i&#93; &#33;&#61; seqb&#91;i&#93; for i&#61;1:length&#40;seqa&#41;&#93;
+@show differences
+num_differences &#61; sum&#40;differences&#41;
+x &#61; num_differences/length&#40;seqa&#41;</code></pre><pre><code class="plaintext">differences = Bool[1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0]
+0.36363636363636365</code></pre>
 <p>The estimated distance is</p>
 <pre><code class="language-julia">d &#61; -0.75 * log&#40;1. - 4x/3&#41;</code></pre><pre><code class="plaintext">0.49747066305769816</code></pre>
 <p>This distance is correctly interpreted as <strong>an estimate of the expected number of substitutions per site</strong> separating the two sequences. Note that the distance is a product of two other evolutionary variables: the <strong>substitution rate</strong> and the <strong>divergence time</strong>. If we have \(n\) sequences, we can apply the distance formula to obtain an \(n \times n\)  <strong>distance matrix</strong>. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the <a href="../submod">notes on substitution models</a>.</p>
@@ -46,24 +49,29 @@ x &#61; differences/length&#40;seqa&#41;</code></pre><pre><code class="plaintext
 <li><p>Infer the tree, assuming the distances</p>
 </li>
 </ol>
-<p>This two step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with \(n\) sequences and \(m\) sites in a single \(n \times n\) matrix it dramatically reduces the data, making tree inference computationally very fast. However, by reducing the rich sequence data to a matrix of numbers it throws away a lot of potentially interesting evolutionary information. Another issue is that when using distance-based methods the estimated distances from step 1 <em>are treated as observed data</em> in step 2. However, distances are themselves estimates, associated with some uncertainty &#40;a distance estimate has a variance for instance&#41;, and this uncertainty in the distances is neglected in step 2. Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost.</p>
-<p>Because of their speed, distance methods are still quite often used. Some ML tree inference programs &#40;for instance IQ-TREE, see the ML tutorial&#41; start their tree search algorithm from a distance-based tree for instance. Also popular packages for phylogenomic and comparative genomic inference such as <a href="https://github.com/davidemms/OrthoFinder">OrthoFinder</a> use distance-based phylogenetic methods in their workflow.</p>
-<h2 id="software_and_data"><a href="#software_and_data" class="header-anchor">Software and data</a></h2>
+<p>This two-step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with \(n\) sequences into a single \(n
+\times n\) matrix we dramatically reduce the data, making tree inference computationally very fast. However, by reducing the rich sequence data to such a matrix we risk throwing away a lot of potentially interesting evolutionary information. Indeed, if we have \(n\) sequences, there are \(4^n\) nucleotide patterns for any site when we compare all \(n\) sequences, which we reduce to \(n(n-1)/2\) when using methods based on pairwise distances. This is different from full maximum-likelihood tree inference methods, where all possible higher-order &#40;higher than pairwise that is&#41; character patterns contribute to phylogeny inference. One can think of the approach of phylogeny estimation from pairwise distances as follows: each distance is an estimate of the branch length between two sequences in the phylogeny, and we seek the phylogeny that is most compatible with these independently obtained branch length estimates. In other words, we estimate \(n(n-1)/2\) two-species phylogenies and seek to somehow infer the phylogeny for all \(n\) sequences from those two-species phylogenies.</p>
+<p>Another issue is that when using distance-based methods the estimated distances from step 1 <em>are treated as observed data</em> in step 2. However, distances are themselves estimates, associated with some uncertainty &#40;a distance estimate has a variance for instance&#41;, and this uncertainty in the estimated distances is neglected in step 2. This is a common source of issues in many areas of bioinformatics, i.e. treating estimates as data, as if known without error &#40;the multiple sequence alignments we use to infer phylogenies provide a good example&#33;&#41;.</p>
+<p>Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost. Because of their speed and relatively good performance, distance methods are still quite often used, even in this age of highly performant computers. Some popular ML tree inference programs &#40;for instance IQ-TREE, see the ML tutorial&#41; start their tree search algorithm from a distance-based tree for instance. Also popular packages for phylogenomic and comparative genomic inference such as <a href="https://github.com/davidemms/OrthoFinder">OrthoFinder</a> use distance-based phylogenetic methods in their workflow.</p>
+<h1 id="software_and_data"><a href="#software_and_data" class="header-anchor">Software and data</a></h1>
 <ol>
 <li><p>Download the <strong>FastME</strong> software at <a href="http://www.atgc-montpellier.fr/fastme/binaries.php">http://www.atgc-montpellier.fr/fastme</a> &#40;on the bottom of the page, click the download button&#41;. In the downloaded folder you will find a binaries directory, identify the binary &#40;executable&#41; for your operating system and put it in some folder of your convenience.<sup id="fnref:fastmeonline"><a href="#fndef:fastmeonline" class="fnref">[1]</a></sup> For some additional guidance with installing FastME on Windows, have a look <a href="/phylocourse/install-windows">here</a>.</p>
 </li>
 <li><p>To view trees, I recommend the <a href="https://github.com/rambaut/figtree/releases/tag/v1.4.4">FigTree</a> tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above &#40;<code>.zip</code> file for Windows users, <code>.tgz</code> for *nix users, I guess the <code>.dmg</code> file is something for Mac OSX users&#40;?&#41;&#41;</p>
 </li>
-<li><p>We will use two small &#39;tree of life&#39; data sets. One <a href="/assets/phylocourse/data/18SrRNA_20.phy">18SrRNA data set with 20 taxa</a> and another <a href="/assets/phylocourse/data/18SrRNA_45.phy">18SrRNA data set with 45 taxa</a>.<sup id="fnref:ancientdata"><a href="#fndef:ancientdata" class="fnref">[2]</a></sup></p>
+<li><p>We will use two small &#39;tree of life&#39; data sets. One <a href="/assets/phylocourse/data/18SrRNA_20.phy">18SrRNA data set with 20 taxa</a> and another <a href="/assets/phylocourse/data/18SrRNA_45.phy">18SrRNA data set with 45 taxa</a>. These are in PHYLIP format<sup id="fnref:ancientdata"><a href="#fndef:ancientdata" class="fnref">[2]</a></sup>, fasta formatted files can be obtained as well <a href="/assets/phylocourse/data/18SrRNA_20.fasta">here</a> and <a href="/assets/phylocourse/data/18SrRNA_45.fasta">here</a>.</p>
 </li>
 </ol>
+<p>It is always best to have a high-level look at the data before delving into analyses. You can view the alignments with a tool like <a href="https://github.com/arvestad/alv">alv</a> &#40;personal favorite&#41; or an online tool like <a href="https://www.ebi.ac.uk/Tools/msa/mview/">MView</a>. Here&#39;s a screenshot of the first 80 columns of the 20 taxa data set from MView.</p>
+<p><img src="/assets/phylocourse/distance/18SrRNA-aln.png" alt="" /></p>
+<h1 id="distance-based_phyogenetics_with_fastme"><a href="#distance-based_phyogenetics_with_fastme" class="header-anchor">Distance-based phyogenetics with FastME</a></h1>
 <h2 id="computing_distance_matrices_using_fastme"><a href="#computing_distance_matrices_using_fastme" class="header-anchor">Computing distance matrices using FastME</a></h2>
-<p>While you could easily implement a little program to generate a distance matrix under the Jukes and Cantor model &#40;see the formula&#39;s for the distance in the section on <a href="../submod">substitution models</a>&#41;, this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using <strong>Neighbor-Joining</strong>, <strong>least-squares</strong>, <strong>minimum evolution</strong> and related distance matrix based methods.</p>
+<p>While you could easily implement a little program to generate a distance matrix under the Jukes and Cantor model &#40;see the formulae for the distance in the section on <a href="../submod">substitution models</a>&#41;, this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to estimate distance matrices and infer trees using <strong>Neighbor-Joining</strong>, <strong>least-squares</strong>, <strong>minimum evolution</strong> and related distance matrix based methods.</p>
 <p>There are two ways to run FastME. There is an interactive mode &#40;inherited from the influential <a href="http://evolution.genetics.washington.edu/phylip.html">PHYLIP software package</a>&#41; and a command line mode. Personally, I find the command line mode much more convenient. First get a look at the help message</p>
 <pre><code class="language-julia">fastme -help</code></pre>
 <p>If you have read the course notes from prof. Van de Peer, most of the options listed there &#40;but not all, no worries&#41; should make some sense to you. To infer a distance matrix with the Jukes &amp; Cantor model you can run something like this from the command line<sup id="fnref:commandline"><a href="#fndef:commandline" class="fnref">[3]</a></sup> :</p>
 <pre><code class="language-julia">fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCmatrix.txt -dJC69</code></pre>
-<p>Try to run this command and see whether you manage to make it work. The above command should generate a distance matrix. Let&#39;s make a heatmap to visualize it:</p>
+<p>Try to run this command and see whether you manage to make it work. The above command should generate a distance matrix. Take a look at the file <code>18SrRNA_20.phy_fastme_stat.txt</code>, is everything as expected? Let&#39;s make a heatmap to visualize the distance matrix:</p>
 <pre><code class="language-julia">using Plots
 function readmatrix&#40;file&#41;  # little function to read the FastME distance matrix
     lines &#61; &#91;split&#40;l&#41; for l in readlines&#40;file&#41;&#91;2:end&#93; if l &#33;&#61; &quot;&quot;&#93;
@@ -73,13 +81,16 @@ function readmatrix&#40;file&#41;  # little function to read the FastME distance
 end
 
 matrix, taxa, ntaxa &#61; readmatrix&#40;&quot;_assets/phylocourse/distance/18SrRNA_20_JCmatrix.txt&quot;&#41;
-heatmap&#40;matrix, yticks&#61;&#40;1:ntaxa, taxa&#41;, xticks&#61;&#40;1:ntaxa, taxa&#41;, xrotation&#61;45, size&#61;&#40;700,650&#41;&#41;</code></pre>
+heatmap&#40;matrix,
+        yticks&#61;&#40;1:ntaxa, taxa&#41;,
+        xticks&#61;&#40;1:ntaxa, taxa&#41;,
+        xrotation&#61;45, size&#61;&#40;700,650&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/hm1.svg" alt="" /></p>
 <blockquote>
 <p><strong>Question</strong>: does this distance matrix make sense to you? Can you spot clades of more closely related species already?</p>
 </blockquote>
 <h2 id="clustering_methods"><a href="#clustering_methods" class="header-anchor">Clustering methods</a></h2>
-<p><strong>Clustering methods</strong> in distance-based phylogenetics are not different from hierarchical clustering methods used in other applications, such as unsupervised machine learning for instance. Both the UPGMA and WPGMA clustering methods are specific cases of <em>average linkage clustering</em> &#40;with different formula&#39;s used to compute the distance between two already existing clusters&#41;. Clustering methods can befound in many packages for scientific computing for most programming languages &#40;here I&#39;ll use the <code>Clustering.jl</code> package for the julia progamming language, note that average linkage clustering as it is usually implemented is identical to what is called the WPGMA method in phylogenetics&#41;.</p>
+<p><strong>Clustering methods</strong> in distance-based phylogenetics are not different from hierarchical clustering methods used in other applications, such as unsupervised machine learning for instance. Both the UPGMA and WPGMA clustering methods are specific cases of <em>average linkage clustering</em> &#40;with different formula&#39;s used to compute the distance between two already existing clusters&#41;. Clustering methods can be found in many packages for scientific computing for most programming languages &#40;here I&#39;ll use the <code>Clustering.jl</code> package for the julia progamming language, note that average linkage clustering as it is usually implemented is identical to what is called the WPGMA method in phylogenetics&#41;.</p>
 <pre><code class="language-julia">using Clustering, StatsPlots
 hcl &#61; hclust&#40;matrix, linkage&#61;:average&#41;
 plot&#40;
@@ -90,7 +101,6 @@ plot&#40;
         xrotation&#61;45&#41;,
     layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/wpgma.svg" alt="" /></p>
-<p>A pretty figure in my humble opinion.</p>
 <blockquote>
 <p><strong>Question</strong>: how can you see in one glance that this is an ultrametric tree?</p>
 </blockquote>
@@ -103,7 +113,7 @@ plot&#40;
 <blockquote>
 <p><strong>Question</strong>: How do you interpret the branch lengths, what is the associated length &#39;unit&#39;?</p>
 </blockquote>
-<p>Now let&#39;s infer a tree using \(\Gamma\)<strong>distributed rates across sites</strong> &#40;i.e. \(\Gamma\) or &#39;Gamma&#39; distances&#41;, still using the Jukes-Cantor substitution model.</p>
+<p>Now let&#39;s infer a tree using \(\Gamma\)  <strong>distributed rates across sites</strong> &#40;i.e. \(\Gamma\) or &#39;Gamma&#39; distances&#41;, still using the Jukes-Cantor substitution model.</p>
 <pre><code class="language-julia">fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g</code></pre>
 <pre><code class="language-julia">matrix, taxa, ntaxa &#61; readmatrix&#40;&quot;_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt&quot;&#41;
 hcl &#61; hclust&#40;matrix, linkage&#61;:average&#41;
@@ -117,7 +127,7 @@ plot&#40;
     layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/wpgma2.svg" alt="" /></p>
 <blockquote>
-<p><strong>Question</strong>: did the topology change? Did the branch lengths change? Why?</p>
+<p><strong>Question</strong>: did the topology change? Did the branch lengths change? Why? What default paremeter settings does FastME use when dealing with Gamma distributed rates across sites?</p>
 </blockquote>
 <h2 id="neighbor-joining"><a href="#neighbor-joining" class="header-anchor">Neighbor-joining</a></h2>
 <p>Neighbor-joining &#40;NJ&#41; is another method for distance-based phylogenetics. It is also a clustering method, but one that does not produce ultrametric trees. To run tree inference with NJ for an input alignment or distance matrix, run <code>fastme</code> with the <code>-o &lt;output_file&gt;</code> and <code>-m NJ</code> options. For instance</p>
@@ -135,7 +145,7 @@ plot&#40;
 <p>Now infer a tree using \(\Gamma\) distances</p>
 <pre><code class="language-julia">fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -g -m NJ</code></pre>
 <blockquote>
-<p><strong>Question</strong>: What &#40;if anything&#41; is changing? Experiment with the \(\alpha\) parameter of the Gamma distribution by using for instance <code>-g0.5</code> in the FastME command. What happens? How does the inference for different values of \(\alpha\) relate to the inference without Gamma distances? &#40;FYI: below you can see a graph of the Gamma distribution for different values of \(\alpha\) to help you interpret the results.&#41;</p>
+<p><strong>Question</strong>: What &#40;if anything&#41; is changing? Experiment with the \(\alpha\) parameter of the Gamma distribution by using for instance <code>-g0.5</code> in the FastME command. What happens? How does the inference for different values of\(\alpha\) relate to the inference without Gamma distances? &#40;FYI: below you can see a graph of the Gamma distribution for different values of \(\alpha\) to help you interpret the results.&#41;</p>
 </blockquote>
 <pre><code class="language-julia">using Distributions
 p &#61; plot&#40;title&#61;&quot;The Gamma distribution with mean 1&quot;&#41;
@@ -147,18 +157,24 @@ end</code></pre>
 <p><strong>Exercise</strong>: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC&#43;Γ model, and vary the shape of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down &#40;we will compare them later with maximum-likelihood results&#41;.</p>
 </blockquote>
 <blockquote>
+<p><strong>Question</strong>. Why, in fact, assume a Gamma distribution for rates across sites? Could we use other distributions &#40;not in FastME, but in general&#41;? Give a couple suggestions and think about the pros and cons.</p>
+</blockquote>
+<blockquote>
 <p><strong>Optional</strong>: Explore some of the other substitution models available in FastME.</p>
 </blockquote>
-<h2 id="extra_implementing_neighbor-joining"><a href="#extra_implementing_neighbor-joining" class="header-anchor">Extra: implementing Neighbor-Joining</a></h2>
-<p>Implementing the neighbor-joining algorithm is fairly easy &#40;at least if we don&#39;t care <em>too</em> much about efficiency&#41;. The code below is a fairly minimal implementation of the NJ algorithm &#40;generating the tree directly in Newick format on the go&#41;:</p>
-<pre><code class="language-julia">function neighbor_joining&#40;matrix, taxa&#41;
+<h1 id="extra_implementing_neighbor-joining"><a href="#extra_implementing_neighbor-joining" class="header-anchor">Extra: implementing Neighbor-Joining</a></h1>
+<p>Implementing the neighbor-joining algorithm is fairly easy &#40;at least if we don&#39;t care <em>too</em> much about efficiency&#41;. The code below is a fairly minimal implementation of the NJ algorithm implemented in such a way as to show the algorithm in action &#40;generating the tree directly in Newick format on the go&#41;:</p>
+<pre><code class="language-julia"># Main NJ algorithm
+using Printf  # for pretty printing
+
+function neighbor_joining&#40;matrix, taxa&#41;
     clades &#61; copy&#40;taxa&#41;
     nodes &#61; collect&#40;1:length&#40;taxa&#41;&#41;
     n &#61; length&#40;nodes&#41;
     while length&#40;nodes&#41; &gt; 1
         # get the next neighbors to join
         &#40;i, j, a, b, di, dj&#41;, new_dist &#61; get_neighbors_to_join&#40;matrix, nodes&#41;
-        # join the chosen nodes to  new clade
+        # join the chosen nodes to a new clade
         push&#33;&#40;clades, &quot;&#40;&#36;&#40;clades&#91;i&#93;&#41;:&#36;di,&#36;&#40;clades&#91;j&#93;&#41;:&#36;dj&#41;&quot;&#41;
         # update the nodes that are still left to join
         nodes&#91;a&#93; &#61; n &#43; 1
@@ -167,10 +183,16 @@ end</code></pre>
         matrix &#61; &#91;&#91;matrix ; new_dist&#91;1:end-1&#93;&#39;&#93; new_dist&#93;
         # increment internal node counter
         n &#43;&#61; 1
+        # this will print out information so we can see the algorithm in action
+        @printf &quot;joining nodes &#37;2d and &#37;2d, creating internal node &#37;2d\n&quot; i j n
+        @printf &quot;subtree below new node &#37;2d:\n\t&#37;s\n&quot; n clades&#91;end&#93;
+        @printf &quot;&#37;d nodes left to join:\n\t&quot; length&#40;nodes&#41;
+        println&#40;nodes, &quot;\n&quot;, &quot;_&quot;^80&#41;
     end
     clades&#91;end&#93;
 end
 
+# Function for a single &#39;join&#39; operation
 function get_neighbors_to_join&#40;matrix, nodes&#41;
     r &#61; length&#40;nodes&#41;
     minindex &#61; &#40;0, 0, 0, 0, Inf&#41;
@@ -189,8 +211,10 @@ function get_neighbors_to_join&#40;matrix, nodes&#41;
     return &#40;i, j, minindex&#91;3&#93;, minindex&#91;4&#93;, di, dj&#41;, new_distances
 end
 
+# This is the formula to compute the branch lengths leading to
+# nodes i and j, which will be joined, as well as the distances
+# between the new internal node and all other nodes left to join
 function get_nj_distance&#40;matrix, nodes, i, j, r&#41;
-    # This is the formula to compute the branch
     a &#61; sum&#40;&#91;matrix&#91;i,k&#93; for k in nodes&#93;&#41;
     b &#61; sum&#40;&#91;matrix&#91;j,k&#93; for k in nodes&#93;&#41;
     if r &#33;&#61; 2  # we are not joining the two last nodes &#40;root&#41;
@@ -205,7 +229,121 @@ function get_nj_distance&#40;matrix, nodes, i, j, r&#41;
 end</code></pre><pre><code class="plaintext">get_nj_distance (generic function with 1 method)</code></pre>
 <p>Then, given a distance matrix, we can use the code like this</p>
 <pre><code class="language-julia">matrix, taxa, ntaxa &#61; readmatrix&#40;&quot;_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt&quot;&#41;
-neighbor_joining&#40;matrix, taxa&#41;</code></pre><pre><code class="plaintext">"((((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218):0.06494892127699999,Anemonias:0.07924348839900001):0.009972187360844695,((((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777):0.01282991248020214,(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671):0.030469872136733397):0.0)"</code></pre>
+neighbor_joining&#40;matrix, taxa&#41;</code></pre><pre><code class="plaintext">joining nodes  1 and  2, creating internal node 21
+subtree below new node 21:
+	(Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107)
+19 nodes left to join:
+	[21, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+________________________________________________________________________________
+joining nodes 14 and 15, creating internal node 22
+subtree below new node 22:
+	(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702)
+18 nodes left to join:
+	[21, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 16, 17, 18, 19, 20]
+________________________________________________________________________________
+joining nodes 21 and  3, creating internal node 23
+subtree below new node 23:
+	((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218)
+17 nodes left to join:
+	[23, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 16, 17, 18, 19, 20]
+________________________________________________________________________________
+joining nodes 17 and 19, creating internal node 24
+subtree below new node 24:
+	(Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361)
+16 nodes left to join:
+	[23, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 16, 24, 18, 20]
+________________________________________________________________________________
+joining nodes  5 and  6, creating internal node 25
+subtree below new node 25:
+	(Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357)
+15 nodes left to join:
+	[23, 4, 25, 7, 8, 9, 10, 11, 12, 13, 22, 16, 24, 18, 20]
+________________________________________________________________________________
+joining nodes 25 and  7, creating internal node 26
+subtree below new node 26:
+	((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086)
+14 nodes left to join:
+	[23, 4, 26, 8, 9, 10, 11, 12, 13, 22, 16, 24, 18, 20]
+________________________________________________________________________________
+joining nodes 26 and  8, creating internal node 27
+subtree below new node 27:
+	(((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193)
+13 nodes left to join:
+	[23, 4, 27, 9, 10, 11, 12, 13, 22, 16, 24, 18, 20]
+________________________________________________________________________________
+joining nodes 24 and 18, creating internal node 28
+subtree below new node 28:
+	((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374)
+12 nodes left to join:
+	[23, 4, 27, 9, 10, 11, 12, 13, 22, 16, 28, 20]
+________________________________________________________________________________
+joining nodes 10 and 12, creating internal node 29
+subtree below new node 29:
+	(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749)
+11 nodes left to join:
+	[23, 4, 27, 9, 29, 11, 13, 22, 16, 28, 20]
+________________________________________________________________________________
+joining nodes  9 and 29, creating internal node 30
+subtree below new node 30:
+	(Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095)
+10 nodes left to join:
+	[23, 4, 27, 30, 11, 13, 22, 16, 28, 20]
+________________________________________________________________________________
+joining nodes 13 and 16, creating internal node 31
+subtree below new node 31:
+	(Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626)
+9 nodes left to join:
+	[23, 4, 27, 30, 11, 31, 22, 28, 20]
+________________________________________________________________________________
+joining nodes 27 and 28, creating internal node 32
+subtree below new node 32:
+	((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841)
+8 nodes left to join:
+	[23, 4, 32, 30, 11, 31, 22, 20]
+________________________________________________________________________________
+joining nodes 31 and 22, creating internal node 33
+subtree below new node 33:
+	((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207)
+7 nodes left to join:
+	[23, 4, 32, 30, 11, 33, 20]
+________________________________________________________________________________
+joining nodes 30 and 11, creating internal node 34
+subtree below new node 34:
+	((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906)
+6 nodes left to join:
+	[23, 4, 32, 34, 33, 20]
+________________________________________________________________________________
+joining nodes 34 and 33, creating internal node 35
+subtree below new node 35:
+	(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671)
+5 nodes left to join:
+	[23, 4, 32, 35, 20]
+________________________________________________________________________________
+joining nodes 32 and 20, creating internal node 36
+subtree below new node 36:
+	(((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777)
+4 nodes left to join:
+	[23, 4, 36, 35]
+________________________________________________________________________________
+joining nodes 36 and 35, creating internal node 37
+subtree below new node 37:
+	((((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777):0.01282991248020214,(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671):0.030469872136733397)
+3 nodes left to join:
+	[23, 4, 37]
+________________________________________________________________________________
+joining nodes 23 and  4, creating internal node 38
+subtree below new node 38:
+	(((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218):0.06494892127699999,Anemonias:0.07924348839900001)
+2 nodes left to join:
+	[38, 37]
+________________________________________________________________________________
+joining nodes 38 and 37, creating internal node 39
+subtree below new node 39:
+	((((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218):0.06494892127699999,Anemonias:0.07924348839900001):0.009972187360844695,((((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777):0.01282991248020214,(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671):0.030469872136733397):0.0)
+1 nodes left to join:
+	[39]
+________________________________________________________________________________
+"((((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218):0.06494892127699999,Anemonias:0.07924348839900001):0.009972187360844695,((((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777):0.01282991248020214,(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671):0.030469872136733397):0.0)"</code></pre>
 <p>You can check this against FastME&#39;s NJ implementation, it should be correct. We have everything in place to start building our own extremely redundant phylogenetics library.</p>
 <blockquote>
 <p><strong>Exercise</strong>: For the diehards, try to understand the code and perhaps reimplement it in your programming language of choice.</p>
