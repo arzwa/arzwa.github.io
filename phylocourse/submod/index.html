@@ -237,14 +237,15 @@ ATTTACCGGCGGGTCTGTGG
 <blockquote>
 <p><strong>Exercise</strong>. Try to understand the code above and explain in words how the simulation algorithm works.</p>
 </blockquote>
-<p>Now to obtain the probability that one sequence evolves into another we can simply multiply the probabilities of the corresponding site-wise probabilities because of our independence assumption</p>
+<p>Now to obtain the probability that one sequence evolves into another we can simply multiply the probabilities of the corresponding site-wise probabilities because of our independence assumption.</p>
 <pre><code class="language-julia">x &#61; translate&#40;original&#41;
 y &#61; translate&#40;evolved&#41;;
 Pn &#61; Pmatrix&#40;0.05&#41;^10  # get the 10-step transition probabilities
 site_probabilities &#61; &#91;Pn&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;
 sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><code class="plaintext">3.310141574250685e-13</code></pre>
-<p>In mathematical notation, the probability <code>sequence_probability</code> computed above could be written as</p>
-\[P(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x,p=0.05)\]
+<p>If \(\ell_i\) denotes the probability that the nucleotide at position \(i\) in sequence \(x\) evolved into the nucleotide at position \(i\) in sequence \(y\) over 10 time steps, then the probability <code>sequence_probability</code> in the example above could be written formally as</p>
+\[P\big(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x, p=0.05\big) = \ell_1 \ell_2 \dots \ell_n
+    = \prod_{i=1}^n \ell_i\]
 <p>Make sure you understand what this means&#33;</p>
 <blockquote>
 <p><strong>Exercise.</strong> Note that these probabilities are <em>very</em> small values. Is this surprising? Does this mean evolution is unlikely? Can you explain why &#40;not&#41;? &#40;Hint: how many possible DNA sequences are there of length 20?&#41;</p>

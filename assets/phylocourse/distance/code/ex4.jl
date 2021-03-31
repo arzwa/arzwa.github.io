@@ -8,5 +8,8 @@ function readmatrix(file)  # little function to read the FastME distance matrix
 end
 
 matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCmatrix.txt")
-heatmap(matrix, yticks=(1:ntaxa, taxa), xticks=(1:ntaxa, taxa), xrotation=45, size=(700,650))
+heatmap(matrix,
+        yticks=(1:ntaxa, taxa),
+        xticks=(1:ntaxa, taxa),
+        xrotation=45, size=(700,650))
 savefig("_assets/phylocourse/distance/hm1.svg") # hide
