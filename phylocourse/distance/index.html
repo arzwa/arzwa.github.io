@@ -17,24 +17,28 @@
   </header>
 
 <!-- Content appended here -->
-<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#distance-based_phylogenetic_inference">Distance-based phylogenetic inference</a><ol><li><a href="#software_and_data">Software and data</a></li><li><a href="#computing_distance_matrices_fastme">Computing distance matrices: FastME</a></li><li><a href="#clustering_methods">Clustering methods</a></li><li><a href="#neighbor-joining">Neighbor-joining</a></li><li><a href="#extra_implementing_neighbor-joining">Extra: implementing Neighbor-Joining</a></li></ol></li></ol></div></p>
+<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#distance-based_phylogenetic_inference">Distance-based phylogenetic inference</a><ol><li><a href="#software_and_data">Software and data</a></li><li><a href="#computing_distance_matrices_using_fastme">Computing distance matrices using FastME</a></li><li><a href="#clustering_methods">Clustering methods</a></li><li><a href="#neighbor-joining">Neighbor-joining</a></li><li><a href="#extra_implementing_neighbor-joining">Extra: implementing Neighbor-Joining</a></li></ol></li></ol></div></p>
 <h1 id="distance-based_phylogenetic_inference"><a href="#distance-based_phylogenetic_inference" class="header-anchor">Distance-based phylogenetic inference</a></h1>
 <blockquote>
-<p><strong>Questions</strong> will be marked in blocks like this, try to formulate a brief answer to them.</p>
+<p><strong>Questions</strong> and <strong>Exercises</strong> will be marked in blocks like this, try to formulate a brief answer to them.</p>
 </blockquote>
 <blockquote>
 <p><strong>Note</strong> that there are some blocks with <code>julia</code> code included below. This is just for illustrating things in a way such that those who are interested in that can actually see how these illustrations &#40;numerical or visual&#41; were actually generated. Don&#39;t let them scare you.</p>
 </blockquote>
-<p>Distance-based phylogenetic methods proceed by computing a <strong>pairwise distance matrix</strong> for an input alignment based on a <a href="../submod">substitution model</a>, i.e. an assumed <strong>model of evolution</strong> for molecular sequences. Usually these estimated distances are the maximum likelihood estimates &#40;MLE&#41; of the pairwise distance under the assumed substitution model. For instance, consider two sequences, for an observed proportion of different sites \(p\), the maximum likelihood estimate of the distance between the two sequences under the Jukes &amp; Cantor substitution model is</p>
-\[\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)\]
+<p>Distance-based phylogenetic methods proceed by computing a <strong>pairwise distance matrix</strong> for an input alignment based on a <a href="../submod">substitution model</a>, i.e. an assumed <strong>model of evolution</strong> for molecular sequences. Usually these estimated distances are the maximum likelihood estimates &#40;MLE&#41; of the pairwise distance under the assumed substitution model. For instance, consider two sequences, for an observed proportion of different sites \(x\), the maximum likelihood estimate of the distance between the two sequences under the Jukes &amp; Cantor substitution model is</p>
+\[\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}x\Big)\]
 <p>So for instance for the alignment</p>
 <pre><code class="language-julia">seqa &#61; &quot;ATCGGGCTAGC&quot;
 seqb &#61; &quot;TTCGGCTTACC&quot;;</code></pre>
 <p>The proportion of different sites is</p>
-<pre><code class="language-julia">p &#61; mapreduce&#40;&#33;&#61;, &#43;, seqa, seqb&#41;/length&#40;seqa&#41;</code></pre><pre><code class="plaintext">0.36363636363636365</code></pre>
-<p>and the estimated distance is</p>
-<pre><code class="language-julia">d &#61; -0.75 * log&#40;1. - 4p/3&#41;</code></pre><pre><code class="plaintext">0.49747066305769816</code></pre>
-<p>This distance is correctly interpreted as <strong>an estimate of the expected number of substitutions per site</strong> separating the two sequences. Note that the distance is a product of two other evolutionary variables: the <strong>substitution rate</strong> and the <strong>divergence time</strong>. If we have \(n\) sequences, we can apply the distance formula to obtain an \(n \times n\)<strong>distance matrix</strong>. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the <a href="../submod">notes on substitution models</a>.</p>
+<pre><code class="language-julia">differences &#61; sum&#40;&#91;seqa&#91;i&#93; &#33;&#61; seqb&#91;i&#93; for i&#61;1:length&#40;seqa&#41;&#93;&#41;
+x &#61; differences/length&#40;seqa&#41;</code></pre><pre><code class="plaintext">0.36363636363636365</code></pre>
+<p>The estimated distance is</p>
+<pre><code class="language-julia">d &#61; -0.75 * log&#40;1. - 4x/3&#41;</code></pre><pre><code class="plaintext">0.49747066305769816</code></pre>
+<p>This distance is correctly interpreted as <strong>an estimate of the expected number of substitutions per site</strong> separating the two sequences. Note that the distance is a product of two other evolutionary variables: the <strong>substitution rate</strong> and the <strong>divergence time</strong>. If we have \(n\) sequences, we can apply the distance formula to obtain an \(n \times n\)  <strong>distance matrix</strong>. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the <a href="../submod">notes on substitution models</a>.</p>
+<blockquote>
+<p><strong>Question</strong>. The proportion of different sites in a pair of sequence \(x\) is a <strong>summary statistic</strong> of the data, we reduce the data to a single number \(x\). For the Jukes - Cantor model the likelihood \(P(\text{sequence pair}|\mathrm{model})\) only depends on the summary statistic \(x\). Why will such a summary statistic not work for more complicated substitution models, for instance where transitions and transversions have different rates? If we cannot use a formula based on some summary statistic, how can we estimate a distance?</p>
+</blockquote>
 <p>After computing the distance matrix, a tree is inferred by using some sort of clustering algorithm or least-squares estimation step. Distance-based phylogenetic inference is thus essentially a two-step process:</p>
 <ol>
 <li><p>Compute pairwise distances</p>
@@ -42,7 +46,7 @@ seqb &#61; &quot;TTCGGCTTACC&quot;;</code></pre>
 <li><p>Infer the tree, assuming the distances</p>
 </li>
 </ol>
-<p>This two step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with \(n\) sequences and \(m\) sites in a single \(n \times n\) matrix it dramatically reduces the data, making tree inference coputationally very fast. However, by reducing the rich sequence data to a matrix of numbers it throws away a lot of potentially interesting evolutionary information. Another issue is that when using distance-based methods the estimated distances from step 1 <em>are treated as observed data</em> in step 2. However, distances are themselves estimates, associated with some uncertainty &#40;a distance estimate has a variance for instance&#41;, and this uncertainty in the distances is neglected in step 2. Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost.</p>
+<p>This two step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with \(n\) sequences and \(m\) sites in a single \(n \times n\) matrix it dramatically reduces the data, making tree inference computationally very fast. However, by reducing the rich sequence data to a matrix of numbers it throws away a lot of potentially interesting evolutionary information. Another issue is that when using distance-based methods the estimated distances from step 1 <em>are treated as observed data</em> in step 2. However, distances are themselves estimates, associated with some uncertainty &#40;a distance estimate has a variance for instance&#41;, and this uncertainty in the distances is neglected in step 2. Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost.</p>
 <p>Because of their speed, distance methods are still quite often used. Some ML tree inference programs &#40;for instance IQ-TREE, see the ML tutorial&#41; start their tree search algorithm from a distance-based tree for instance. Also popular packages for phylogenomic and comparative genomic inference such as <a href="https://github.com/davidemms/OrthoFinder">OrthoFinder</a> use distance-based phylogenetic methods in their workflow.</p>
 <h2 id="software_and_data"><a href="#software_and_data" class="header-anchor">Software and data</a></h2>
 <ol>
@@ -53,7 +57,7 @@ seqb &#61; &quot;TTCGGCTTACC&quot;;</code></pre>
 <li><p>We will use two small &#39;tree of life&#39; data sets. One <a href="/assets/phylocourse/data/18SrRNA_20.phy">18SrRNA data set with 20 taxa</a> and another <a href="/assets/phylocourse/data/18SrRNA_45.phy">18SrRNA data set with 45 taxa</a>.<sup id="fnref:ancientdata"><a href="#fndef:ancientdata" class="fnref">[2]</a></sup></p>
 </li>
 </ol>
-<h2 id="computing_distance_matrices_fastme"><a href="#computing_distance_matrices_fastme" class="header-anchor">Computing distance matrices: FastME</a></h2>
+<h2 id="computing_distance_matrices_using_fastme"><a href="#computing_distance_matrices_using_fastme" class="header-anchor">Computing distance matrices using FastME</a></h2>
 <p>While you could easily implement a little program to generate a distance matrix under the Jukes and Cantor model &#40;see the formula&#39;s for the distance in the section on <a href="../submod">substitution models</a>&#41;, this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using <strong>Neighbor-Joining</strong>, <strong>least-squares</strong>, <strong>minimum evolution</strong> and related distance matrix based methods.</p>
 <p>There are two ways to run FastME. There is an interactive mode &#40;inherited from the influential <a href="http://evolution.genetics.washington.edu/phylip.html">PHYLIP software package</a>&#41; and a command line mode. Personally, I find the command line mode much more convenient. First get a look at the help message</p>
 <pre><code class="language-julia">fastme -help</code></pre>
@@ -69,9 +73,7 @@ function readmatrix&#40;file&#41;  # little function to read the FastME distance
 end
 
 matrix, taxa, ntaxa &#61; readmatrix&#40;&quot;_assets/phylocourse/distance/18SrRNA_20_JCmatrix.txt&quot;&#41;
-heatmap&#40;matrix, yticks&#61;&#40;1:ntaxa, taxa&#41;, xticks&#61;&#40;1:ntaxa, taxa&#41;, xrotation&#61;45, size&#61;&#40;700,650&#41;&#41;</code></pre><pre><code class="plaintext">Your GR installation is incomplete. Rerun build step for GR package.
-Failed to precompile Plots [91a5bcdd-55d7-5caf-9e0b-520d859cae80] to /home/arzwa/.julia/compiled/v1.6/Plots/jl_XFvzDO.
-</code></pre>
+heatmap&#40;matrix, yticks&#61;&#40;1:ntaxa, taxa&#41;, xticks&#61;&#40;1:ntaxa, taxa&#41;, xrotation&#61;45, size&#61;&#40;700,650&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/hm1.svg" alt="" /></p>
 <blockquote>
 <p><strong>Question</strong>: does this distance matrix make sense to you? Can you spot clades of more closely related species already?</p>
@@ -86,9 +88,7 @@ plot&#40;
         yticks&#61;&#40;1:ntaxa, &#91;taxa&#91;i&#93; for i in hcl.order&#93;&#41;,
         xticks&#61;&#40;1:ntaxa, &#91;taxa&#91;i&#93; for i in hcl.order&#93;&#41;,
         xrotation&#61;45&#41;,
-    layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre><pre><code class="plaintext">Your GR installation is incomplete. Rerun build step for GR package.
-Failed to precompile StatsPlots [f3b207a7-027a-5e70-b257-86293d7955fd] to /home/arzwa/.julia/compiled/v1.6/StatsPlots/jl_iAMq6z.
-</code></pre>
+    layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/wpgma.svg" alt="" /></p>
 <p>A pretty figure in my humble opinion.</p>
 <blockquote>
@@ -114,8 +114,7 @@ plot&#40;
         yticks&#61;&#40;1:ntaxa, &#91;taxa&#91;i&#93; for i in hcl.order&#93;&#41;,
         xticks&#61;&#40;1:ntaxa, &#91;taxa&#91;i&#93; for i in hcl.order&#93;&#41;,
         xrotation&#61;45&#41;,
-    layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre><pre><code class="plaintext">UndefVarError: readmatrix not defined
-</code></pre>
+    layout&#61;grid&#40;2, 1, heights&#61;&#91;0.2,0.8&#93;&#41;, size&#61;&#40;600,750&#41;&#41;</code></pre>
 <p><img src="/assets/phylocourse/distance/wpgma2.svg" alt="" /></p>
 <blockquote>
 <p><strong>Question</strong>: did the topology change? Did the branch lengths change? Why?</p>
@@ -142,8 +141,7 @@ plot&#40;
 p &#61; plot&#40;title&#61;&quot;The Gamma distribution with mean 1&quot;&#41;
 for α in &#91;0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.&#93;
     plot&#33;&#40;p, Gamma&#40;α, 1/α&#41;, label&#61;&quot;\\alpha &#61; &#36;α&quot;, xlim&#61;&#40;0,5&#41;, ylim&#61;&#40;0,5&#41;&#41;
-end</code></pre><pre><code class="plaintext">UndefVarError: plot not defined
-</code></pre>
+end</code></pre>
 <p><img src="/assets/phylocourse/distance/gamma.svg" alt="" /></p>
 <blockquote>
 <p><strong>Exercise</strong>: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC&#43;Γ model, and vary the shape of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down &#40;we will compare them later with maximum-likelihood results&#41;.</p>
@@ -207,8 +205,7 @@ function get_nj_distance&#40;matrix, nodes, i, j, r&#41;
 end</code></pre><pre><code class="plaintext">get_nj_distance (generic function with 1 method)</code></pre>
 <p>Then, given a distance matrix, we can use the code like this</p>
 <pre><code class="language-julia">matrix, taxa, ntaxa &#61; readmatrix&#40;&quot;_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt&quot;&#41;
-neighbor_joining&#40;matrix, taxa&#41;</code></pre><pre><code class="plaintext">UndefVarError: readmatrix not defined
-</code></pre>
+neighbor_joining&#40;matrix, taxa&#41;</code></pre><pre><code class="plaintext">"((((Homosapie:0.02924755103488889,Xenopusla:0.021778841927111107):0.08114770060050783,Artemiasa:0.11616511535899218):0.06494892127699999,Anemonias:0.07924348839900001):0.009972187360844695,((((((Oryzasati:0.0061716773969643,Zeamaysxx:0.0143528379960357):0.02197552496695191,Glycinema:0.025865134953548086):0.01417354623424481,Zamiapumi:0.041985046430755193):0.03377916779845535,((Chlamydomo:0.010749288627016637,Volvoxcar:0.009419747100983361):0.031210936093406267,Chlorellaa:0.04110170407209374):0.03217114798238841):0.02786998226327543,Palmariap:0.2015992260026777):0.01282991248020214,(((Candidaal:0.019243759892322902,(Kluyveromy:0.008400335147631251,Saccharomy:0.013484863547368749):0.018706281291177095):0.035214710391360926,Neurospora:0.07166376672263906):0.011126122879444332,((Bulleraal:0.020002847598359373,Trichospor:0.022424966190640626):0.027329815263197922,(Leucospori:0.0098172971579853,Sporobolom:0.011305443089014702):0.08077801428405207):0.012930904895555671):0.030469872136733397):0.0)"</code></pre>
 <p>You can check this against FastME&#39;s NJ implementation, it should be correct. We have everything in place to start building our own extremely redundant phylogenetics library.</p>
 <blockquote>
 <p><strong>Exercise</strong>: For the diehards, try to understand the code and perhaps reimplement it in your programming language of choice.</p>
