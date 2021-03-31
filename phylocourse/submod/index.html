@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
+   <link rel="stylesheet" href="/libs/highlight/github.min.css">
+   
+  <link rel="stylesheet" href="/css/franklin.css">
+  <link rel="stylesheet" href="/css/basic.css">
+   <title>Substitution models for molecular phylogenetics</title>  
+</head>
+<body>
+  <header>
+	  <!--div class="blog-name"><a href="/">bb</a></div--->
+  </header>
+
+<!-- Content appended here -->
+<div class="franklin-content"><p><a href="/phylocourse/">back</a></p>
+<div class="franklin-toc"><ol><li><a href="#substitution_models_for_molecular_phylogenetics">Substitution models for molecular phylogenetics</a></li><li><a href="#discrete-time_markov_models_of_nucleotide_substitution">Discrete-time Markov models of nucleotide substitution</a><ol><li><a href="#simulating_the_simplest_model">Simulating the simplest model</a></li><li><a href="#the_markov_property">The Markov property</a></li><li><a href="#the_transition_probability_matrix">The transition probability matrix</a></li><li><a href="#from_individual_sites_to_sequences">From individual sites to sequences</a></li><li><a href="#a_note_on_time-reversibility">A note on time-reversibility</a></li><li><a href="#an_example_of_maximum_likelihood_estimation">An example of maximum likelihood estimation</a></li></ol></li><li><a href="#the_real_deal_continuous-time_markov_models_of_sequence_evolution">The real deal: continuous-time Markov models of sequence evolution</a><ol><li><a href="#ctmcs_and_the_poisson_process">CTMC&#39;s and the Poisson process</a></li><li><a href="#the_rate_matrix_q_and_transition_probabilities">The rate matrix \(Q\) and transition probabilities</a></li></ol></li><li><a href="#so_what_are_molecular_distances_anyway">So what are molecular distances anyway?</a></li><li><a href="#exercises">Exercises</a></li></ol></div>
+<blockquote>
+<p><strong>Exercises</strong> will be marked in blocks like this, try to formulate a brief answer to them.</p>
+</blockquote>
+<h2 id="substitution_models_for_molecular_phylogenetics"><a href="#substitution_models_for_molecular_phylogenetics" class="header-anchor">Substitution models for molecular phylogenetics</a></h2>
+<p>By now you should have some idea of the major approaches towards the inference of phylogenies from molecular sequence data. As discussed in the course notes by prof. Van de Peer a rough partitioning of the different methods is the following</p>
+<table><tr><th align="right"></th><th align="right">Model-based</th><th align="right">Not model-based</th></tr><tr><td align="right">Character-based</td><td align="right">Maximum likelihood, Bayesian inference</td><td align="right">Maximum parsimony</td></tr><tr><td align="right">Not character-based</td><td align="right">Distance methods</td><td align="right">&#40;no established methods&#41;</td></tr></table>
+<p>Nowadays, most methods in phylogenetics – be it for tree construction &#40;which is the focus of the course&#41;, inference of adaptive protein evolution or macroevolutionary analyses of trait evolution and diversification – are model-based approaches that employ a <strong>probabilistic model of evolution</strong> and seek to perform <strong>statistical inference of the parameters of this model</strong>. In these notes I will attempt to make clear what these models of evolution amount to and I will try to convey some intuition on how modern phylogenetic methods are largely <em>statistical</em> in nature.</p>
+<p>Concerning the problem of phylogeny reconstruction from sequence data, the probabilistic model of sequence evolution is usually a <strong>substitution model</strong> which describes how a single site in an alignment evolves &#39;along&#39; a tree.  The goal in statistical phylogenetics is then to somehow find the phylogenetic tree and parameters of the substitution model that &#39;best explain&#39; the observed sequence data. Note that this is deliberately formulated in a vague way, as the specifics of this procedure depend strongly on your philosophy of statistical inference. In particular two major approaches are used in phylogenetics, based on either the principle of <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">Maximum likelihood</a> or <a href="https://en.wikipedia.org/wiki/Bayesian_inference">Bayesian inference</a>.  In addition, methods based on pairwise distances go somewhat halfway a full probabilistic modeling approach, using substitution models &#40;and hence, statistical methods&#41; to compute <em>pairwise</em> distances among sequences but not explicitly modeling the evolution of a group of sequences along a phylogeny.</p>
+<p>Using substitution models to model the evolutionary process probabilistically, we can answer questions that become progressively more interesting.</p>
+<blockquote>
+<p>Q1: What is the probability that a given nucleotide substitutes into another over some time \(t\) given the substitution model?</p>
+</blockquote>
+<blockquote>
+<p>Q2: What is the probability that the sequence <code>ATCGAATCG</code> evolves into<code>ATCCCAATC</code> over some time \(t\) given the substitution model?</p>
+</blockquote>
+<blockquote>
+<p>Q3: Assuming some substitution model, what is the expected number of substitutions that happened during the course of evolution when we observe \(x\) differences between two sequences?</p>
+</blockquote>
+<blockquote>
+<p>Q4: What is the probability of observing a set of \(n\) sequences given that they evolved along a phylogenetic tree \(\mathcal{T}\) under a given substitution model?</p>
+</blockquote>
+<blockquote>
+<p>Q5: Which phylogenetic tree connecting a set of \(n\) sequences is the most likely to have resulted in the observed sequences given the substitution model?</p>
+</blockquote>
+<p>I hope these questions already given you an idea of why such models of sequence evolution are interesting&#33; The last question – which asks for the tree that &#39;explains&#39; the data best under the model – is essentially the problem of maximum likelihood inference of phylogenies. The goal of these notes is to give you a feel of how these questions can be answered and how they relate to phylogenetic inference.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Consider the last question &#40;Q5&#41; in the above list. How does this compare to the approach taken in maximum parsimony tree inference? Under what condition does the maximum parsimony tree answer the question asked?</p>
+</blockquote>
+<h2 id="discrete-time_markov_models_of_nucleotide_substitution"><a href="#discrete-time_markov_models_of_nucleotide_substitution" class="header-anchor">Discrete-time Markov models of nucleotide substitution</a></h2>
+<h3 id="simulating_the_simplest_model"><a href="#simulating_the_simplest_model" class="header-anchor">Simulating the simplest model</a></h3>
+<p>The simplest non-trivial probabilistic model of DNA substitution could be specified in words as follows:</p>
+<blockquote>
+<p>In a given time step of length \(Δt\), a given nucleotide changes into random other nucleotide with probability \(p\), it stays the same nucleotide with probability \(1-p\).</p>
+</blockquote>
+<p>This is a simple probabilistic model of sequence evolution with a single parameter \(p\). We could for instance use this model to <strong>simulate</strong> the evolution of a given site in a sequence over a series of \(n\) time steps:</p>
+<pre><code class="language-julia">function simulate&#40;site, n, p&#41;
+    print&#40;site&#41;
+    for i&#61;1:n
+        if rand&#40;&#41; &lt; p
+            site &#61; rand&#40;setdiff&#40;&quot;ATCG&quot;, site&#41;&#41;
+        end
+        print&#40;&quot; --&gt; &quot;, site&#41;
+    end
+end</code></pre><pre><code class="plaintext">simulate (generic function with 1 method)</code></pre>
+<p>Note that the string <code>&quot;ATCG&quot;</code> is equivalent to a list of characters <code>&#91;&#39;A&#39;,
+&#39;T&#39;, &#39;C&#39;, &#39;G&#39;&#93;</code>, that <code>setdiff</code> takes the set difference and that <code>rand</code> picks a random element from a collection. To be clear:</p>
+<pre><code class="language-julia">@show setdiff&#40;&quot;ATCG&quot;, &#39;A&#39;&#41;
+@show rand&#40;setdiff&#40;&quot;ATCG&quot;, &#39;A&#39;&#41;&#41;</code></pre><pre><code class="plaintext">setdiff("ATCG", 'A') = ['T', 'C', 'G']
+rand(setdiff("ATCG", 'A')) = 'G'
+</code></pre>
+<p>Now we do a <em>simulation</em> of 10 time steps assuming an initial state <code>A</code> and with \(p\) &#40;the single parameter of the model&#41; set to \(0.4\):</p>
+<pre><code class="language-julia">simulate&#40;&#39;A&#39;, 10, 0.4&#41;</code></pre><pre><code class="plaintext">A --> G --> C --> T --> T --> T --> T --> T --> T --> T --> C</code></pre>
+<p>The model of sequence evolution we specified is a simple kind of <a href="https://en.wikipedia.org/wiki/Stochastic_process">stochastic process</a> belonging to the class of <strong>discrete-time Markov chains &#40;DTMC&#41;</strong>. A stochastic process can be thought of intuitively as something that evolves randomly in time. Here this &#39;something&#39; is the state of the nucleotide of interest, and we denote the state of the nucleotide at time point \(n\) by \(X(n)\), taking values in the state space \(\{A, T, C, G\}\).</p>
+<p>Note that the &#39;discrete-time&#39; label refers to the fact that the evolutionary process is assumed to proceed in discrete time steps which can be indexed by integers, i.e. \(n \in \mathbb{N}\) &#40;continuous-time models, where we consider \(X(t)\) with \(t \in \mathbb{R}^+\), will be discussed below&#41;. In the simulation function above, we effectively iterate through the time steps, at each time point flipping a biased coin which lands heads with probability \(p\) and tails with probability \(1-p\). If the virtual coin lands heads, the nucleotide substitutes, if it lands tails it stays put.</p>
+<p>A sequence \((X(1), X(2), X(3), \dots)\) is called a <em>realization</em> of the stochastic process. The simulation function above prints such a realization given the initial state <code>A</code>.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Use the simulation function above to estimate the probability that a nucleotide <code>A</code> substitutes to a nucleotide <code>T</code> after 10 time steps when \(p = 0.1\)</p>
+</blockquote>
+<h3 id="the_markov_property"><a href="#the_markov_property" class="header-anchor">The Markov property</a></h3>
+<p>We called the above model a discrete-time <strong>Markov</strong> chain. The key feature of all stochastic processes with the <strong>Markov property</strong> is that at any given time, the future evolution of the process only depends on the current state and not the history of the process. In probabilistic notation<sup id="fnref:pr"><a href="#fndef:pr" class="fnref">[1]</a></sup> :</p>
+\[ P\big[X(n+1)|X(n),X(n-1),X(n-2),\dots,X(0)\big] = P\big[X(n+1)|X(n)\big] \]
+<p>The probability \(P[X(n+1)|X(n)]\) is known as the <strong>transition probability</strong>.</p>
+<p>This property is what makes these models particularly mathematically tractable<sup id="fnref:sp"><a href="#fndef:sp" class="fnref">[2]</a></sup>. Using the transition probabilities and the Markov property, we can compute the probability of a particular realization under the model. Consider for instance the simple model above with the parameter \(p\) and an observed realization <code>A ⟶  G ⟶  G ⟶  T</code>. The probability of this realization under the model can be obtained as:</p>
+\[\begin{aligned}
+P(&A \rightarrow G \rightarrow G \rightarrow T) = P(X_0=A, X_1=G, X_2=G, X_3=T) \\
+&= P(X_3=T|X_0=A,X_1=G,X_2=G)P(X_0=A,X_1=G,X_2=G) \\
+&= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_0=A,X_1=G) \\
+&= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_1=G|X_0=A) P(X_0=A)\\
+&= P(X_3=T|X_2=G)P(X_2=G|X_1=G)P(X_1=G|X_0=A)P(X_0=A) \\
+&= p \times (1-p) \times p \times 1 \\
+&= p^2(1-p)
+\end{aligned}\]
+<p>Where I have written \(X_n\) instead of \(X(n)\) to avoid all those parentheses. While the equations are a bit convoluted, this is just a simple exercise in conditional probabilities &#40;see also note <sup id="fnref:pr"><a href="#fndef:pr" class="fnref">[1]</a></sup>&#41;.</p>
+<p>But <em>why is being able to compute such a probability interesting?</em> Consider a question of the sort:</p>
+<blockquote>
+<p>For a given site, what is the probability to observe a nucleotide <code>A</code> at the present when it was an <code>T</code> in an ancestor \(n\) generations ago, assuming the probability of a substitution in a single generation is \(p\) &#40;with all kinds of substitutions equally likely&#41;?</p>
+</blockquote>
+<p>Clearly this starts to sound like something that can be of scientific interest &#40;if you don&#39;t see why, please take a moment to ponder why being able to answer such a question is interesting&#33;&#41;. We cannot quite apply the calculations we did above directly though, since we have not specified the entire sequence of transitions like we did above. We are looking for the probability</p>
+\[P(T \rightarrow \underbrace{? \rightarrow ? \rightarrow \dots \rightarrow ?}_{n-1 \text{ intermediate states}} \rightarrow A)\]
+<p>or the <strong>\(n\)-step transition probability</strong> \(P(X_n=A |X_0=T)\) asociated with the Markov chain. If we write the transition probability \(P[X(n+1)=A|X(n)=T]\) &#40;i.e. the probability of a <code>T --&gt; A</code> transition&#41; more concisely as \(p_{AT}\). If we write the <strong>alphabet</strong> of the sequence data as \(\mathcal{A} = \{A,T,C,G\}\), the probability we are querying in the above question is of the form</p>
+\[\begin{aligned}
+P(X_n=A |X_0=T) &= \sum_{x \in \mathcal{A}} p_{Ax} P(X_{n-1}=x|X_0=T) \\
+  &= \sum_{x \in \mathcal{A}} p_{Ax} \Big(
+          \sum_{y \in \mathcal{A}} p_{xy} P(X_{n-2}=y|X(0)=T) \Big) \\
+  &= \sum_{x \in \mathcal{A}} p_{Ax} \Big(
+          \sum_{y \in \mathcal{A}} p_{xy} \Big( \dots \sum_{z \in \mathcal{A}} p_{zT} \Big) \Big)
+\end{aligned}\]
+<p>Nothing stops us from implementing this recursive formulation<sup id="fnref:recursion"><a href="#fndef:recursion" class="fnref">[3]</a></sup> of the \(n\)-step transition probability in a computer program, however we can formulate this elegantly and concisely using a little bit of matrix algebra.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Explain in words the reasoning behind the first equality in the above equation. Can you think of a different way to start the derivation?</p>
+</blockquote>
+<h3 id="the_transition_probability_matrix"><a href="#the_transition_probability_matrix" class="header-anchor">The transition probability matrix</a></h3>
+<p><em>Any</em> DTMC model of nucleotide substitution is completely determined by its so-called <strong>transition probability matrix</strong> \(P\):</p>
+\[P = \begin{bmatrix}
+    p_{AA} & p_{AT} & p_{AC} & p_{AG} \\
+    p_{TA} & p_{TT} & p_{TC} & p_{TG} \\
+    p_{CA} & p_{CT} & p_{CC} & p_{CG} \\
+    p_{GA} & p_{GT} & p_{GC} & p_{GG}
+\end{bmatrix}\]
+<p>You can fill this in for the simple model we defined above to get</p>
+\[P_{simple} = \begin{bmatrix}
+    (1-p) & p/3 & p/3 & p/3 \\
+    p/3 & (1-p) & p/3 & p/3 \\
+    p/3 & p/3 & (1-p) & p/3 \\
+    p/3 & p/3 & p/3 & (1-p)
+\end{bmatrix}\]
+<p>At this point, it&#39;s fairly easy to see that we could easily specify more complicated Markov models by introducing more parameters. For instance we could have different probabilities of a purine &#40;<code>A</code> and <code>G</code>&#41; to purine substitution versus a purine to pyrimidine substitution. But note that <em>however one specifies the model, each column of the transition probability matrix has to sum to one</em>. This simply means that the chain has to go <em>somewhere</em>, i.e. the total probability to be in <em>any</em> state in the next time step has to be one. To make this completely clear, consider the current state of the process is \(C\), then the third column of \(P\) gives the probability distribution over the state at the next time step, i.e. with probability \(p_{AC} = p/3\) will the chain move to state \(A\), with probability \(p_{TC} =p/3\) will the chain move to state \(T\), with probability \(p_{CC} = (1-p)\) there will be no change and again with probability \(p/3\) the chain will move to state \(G\).</p>
+<p>For a given initial distribution over states \(f(0) = [f_A, f_T, f_C, f_G]\), it is not hard to verify that the following matrix multiplication</p>
+\[f(1) = P f(0) = \begin{bmatrix}
+  p_{AA} f_A + p_{AT} f_T +p_{AC} f_C + p_{AG} f_G \\
+  p_{TA} f_A + p_{TT} f_T +p_{TC} f_C + p_{TG} f_G \\
+  p_{CA} f_A + p_{CT} f_T +p_{CC} f_C + p_{CG} f_G \\
+  p_{GA} f_A + p_{GT} f_T +p_{GC} f_C + p_{GG} f_G \end{bmatrix}
+  \]
+<p>gives the probability distribution over states at the first time point.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Explain in words what the above equation means.</p>
+</blockquote>
+<p>For instance, consider the transition probability matrix</p>
+<pre><code class="language-julia">Pmatrix&#40;p&#41; &#61; &#91;1-p p/3 p/3 p/3 ;
+              p/3 1-p p/3 p/3 ;
+              p/3 p/3 1-p p/3 ;
+              p/3 p/3 p/3 1-p &#93;
+P &#61; Pmatrix&#40;0.2&#41;</code></pre><pre><code class="plaintext">4×4 Matrix{Float64}:
+ 0.8        0.0666667  0.0666667  0.0666667
+ 0.0666667  0.8        0.0666667  0.0666667
+ 0.0666667  0.0666667  0.8        0.0666667
+ 0.0666667  0.0666667  0.0666667  0.8</code></pre>
+<p>and if we assume an initial state <code>T</code>, the initial distribution is &#40;if we keep the <code>ATCG</code> order&#41;:</p>
+<pre><code class="language-julia">f0 &#61; &#91;0, 1, 0, 0.&#93;;</code></pre>
+<p>i.e. the probability the nucleotide is in state <code>A</code>, <code>T</code>, <code>C</code> or <code>G</code> at time point 0 is 0, 1, 0 and 0 respectively &#40;this is just another way of expressing that the initial state is <code>T</code>&#41;. We obtain the probability distribution over states at the first time point as</p>
+<pre><code class="language-julia">f1 &#61; P*f0</code></pre><pre><code class="plaintext">4-element Vector{Float64}:
+ 0.06666666666666667
+ 0.8
+ 0.06666666666666667
+ 0.06666666666666667</code></pre>
+<p>This is simply the vector of transition probabilities \([p_{AT}, p_{TT},
+p_{CT}, p_{GT}]\). Now, of course we can repeat this</p>
+\[f(2) = Pf(1) = P(Pf(0)) = P^2f(0)\]
+<p>and generally we get</p>
+\[f(n) = P^nf(0)\]
+<p>which provides us with an easy way to compute the \(n\)-step transition probabilities. For instance, the vector</p>
+<pre><code class="language-julia">P^10*f0</code></pre><pre><code class="plaintext">4-element Vector{Float64}:
+ 0.23875513438355286
+ 0.28373459684934227
+ 0.2387551343835528
+ 0.23875513438355278</code></pre>
+<p>gives the 10-step transition probabilities for the initial state <code>T</code>.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Why is it the case that \(f(2) = P f(1) = P(Pf(0))\)? What assumption are we making here?</p>
+</blockquote>
+<p>Clearly, we can now answer our question from before:</p>
+<blockquote>
+<p>For a given site, what is the probability to observe a nucleotide <code>A</code> at the present when it was a <code>T</code> in an ancestor \(n\) generations ago, assuming the probability of a substitution in a single time step is \(p\) &#40;with all kinds of substitutions equally likely&#41;?</p>
+</blockquote>
+<p>For \(n = 10\) and \(p = 0.2\), this is \(0.239\) &#40;see above&#41;.</p>
+<blockquote>
+<p><strong>Exercise</strong>. Use the code above &#40;or write your own&#41; to compute the probability that a <code>T</code> substitutes to a <code>G</code> when \(p = 0.1\) and \(n=5\).</p>
+</blockquote>
+<p>Note that as the number of time steps \(n\) grows, the probability distribution over states converges to an equilibrium</p>
+<pre><code class="language-julia">for n in &#91;1, 2, 5, 10, 20, 50, 100, 200&#93;
+    fn &#61; P^n*f0
+    println&#40;round.&#40;fn, digits&#61;3&#41;&#41;
+end</code></pre><pre><code class="plaintext">[0.067, 0.8, 0.067, 0.067]
+[0.116, 0.653, 0.116, 0.116]
+[0.197, 0.409, 0.197, 0.197]
+[0.239, 0.284, 0.239, 0.239]
+[0.249, 0.252, 0.249, 0.249]
+[0.25, 0.25, 0.25, 0.25]
+[0.25, 0.25, 0.25, 0.25]
+[0.25, 0.25, 0.25, 0.25]
+</code></pre>
+<p>This distribution is called the <strong>stationary distribution</strong> of the Markov chain, and in the simple model we defined above it is simply \([1/4, 1/4, 1/4,
+1/4]\). This of course could be expected, since nothing in the model seems to systematically prefer one nucleotide over the other. Clearly, this entails that, given enough time, it will be impossible to determine what the initial state of any given nucleotide position was based on the observed state any better then a random guess would.</p>
+<p>If we write the stationary distribution as \(\pi\), it has the property that</p>
+\[\pi = P\pi\]
+<pre><code class="language-julia">P*&#91;0.25, 0.25, 0.25, 0.25&#93;</code></pre><pre><code class="plaintext">4-element Vector{Float64}:
+ 0.25
+ 0.25
+ 0.25
+ 0.25</code></pre>
+<p>Which suggests why &#39;stationary&#39; is really the right word to use – once the Markov chain is in the stationary state &#40;in this case this means that once the probability a given nucleotide is in any state is 1/4&#41;, it will stay there.</p>
+<p>The stationary distribution of a Markov chain is not only an interesting thing in Markov chain theory, but is also relevant for molecular evolution. For instance, if some genome has a strong GC bias, a model with stationary distribution <code>&#91;0.25, 0.25, 0.25, 0.25&#93;</code> may seem unrealistic. Substition models with stationary distributions that are more realistic for the data at hand have therefore been developed – as we will see later.</p>
+<p>Lastly, we note that for some Markov models the \(n\)-step transition probabilities have an analytical solution. For the simple one parameter DTMC, the matrix \(P^n\) with the \(n\)-step transition probabilities is of the form</p>
+\[P_{simple}^n = \begin{bmatrix}
+    p_0(n) & p_1(n) & p_1(n) & p_1(n) \\
+    p_1(n) & p_0(n) & p_1(n) & p_1(n) \\
+    p_1(n) & p_1(n) & p_0(n) & p_1(n) \\
+    p_1(n) & p_1(n) & p_1(n) & p_0(n) \end{bmatrix} \]
+<p>with</p>
+\[ p_0(n) = \frac{1}{4} + \frac{3}{4}\Big(1 - \frac{4}{3}p\Big)^n\ \text{  and  }\ p_1(n) = \frac{1}{4} - \frac{1}{4}\Big(1 - \frac{4}{3}p\Big)^n \]
+<p>In other words, for a given site, the probability of observing a different nucleotide after \(n\) time steps is \(\frac{1}{4} - \frac{1}{4}\Big(1 -
+\frac{4}{3}p\Big)^n\). However for most Markov models such a simple formula does not exist, so it is generally more important to understand the approach using the transition probability matrix directly.</p>
+<h3 id="from_individual_sites_to_sequences"><a href="#from_individual_sites_to_sequences" class="header-anchor">From individual sites to sequences</a></h3>
+<p>If we make the assumption that sites in a sequence evolve independently &#40;clearly a terrible assumption from a biological point of view, but a very convenient one statistically&#41;, the DTMC for a single site quickly generalizes to a model for entire sequences. Consider the following simulation of a sequence evolving according to the simple DTMC:</p>
+<pre><code class="language-julia">using Distributions
+ntoi &#61; Dict&#40;n&#61;&gt;i for &#40;i,n&#41; in enumerate&#40;&quot;ATCG&quot;&#41;&#41;
+iton &#61; Dict&#40;i&#61;&gt;n for &#40;i,n&#41; in enumerate&#40;&quot;ATCG&quot;&#41;&#41;
+translate&#40;seq::String&#41; &#61; &#91;ntoi&#91;n&#93; for n in seq&#93;
+translate&#40;seq::Vector&#123;Int&#125;&#41; &#61; join&#40;&#91;iton&#91;i&#93; for i in seq&#93;&#41;
+
+function simulate&#40;seq, P, n&#41;
+    x &#61; translate&#40;seq&#41;   # translate nucleotides to integers
+    Pn &#61; P^n
+    x &#61; map&#40;i-&gt;rand&#40;Categorical&#40;Pn&#91;:,i&#93;&#41;&#41;, x&#41;
+    return translate&#40;x&#41;  # translate integers back to nucleotides
+end
+
+original &#61; &quot;ATCGGGCGGGATTATTACGG&quot;
+evolved  &#61; simulate&#40;original, Pmatrix&#40;0.05&#41;, 10&#41;
+diffs &#61; join&#40;&#91;original&#91;i&#93; &#61;&#61; evolved&#91;i&#93; ? &quot;|&quot; : &quot; &quot; for i&#61;1:length&#40;original&#41;&#93;&#41;
+println&#40;original, &quot;\n&quot;, diffs, &quot;\n&quot;, evolved&#41;</code></pre><pre><code class="plaintext">ATCGGGCGGGATTATTACGG
+||    |||      |  ||
+ATTTACCGGCGGGTCTGTGG
+</code></pre>
+<blockquote>
+<p><strong>Exercise</strong>. Try to understand the code above and explain in words how the simulation algorithm works.</p>
+</blockquote>
+<p>Now to obtain the probability that one sequence evolves into another we can simply multiply the probabilities of the corresponding site-wise probabilities because of our independence assumption</p>
+<pre><code class="language-julia">x &#61; translate&#40;original&#41;
+y &#61; translate&#40;evolved&#41;;
+Pn &#61; Pmatrix&#40;0.05&#41;^10  # get the 10-step transition probabilities
+site_probabilities &#61; &#91;Pn&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;
+sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><code class="plaintext">3.310141574250685e-13</code></pre>
+<p>In mathematical notation, the probability <code>sequence_probability</code> computed above could be written as</p>
+\[P(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x,p=0.05)\]
+<p>Make sure you understand what this means&#33;</p>
+<blockquote>
+<p><strong>Exercise.</strong> Note that these probabilities are <em>very</em> small values. Is this surprising? Does this mean evolution is unlikely? Can you explain why &#40;not&#41;? &#40;Hint: how many possible DNA sequences are there of length 20?&#41;</p>
+</blockquote>
+<p>When working with small values in numerical applications, its almost always better to work on a log scale, i.e. the log probability of this particular evolutionary scenario under the substitution model is</p>
+<pre><code class="language-julia">sum&#40;log.&#40;site_probabilities&#41;&#41;</code></pre><pre><code class="plaintext">-28.736615248771365</code></pre>
+<p>Of course you recall that \(\log ab = \log a + \log b\), so that multiplying a bunch of probabilities corresponds to summing them on a logarithmic scale.</p>
+<blockquote>
+<p><strong>Exercise.</strong> What is the probability that the sequence in the variable <code>x</code> in the code example above evolves into a sequence &quot;AAAAAAAAAAAAAAAAAAAA&quot; assuming \(p = 0.05\) and \(n=10\)? Compare this probability to the probability computed above for the evolution of <code>x</code> into <code>y</code>, explain why this probability is different.</p>
+</blockquote>
+<h3 id="a_note_on_time-reversibility"><a href="#a_note_on_time-reversibility" class="header-anchor">A note on time-reversibility</a></h3>
+<p>The simple DTMC model of sequence evolution we discussed above is a <strong>time-reversible model</strong>. Mathematically, what this means is that</p>
+\[\pi_i p_{ji}(n) = \pi_j p_{ij}(n) \]
+<p>For instance \(\pi_A p_{TA}(n) = \pi_T p_{AT}(n)\). Here \(\pi_i\) is the probability for state \(i\) under the stationary distribution, which in turn we can think of as the probability that a typical nucleotide site evolved under the assumed model is in state \(i\). What the above equation means is that the &#39;flow&#39; from <code>A</code> to <code>T</code> is the same as the flow from <code>T</code> to <code>A</code> for instance. Another way of saying that the amount of evolutionary change from <code>T</code> to <code>A</code> is the same as the amount of change from <code>A</code> to <code>T</code> &#40;this does <em>not</em> mean that the <em>rates</em> of change are the same&#41;. An important consequence of this time-reversibility is that the following two scenario&#39;s will have the same probability under the substitution model:</p>
+<ol>
+<li><p>A sequence <code>ATTTCATG</code> evolving over \(2n\) time steps into the sequence <code>TTGGGATG</code></p>
+</li>
+<li><p>An unknown ancestral sequence evolving independently into the sequences <code>ATTTCATG</code> and <code>TTGGGATG</code> over a time \(t\)</p>
+</li>
+</ol>
+<p><img src="/assets/phylocourse/submod/rev.png" alt="" /></p>
+<p>In other words, from the point of view of the model, both scenario&#39;s are indistinguishable. Almost all commonly used substitution models in phylogenetics are reversible.</p>
+<h3 id="an_example_of_maximum_likelihood_estimation"><a href="#an_example_of_maximum_likelihood_estimation" class="header-anchor">An example of maximum likelihood estimation</a></h3>
+<p>If you&#39;re unsure what all this stuff has to do with statistics, consider the following scenario: you observed the two sequences above, i.e. &#40;in integer representation <code>A&#61;1, T&#61;2, C&#61;3, G&#61;4</code>&#41;:</p>
+<pre><code class="language-julia">println&#40;join&#40;x&#41;, &quot;\n&quot;, join&#40;y&#41;&#41;</code></pre><pre><code class="plaintext">12344434441221221344
+12221334434442324244
+</code></pre>
+<p>This is the <strong>data</strong>. Now let&#39;s say we believe the simple DTMC model is a reasonable model for these sequences, and assume we know they are derived from a common ancestral sequence \(5\) time steps in the past.  You have no clue however about the \(p\) parameter of the model, and you would like to <em>infer this parameter from the observed data</em>.  One thing you could do is look for the value of \(p\) that makes the data <em>most likely</em>, i.e. results in the highest probability under the model. In other words, we could look for the value of \(p\) that makes \(P(\text{data}|p)\) attain a maximum. A naive approach do this is the following:</p>
+<pre><code class="language-julia">function test_different_ps&#40;x, y, n&#41;
+    l &#61; &#91;&#93;
+    for p&#61;0.0:0.001:1.0
+        Pn &#61; Pmatrix&#40;p&#41;^n
+        site_probabilities &#61; &#91;Pn&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;
+        push&#33;&#40;l, &#40;p,sum&#40;log.&#40;site_probabilities&#41;&#41;&#41;&#41;
+    end
+    return l
+end
+
+l &#61; test_different_ps&#40;x, y, 10&#41;;</code></pre>
+<p>We can plot the results</p>
+<pre><code class="language-julia">using Plots
+plot&#40;first.&#40;l&#41;, last.&#40;l&#41;,
+    xlabel&#61;&quot;p&quot;, ylabel&#61;&quot;P&#40;data|p&#41;&quot;,
+    grid&#61;false, legend&#61;false, color&#61;:black&#41;</code></pre><pre><code class="plaintext">Your GR installation is incomplete. Rerun build step for GR package.
+Failed to precompile Plots [91a5bcdd-55d7-5caf-9e0b-520d859cae80] to /home/arzwa/.julia/compiled/v1.6/Plots/jl_J4iOfm.
+</code></pre>
+<p><img src="/assets/phylocourse/submod/lhood1.svg" alt="" /></p>
+<p>Incidentally, the value \(P(\text{data}|p)\) viewed as a function of \(p\) for a fixed data set is called the <strong>likelihood function</strong> of \(p\). The maximum likelihood estimate &#40;MLE&#41; using this naive brute force approach is</p>
+<pre><code class="language-julia">themax, index &#61; findmax&#40;last.&#40;l&#41;&#41;
+println&#40;&quot;Maximum likelihood value: P&#40;data|p&#61;p̂&#41; &#61; &#36;themax&quot;&#41;
+println&#40;&quot;ML estimate: ̂p &#61; &#36;&#40;l&#91;index&#93;&#41;&quot;&#41;</code></pre><pre><code class="plaintext">Maximum likelihood value: P(data|p=p̂) = -26.643637520304715
+ML estimate: ̂p = (0.111, -26.643637520304715)
+</code></pre>
+<p>If you understand this, you understand the essence of maximum likelihood estimation in statistics.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Make sure you understand the above code. Is the MLE as expected? Where did we use the time-reversibility property? Why does the likelihood curve has this long plateau?</p>
+</blockquote>
+<h2 id="the_real_deal_continuous-time_markov_models_of_sequence_evolution"><a href="#the_real_deal_continuous-time_markov_models_of_sequence_evolution" class="header-anchor">The real deal: continuous-time Markov models of sequence evolution</a></h2>
+<p>If you managed to get through the above sections, now comes a serious disappointment. DTMCs are generally <em>not</em> used in molecular phylogenetics. However, there closely related continuous-time counterparts are. In this section we will take a look at the <strong>continuous-time Markov chain &#40;CTMC&#41;</strong> analog of the simple model considered above. As is often the case when going from discrete to continuous things in mathematics, the former can be seen as a limit of the latter, and therefore our knowledge of DTMCs will be very helpful here.</p>
+<h3 id="ctmcs_and_the_poisson_process"><a href="#ctmcs_and_the_poisson_process" class="header-anchor">CTMC&#39;s and the Poisson process</a></h3>
+<p>We will develop the continuous-time analog of the DTMC described above.  In the continuous time models, we no longer model the evolution of a nucleotide site in discrete time steps, but over the positive real line \(\mathbb{R}\). We will denote the state at a time point \(t\) as \(X(t) \in \{A,T,C,G\}\), and our goal will be to develop a stochastic model for the evolution of \(X\) over time.</p>
+<p>Whereas in the DTMC case we specified a probability of substitution per time step &#40;the \(p\) parameter&#41;, now we consider a <strong>substitution rate</strong> \(\lambda\). The meaning of the \(\lambda\) parameter is best understood as follows: the probability that a nucleotide substiutes in a small time interval \(\Delta t\) will be approximately \(\lambda \Delta t\), with the approximation becoming more correct as \(\Delta t \rightarrow 0\). The expected number of substitutions over a time length \(t\) will be</p>
+\[\mathbb{E}[\text{number of substitutions}] = \lambda t\]
+<p>Note that as in basic physics, multiplying a &#39;rate&#39; times a &#39;time&#39; variable &#40;e.g. as in \(\lambda t\)&#41; results in a <strong>distance</strong>. This single-parameter CTMC is closely related to a <strong><a href="https://en.wikipedia.org/wiki/Poisson_point_process">Poisson process</a></strong>. The number of substitution events under the model happening over a time \(t\) is a Poisson distributed random variable with mean \(\lambda t\). It is a property of the Poisson process that the time between two events, the so-called <strong>waiting time</strong> \(t_w\), is distributed according to an exponential distribution \(\lambda e^{-\lambda t_w}\). The Poisson process and related CTMCs are very general models, used to model random phenomena as varied as the number of car accidents, telephone calls, radioactive decay events or, indeed, nucleotide substitutions in a certain time period.</p>
+<p>We can now do the sequence simulation again like we did in the very first section. We assume substitutions happen according to the Poisson process model, and that when a substitution happens, all kinds of substitutions are equally likely:</p>
+<pre><code class="language-julia">using Printf
+randexp&#40;λ&#41; &#61; -log&#40;rand&#40;&#41;&#41;/λ  # generate a random number from the exponential distribution with rate λ
+
+function simulate&#40;site, λ, t&#41;
+    @printf &quot;X&#40;&#37;.2f&#41; &#61; &#37;s\n&quot; 0. site
+    curr_t &#61; randexp&#40;λ&#41;  # time of the first substitution event
+    while curr_t &lt; t
+        site &#61; rand&#40;setdiff&#40;&quot;ATCG&quot;, site&#41;&#41;  # change state
+        @printf &quot;X&#40;&#37;.2f&#41; &#61; &#37;s\n&quot; curr_t site
+        curr_t &#43;&#61; randexp&#40;λ&#41;  # get time of next substitution event
+    end
+    @printf &quot;X&#40;&#37;.2f&#41; &#61; &#37;s\n&quot; t site
+end
+
+simulate&#40;&#39;A&#39;, 10., 1.&#41;</code></pre><pre><code class="plaintext">X(0.00) = A
+X(0.00) = C
+X(0.04) = T
+X(0.05) = G
+X(0.14) = A
+X(0.28) = C
+X(0.28) = A
+X(0.45) = T
+X(0.84) = A
+X(0.90) = C
+X(1.00) = C
+</code></pre>
+<blockquote>
+<p><strong>Exercise.</strong> Take some time to understand how the simulation works. Which property of the Poisson process are we using to drive the simulation? How many substitutions did you expect to occur during the simulation above?</p>
+</blockquote>
+<h3 id="the_rate_matrix_q_and_transition_probabilities"><a href="#the_rate_matrix_q_and_transition_probabilities" class="header-anchor">The rate matrix \(Q\) and transition probabilities</a></h3>
+<p>While the DTMC was directly defined in terms of a transition probability matrix, this is not the case for the CTMC. The continuous-time model we specified and simulated above is again a Markov model: both the time until the next substitution event, and the type of this substitution event are only dependent on the present state, and not on the past. The Markov chain is fully specified by its <strong>rate matrix</strong> \(Q\)<sup id="fnref:generator"><a href="#fndef:generator" class="fnref">[4]</a></sup>. The rate matrix for the simple model can be written as</p>
+\[Q = \begin{bmatrix}
+    -3\lambda & \lambda & \lambda & \lambda \\
+    \lambda & -3\lambda & \lambda & \lambda \\
+    \lambda & \lambda & -3\lambda & \lambda \\
+    \lambda & \lambda & \lambda & -3\lambda \end{bmatrix} \]
+<p>Where I have assumed that the total substitution rate &#40;what we called \(\lambda\) above&#41; is given by \(3\lambda\) &#40;to avoid writing all those fractions&#41;. This continuous-time Markov chain &#40;CTMC&#41; model of nucleotide substitution is known as the <strong>Jukes &amp; Cantor model</strong> &#40;JC69, after Jukes &amp; Cantor 1969&#41;. The entries of this matrix could be interpreted as rates of &#39;flow&#39; between states in the model, with the diagonal elements the negative rates of flow <em>away</em> from some state.</p>
+<p>Now we wish to be able to compute transition probabilities of the form</p>
+\[p_{AG}(\Delta t) = P\big(X(\Delta t)=A|X(0)=G\big)\]
+<p>Note that \(p_{ij}(0) = 0\) if \(i \ne j\) and \(p_{ii}(0) = 1\). In other words the transition probability matrix at \(t=0\) is</p>
+\[P(0) = I\]
+<p>For a very small time interval \(\Delta t\), we have approximately that \(p_{ij}(\Delta t) = \lambda \Delta t\) if \(i \ne j\) &#40;this is the definition of the rate parameter \(\lambda\)&#41; and \(p_{ii}(\Delta t) = 1 - 3\lambda \Delta t\). In other words if we would take very small time steps, we could approximate the CTMC model by the DTMC model with \(p=\lambda \Delta t\). In matrix notation:</p>
+\[ P(\Delta t) \approx I + Q \Delta t = \begin{bmatrix}
+    1-3\lambda \Delta t & \lambda \Delta t & \lambda \Delta t & \lambda \Delta t \\
+    \lambda \Delta t & 1-3\lambda \Delta t & \lambda \Delta t & \lambda \Delta t \\
+    \lambda \Delta t & \lambda \Delta t & 1-3\lambda \Delta t & \lambda \Delta t \\
+    \lambda \Delta t & \lambda \Delta t & \lambda \Delta t & 1-3\lambda \Delta t \end{bmatrix} \]
+<p>Divding by \(\Delta t\) and taking the limit as \(\Delta t \rightarrow 0\) &#40;i.e. approximating the CTMC by a DTMC with smaller and smaller time steps&#41;, we find that</p>
+\[\frac{dP(t)}{dt} \Bigg|_{t=0} = \lim_{\Delta t \rightarrow 0} \frac{P(\Delta t) - P(0)}{\Delta t} =
+\lim_{\Delta t \rightarrow 0}\frac{I + Q\Delta t - I}{\Delta t} = Q\]
+<p>The rate matrix is therefore the derivative of the transition probability matrix at \(t = 0\). The Markov property further implies that, in general</p>
+\[\frac{dP(t)}{dt} = \frac{P(t + \Delta t) - P(t)}{\Delta t} = QP(t)\]
+<p>Which has the solution<sup id="fnref:solution"><a href="#fndef:solution" class="fnref">[5]</a></sup></p>
+\[ P(t) = e^{Qt} = I + Qt + Q^2\frac{t^2}{2!} + Q^3\frac{t}{3!} + \dots \]
+<p>Which shows how the approximation relates to the exact solution &#40;in the approximation we simply ignored all higher powers of \(Q\)&#41;. I agree having a matrix in the exponent looks scary, but don&#39;t worry, modern programming languages aren&#39;t scared of matrix exponentials:</p>
+<pre><code class="language-julia">Q&#40;λ&#41; &#61; &#91;-3λ   λ   λ   λ ;
+          λ -3λ   λ   λ ;
+          λ   λ -3λ   λ ;
+          λ   λ   λ -3λ &#93;
+
+theQ &#61; Q&#40;0.2&#41;</code></pre><pre><code class="plaintext">4×4 Matrix{Float64}:
+ -0.6   0.2   0.2   0.2
+  0.2  -0.6   0.2   0.2
+  0.2   0.2  -0.6   0.2
+  0.2   0.2   0.2  -0.6</code></pre>
+<p>and now compute the transition probability matrix \(P(t)\) at time \(t = 1.2\) using the matrix exponential formula:</p>
+<pre><code class="language-julia">theP &#61; exp&#40;theQ*1.2&#41;</code></pre><pre><code class="plaintext">4×4 Matrix{Float64}:
+ 0.53717   0.154277  0.154277  0.154277
+ 0.154277  0.53717   0.154277  0.154277
+ 0.154277  0.154277  0.53717   0.154277
+ 0.154277  0.154277  0.154277  0.53717</code></pre>
+<p>The entry at \(P[i,j]\) gives the transition probability \(p_{ij}(t)\). So for instance \(p_{AG}(0.8)\) is</p>
+<pre><code class="language-julia">exp&#40;theQ*0.8&#41;&#91;1,4&#93;</code></pre><pre><code class="plaintext">0.11817689398923781</code></pre>
+<p>By the way, note again how the matrix converges for large \(t\)</p>
+<pre><code class="language-julia">exp&#40;theQ*10.&#41;</code></pre><pre><code class="plaintext">4×4 Matrix{Float64}:
+ 0.250252  0.249916  0.249916  0.249916
+ 0.249916  0.250252  0.249916  0.249916
+ 0.249916  0.249916  0.250252  0.249916
+ 0.249916  0.249916  0.249916  0.250252</code></pre>
+<p>So now that we can compute \(P(t)\), we can do everything that we did with the DTMC above, but in continuous time, which is much more convenient. For instance the log-probability that a sequence <code>TTAT</code> evolves into a sequence <code>TTGG</code> over a time \(t=0.1\) million years given a substitution rate of \(\lambda = 1\) substitution per million years can be computed as</p>
+<pre><code class="language-julia">function ctmc_probability&#40;seqa, seqb, t, λ&#41;
+    x &#61; translate&#40;seqa&#41;
+    y &#61; translate&#40;seqb&#41;
+    Pt &#61; exp&#40;Q&#40;λ&#41;*t&#41;
+    sum&#40;log.&#40;&#91;Pt&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;&#41;&#41;
+end
+
+ctmc_probability&#40;&quot;TTAT&quot;, &quot;TTGG&quot;, 0.1, 1.&#41;</code></pre><pre><code class="plaintext">-5.559925286344674</code></pre>
+<p>Or we can use the naive approach used above to obtain a maximum likelihood estimate for \(\lambda\) &#40;assuming we know \(t\)&#41;</p>
+<pre><code class="language-julia">function test_different_λs&#40;seqa, seqb, t&#41;
+    l &#61; &#91;&#93;
+    for λ&#61;0.:0.01:10.
+        push&#33;&#40;l, &#40;λ, ctmc_probability&#40;seqa, seqb, t, λ&#41;&#41;&#41;
+    end
+    return l
+end
+
+l &#61; test_different_λs&#40;&quot;TTAT&quot;, &quot;TTGG&quot;, 1.4&#41;
+
+themax, index &#61; findmax&#40;last.&#40;l&#41;&#41;
+println&#40;&quot;Maximum likelihood value: P&#40;data|̂λ&#41; &#61; &#36;themax&quot;&#41;
+println&#40;&quot;ML estimate: ̂λ &#61; &#36;&#40;l&#91;index&#93;&#41;&quot;&#41;</code></pre><pre><code class="plaintext">Maximum likelihood value: P(data|̂λ) = -4.970037197945674
+ML estimate: ̂λ = (0.2, -4.970037197945674)
+</code></pre>
+<p>To finish this section, again, we note that the simple Jukes-Cantor CTMC model has an analytical solution for the transition probabilities. Specifically the solution of \(P(t) = e^{Qt}\) for the Jukes-Cantor rate matrix is</p>
+\[P_{JC}(t) = \begin{bmatrix}
+    p_0(t) & p_1(t) & p_1(t) & p_1(t) \\
+    p_1(t) & p_0(t) & p_1(t) & p_1(t) \\
+    p_1(t) & p_1(t) & p_0(t) & p_1(t) \\
+    p_1(t) & p_1(t) & p_1(t) & p_0(t) \end{bmatrix} \]
+<p>with</p>
+\[ p_0(t) = \frac{1}{4} + \frac{3}{4} e^{-4 \lambda t}\ \text{  and  }\ p_1(t) = \frac{1}{4} - \frac{1}{4}e^{-4 \lambda t} \]
+<p>which unsuprisingly shares a lot of structure with the analogous DTMC model. More general, parameter-rich substitution models do not admit such an expression in terms of simple formula&#39;s.</p>
+<h2 id="so_what_are_molecular_distances_anyway"><a href="#so_what_are_molecular_distances_anyway" class="header-anchor">So what are molecular distances anyway?</a></h2>
+<p>The transition probbilities for the simplest CTMC model – i.e. the Jukes-Cantor model – are functions of two generally unknown parameters, being the substitution rate \(\lambda\) and the time \(t\) &#40;in the DTMC model we had \(p\) and \(n\) serving similar roles&#41;. The transition probabilities involve only the product of these two parameters \(\lambda t\), which is as we already noted above a <strong>distance</strong> &#40;rate \(\times\) time &#61; distance&#41;. As you can easily see, the  transition probabilities will be the same when &#40;1&#41; the rate is \(\lambda\) and the time is \(t\) or when &#40;2&#41; the rate is \(\lambda/2\) and the time is \(2t\) or more generally &#40;3&#41; when the rate is \(a\lambda\) and the time is \(t/a\).</p>
+<p>So what happens if we would want to estimate both \(\lambda\) and \(t\) from the data using a maximum likelihood approach like the one used above?</p>
+<pre><code class="language-julia">seqa &#61; &quot;TTTATCGACCTATTC&quot;
+seqb &#61; &quot;TAAAACGAACTATAC&quot;
+p &#61; heatmap&#40;0.1:0.02:2, 0.1:0.02:2, size&#61;&#40;400,350&#41;,
+    &#40;λ,t&#41;-&gt;ctmc_probability&#40;seqa, seqb, t, λ&#41;,
+    fill&#61;true, xlabel&#61;&quot;\\lambda&quot;, ylabel&#61;&quot;t&quot;, title&#61;&quot;log-likelihood&quot;&#41;
+for a&#61;0.1:0.25:5
+    plot&#33;&#40;p, x-&gt;a/x, ylim&#61;&#40;0.1,2&#41;, xlim&#61;&#40;0.1,2&#41;, legend&#61;false, color&#61;:black&#41;
+end</code></pre><pre><code class="plaintext">UndefVarError: heatmap not defined
+</code></pre>
+<p><img src="/assets/phylocourse/submod/lhood2.svg" alt="" /></p>
+<p>One can clearly see a boomerang shaped area in the likelihood surface corresponding to parameter region with high likelihood.</p>
+<blockquote>
+<p><strong>Exercise.</strong> Interpret the likelihood surface plotted above, what can you say about the most likely values of the parameters of the model of evolution?</p>
+</blockquote>
+<p>We are unable to obtain a unique maximum likelihood estimate &#40;MLE&#41; for both \(t\) and \(\lambda\).  However, we could try to obtain an estimate of the product of \(\lambda\) and \(t\) &#40;i.e. the distance&#41;.</p>
+<pre><code class="language-julia">plot&#40;0:0.01:1, d-&gt;ctmc_probability&#40;seqa, seqb, d, 1/3&#41;,
+    color&#61;:black, legend&#61;false, xlabel&#61;&quot;distance&quot;, ylabel&#61;&quot;log-likelihood&quot;&#41;</code></pre><pre><code class="plaintext">UndefVarError: plot not defined
+</code></pre>
+<p><img src="/assets/phylocourse/submod/lhood3.svg" alt="" /></p>
+<p>What we&#39;ve done here is fix the <em>total</em> substitution rate for each state at \(1\) &#40;i.e. \(\lambda = 1/3\), giving a total substitution rate of \(3\lambda =
+1\)&#41; and then estimate the time \(t\). In other words, we are estimating time, but on a <em>different time scale</em>, namely a scale of expected number of substitutions per site &#40;i.e. one unit of this rescaled time corresponds to one expected substitution per site&#41;. This amounts to the same as estimating the product \(\lambda t\) or in other words the <strong>distance</strong>.</p>
+<p>This example show how we can estimate distances for <em>any substitution model</em> &#40;so also more complicated one than the JC model introduced above&#41; given a rate matrix \(Q\) that is scaled such that the average total substitution rate for each state is 1. We simply obtain the maximum likelihood estimate for the time parameter of the CTMC model keeping the rate matrix fixed using the transition probabilities of the CTMC and the observed data. However, as you might expect &#40;or recall from the course notes&#41;, there is a simple formula for the distance under the JC model</p>
+\[\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)\]
+<p>Where \(p\) is the proportion of different sites in the two aligned sequences. We can use this formula to verify our graphical maximum likelihood approach above</p>
+<pre><code class="language-julia">distance_JC&#40;p&#41; &#61; -0.75 * log&#40;1. - 4p/3&#41;
+p &#61; mapreduce&#40;&#33;&#61;, &#43;, seqa, seqb&#41;/length&#40;seqa&#41;
+distance_JC&#40;p&#41;</code></pre><pre><code class="plaintext">0.4408399986765892</code></pre>
+<p>It seems to work, let&#39;s verify more closely:</p>
+<pre><code class="language-julia">plot&#40;0:0.01:1, d-&gt;ctmc_probability&#40;seqa, seqb, d, 1/3&#41;,
+    color&#61;:black, legend&#61;false, xlabel&#61;&quot;distance&quot;, ylabel&#61;&quot;log-likelihood&quot;&#41;
+dist &#61; distance_JC&#40;p&#41;
+vline&#33;&#40;&#91;dist&#93;&#41;
+hline&#33;&#40;&#91;ctmc_probability&#40;seqa, seqb, dist, 1/3&#41;&#93;&#41;</code></pre><pre><code class="plaintext">UndefVarError: plot not defined
+</code></pre>
+<p><img src="/assets/phylocourse/submod/lhood4.svg" alt="" /></p>
+<p>Of course it worked. More on distances and distance-based phylogenetic inference in the <a href="../distance">next section</a>&#33;</p>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">Exercises</a></h2>
+<ol>
+<li><p>Consider the figure below showing evolutionary histories for a single nucleotide site for a set of three taxa. Compute numerically or write down symbolically the probability of the observed evolutionary history in &#40;1&#41; and &#40;2&#41;.</p>
+</li>
+</ol>
+<p><img src="/assets/phylocourse/submod/ex1.png" alt="" /></p>
+<ol start="2">
+<li><p>I guess most of you have knowledge of some programming language, but likely not julia. A good exercise – for those who feel like it – would be to implement some of the bits of simulation and inference code above in your programming language of choice &#40;Python, R, Perl, ...&#41;.</p>
+</li>
+</ol>
+<hr />
+<p> <table class="fndef" id="fndef:pr">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:pr">[1]</a></td>
+        <td class="fndef-content">Some basic familiarity with probability theory is assumed here. Recall that \(P(A|B)\) denotes the conditional probability of the event \(A\) given the event \(B\) &#40;e.g. \(P(\text{I have COVID}|\text{I cough all the time})\) can be read as &#39;the probability that I have COVID if it is the case that I cough all the time&#39;&#41;. \(P(A,B)\) is the joint probability of event \(A\) and \(B\), i.e. the probability that both \(A\) and \(B\) &#39;occur&#39;. The product rule of probability theory relates these as \(P(A,B) = P(A|B)P(B) = P(B|A)P(A)\), which also gives Bayes&#39; rule \(P(A|B) = P(B|A)P(A)/P(B)\). Note that this also works for more than two events, e.g. \(P(A,B,C) = P(A,B|C)P(C) = P(A|B,C)P(B|C)P(C)\).</td>
+    </tr>
+</table>
+ <table class="fndef" id="fndef:sp">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:sp">[2]</a></td>
+        <td class="fndef-content">Open any textbook on stochastic processes, and you will find that the mathematics of stochastic processes quickly becomes very involved.</td>
+    </tr>
+</table>
+ <table class="fndef" id="fndef:recursion">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:recursion">[3]</a></td>
+        <td class="fndef-content">Note that this recursive formulation is general, it will work for any discrete Markov model of DNA substitution, not ony the simple single parameter one. For the simple model we could probably find an easier formula for the \(n\)-step transition probability if we would do some maths here.</td>
+    </tr>
+</table>
+  <table class="fndef" id="fndef:generator">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:generator">[4]</a></td>
+        <td class="fndef-content">In the Markov chain literature this is often referred to as the <em>infinitesimal generator</em>, but in phylogenetics it&#39;s commonly reffered to simply as the rate matrix.</td>
+    </tr>
+</table>
+ <table class="fndef" id="fndef:solution">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:solution">[5]</a></td>
+        <td class="fndef-content">Note that if you forget for a while that \(P(t)\) and \(Q\) represent matrices, and just look at this as a simple ordinary differential equation &#40;ODE&#41; of the form </p>
+\[\frac{df(t)}{dt} = af(t)\]
+<p>the solution is very straightforward &#40;you might recognize this form of ODE from population growth or radioactive decay models&#41;. If we bring \(f(t)\) from the right hand side to the left, and integrate on both sides from \(t_0\) to \(t\), we get the very familiar solution \(f(t) = f(t_0)e^{at}\). If we would naively apply this to our case we would have \(P(t) = P(0)e^{Qt}\) and since we have \(P(0) = I\) this happens to be the actual form of the solution.</td>
+    </tr>
+</table>
+</p>
+
+<div class="page-foot">
+  <div class="copyright">
+    &copy; Arthur Zwaenepoel. Last modified: March 30, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+  </div>
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>
