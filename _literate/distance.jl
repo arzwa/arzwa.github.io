@@ -2,47 +2,118 @@
 # \toc
 # # Distance-based phylogenetic inference
 
-# >**Questions** will be marked in blocks like this, try to formulate a brief answer to them.
+# >**Questions** and **Exercises** will be marked in blocks like this, try to
+# >formulate a brief answer to them.
 
 # >**Note** that there are some blocks with `julia` code included below. This is just for illustrating things in a way such that those who are interested in that can actually see how these illustrations (numerical or visual) were actually generated. Don't let them scare you.
 
-# Distance-based phylogenetic methods proceed by computing a **pairwise distance matrix** for an input alignment based on a [substitution model](../submod), i.e. an assumed **model of evolution** for molecular sequences. Usually these estimated distances are the maximum likelihood estimates (MLE) of the pairwise distance under the assumed substitution model. For instance, consider two sequences, for an observed proportion of different sites $p$, the maximum likelihood estimate of the distance between the two sequences under the Jukes & Cantor substitution model is
-# $$\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}p\Big)$$
+# Distance-based phylogenetic methods proceed by computing a **pairwise
+# distance matrix** for an input alignment based on a [substitution
+# model](../submod), i.e. an assumed **model of evolution** for molecular
+# sequences. Usually these estimated distances are the maximum likelihood
+# estimates (MLE) of the pairwise distance under the assumed substitution
+# model. For instance, consider two sequences, for an observed proportion of
+# different sites $x$, the maximum likelihood estimate of the distance between
+# the two sequences under the Jukes & Cantor substitution model is
+#
+# $$\hat{d} = -\frac{3}{4} \log \Big(1 - \frac{4}{3}x\Big)$$
+# 
 # So for instance for the alignment
 
 seqa = "ATCGGGCTAGC"
 seqb = "TTCGGCTTACC";
 
 # The proportion of different sites is
-p = mapreduce(!=, +, seqa, seqb)/length(seqa)
+differences = sum([seqa[i] != seqb[i] for i=1:length(seqa)])
+x = differences/length(seqa)
 
-# and the estimated distance is
-d = -0.75 * log(1. - 4p/3)
+# The estimated distance is
+d = -0.75 * log(1. - 4x/3)
 
-# This distance is correctly interpreted as **an estimate of the expected number of substitutions per site** separating the two sequences. Note that the distance is a product of two other evolutionary variables: the **substitution rate** and the **divergence time**. If we have $n$ sequences, we can apply the distance formula to obtain an $n \times n$ **distance matrix**. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the [notes on substitution models](../submod).
+# This distance is correctly interpreted as **an estimate of the expected
+# number of substitutions per site** separating the two sequences. Note that
+# the distance is a product of two other evolutionary variables: the
+# **substitution rate** and the **divergence time**. If we have $n$ sequences,
+# we can apply the distance formula to obtain an $n \times n$  **distance
+# matrix**. Note however that such simple distance formulae are generally not
+# available for more complicated substitution models. For more details, see the
+# [notes on substitution models](../submod).
 
-# After computing the distance matrix, a tree is inferred by using some sort of clustering algorithm or least-squares estimation step. Distance-based phylogenetic inference is thus essentially a two-step process:
+# > **Question**. The proportion of different sites in a pair of sequence $x$
+# > is a **summary statistic** of the data, we reduce the data to a single number
+# > $x$. For the Jukes - Cantor model the likelihood $P(\text{sequence pair}|\mathrm{model})$ 
+# > only depends on the summary statistic $x$. Why will
+# > such a summary statistic not work for more complicated substitution models,
+# > for instance where transitions and transversions have different rates?
+# > If we cannot use a formula based on some summary statistic, how can we
+# > estimate a distance?
+
+# After computing the distance matrix, a tree is inferred by using some sort of
+# clustering algorithm or least-squares estimation step. Distance-based
+# phylogenetic inference is thus essentially a two-step process:
 
 # 1. Compute pairwise distances
 # 2. Infer the tree, assuming the distances
 
-# This two step procedure is both the strength and weakness of distance-based methods. By collapsing the sequence data with $n$ sequences and $m$ sites in a single $n \times n$ matrix it dramatically reduces the data, making tree inference coputationally very fast. However, by reducing the rich sequence data to a matrix of numbers it throws away a lot of potentially interesting evolutionary information. Another issue is that when using distance-based methods the estimated distances from step 1 *are treated as observed data* in step 2. However, distances are themselves estimates, associated with some uncertainty (a distance estimate has a variance for instance), and this uncertainty in the distances is neglected in step 2. Both of these issues are solved in ML and Bayesian phylogenetic inference, however at the price of a strongly increased computational cost.
+# This two step procedure is both the strength and weakness of distance-based
+# methods. By collapsing the sequence data with $n$ sequences and $m$ sites in
+# a single $n \times n$ matrix it dramatically reduces the data, making tree
+# inference computationally very fast. However, by reducing the rich sequence
+# data to a matrix of numbers it throws away a lot of potentially interesting
+# evolutionary information. Another issue is that when using distance-based
+# methods the estimated distances from step 1 *are treated as observed data* in
+# step 2. However, distances are themselves estimates, associated with some
+# uncertainty (a distance estimate has a variance for instance), and this
+# uncertainty in the distances is neglected in step 2. Both of these issues are
+# solved in ML and Bayesian phylogenetic inference, however at the price of a
+# strongly increased computational cost.
 
-# Because of their speed, distance methods are still quite often used. Some ML tree inference programs (for instance IQ-TREE, see the ML tutorial) start their tree search algorithm from a distance-based tree for instance. Also popular packages for phylogenomic and comparative genomic inference such as [OrthoFinder](https://github.com/davidemms/OrthoFinder) use distance-based phylogenetic methods in their workflow.
+# Because of their speed, distance methods are still quite often used. Some ML
+# tree inference programs (for instance IQ-TREE, see the ML tutorial) start
+# their tree search algorithm from a distance-based tree for instance. Also
+# popular packages for phylogenomic and comparative genomic inference such as
+# [OrthoFinder](https://github.com/davidemms/OrthoFinder) use distance-based
+# phylogenetic methods in their workflow.
 
 # ## Software and data
 
-# 1. Download the **FastME** software at [http://www.atgc-montpellier.fr/fastme](http://www.atgc-montpellier.fr/fastme/binaries.php) (on the bottom of the page, click the download button). In the downloaded folder you will find a binaries directory, identify the binary (executable) for your operating system and put it in some folder of your convenience.[^fastmeonline] For some additional guidance with installing FastME on Windows, have a look [here](/phylocourse/install-windows).
+# 1. Download the **FastME** software at
+#    [http://www.atgc-montpellier.fr/fastme](http://www.atgc-montpellier.fr/fastme/binaries.php)
+#    (on the bottom of the page, click the download button). In the downloaded
+#    folder you will find a binaries directory, identify the binary (executable)
+#    for your operating system and put it in some folder of your
+#    convenience.[^fastmeonline] For some additional guidance with installing
+#    FastME on Windows, have a look [here](/phylocourse/install-windows).
 
-# 2. To view trees, I recommend the [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool. FigTree requires Java, but that should be available on most machines. Download the executable for your operating system from the link above (`.zip` file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is something for Mac OSX users(?))
+# 2. To view trees, I recommend the
+#    [FigTree](https://github.com/rambaut/figtree/releases/tag/v1.4.4) tool.
+#    FigTree requires Java, but that should be available on most machines.
+#    Download the executable for your operating system from the link above (`.zip`
+#    file for Windows users, `.tgz` for *nix users, I guess the `.dmg` file is
+#    something for Mac OSX users(?))
 
-# 3. We will use two small 'tree of life' data sets. One [18SrRNA data set with 20 taxa](/assets/phylocourse/data/18SrRNA_20.phy) and another [18SrRNA data set with 45 taxa](/assets/phylocourse/data/18SrRNA_45.phy).[^ancientdata]
+# 3. We will use two small 'tree of life' data sets. One [18SrRNA data set with
+#    20 taxa](/assets/phylocourse/data/18SrRNA_20.phy) and another [18SrRNA data
+#    set with 45 taxa](/assets/phylocourse/data/18SrRNA_45.phy).[^ancientdata]
+#
 
-# ## Computing distance matrices: FastME
+# ## Computing distance matrices using FastME
 
-# While you could easily implement a little program to generate a distance matrix under the Jukes and Cantor model (see the formula's for the distance in the section on [substitution models](../submod)), this is less straightforward when employing more complicated substitution models. FastME is probably the fastest implementation of distance-based phylogenetics methods using general substitution models available today. It is a software tool that can both be used to compute distance matrices and infer trees using **Neighbor-Joining**, **least-squares**, **minimum evolution** and related distance matrix based methods.
+# While you could easily implement a little program to generate a distance
+# matrix under the Jukes and Cantor model (see the formula's for the distance
+# in the section on [substitution models](../submod)), this is less
+# straightforward when employing more complicated substitution models. FastME
+# is probably the fastest implementation of distance-based phylogenetics
+# methods using general substitution models available today. It is a software
+# tool that can both be used to compute distance matrices and infer trees using
+# **Neighbor-Joining**, **least-squares**, **minimum evolution** and related
+# distance matrix based methods.
 
-# There are two ways to run FastME. There is an interactive mode (inherited from the influential [PHYLIP software package](http://evolution.genetics.washington.edu/phylip.html)) and a command line mode. Personally, I find the command line mode much more convenient. First get a look at the help message
+# There are two ways to run FastME. There is an interactive mode (inherited
+# from the influential [PHYLIP software
+# package](http://evolution.genetics.washington.edu/phylip.html)) and a command
+# line mode. Personally, I find the command line mode much more convenient.
+# First get a look at the help message
 # ```
 # fastme -help
 # ```

@@ -3,9 +3,10 @@
 seqa = "ATCGGGCTAGC"
 seqb = "TTCGGCTTACC";
 
-p = mapreduce(!=, +, seqa, seqb)/length(seqa)
+differences = sum([seqa[i] != seqb[i] for i=1:length(seqa)])
+x = differences/length(seqa)
 
-d = -0.75 * log(1. - 4p/3)
+d = -0.75 * log(1. - 4x/3)
 
 using Plots
 function readmatrix(file)  # little function to read the FastME distance matrix

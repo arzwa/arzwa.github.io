@@ -4,6 +4,9 @@
 # \newcommand{\Dt}{\Delta t}
 #
 # \toc
+# >**Exercises** will be marked in blocks like this, try to formulate a brief
+# >answer to them.
+
 # ## Substitution models for molecular phylogenetics
 #
 # By now you should have some idea of the major approaches towards the

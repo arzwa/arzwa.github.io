@@ -1,2 +1,3 @@
 # This file was generated, do not modify it. # hide
-p = mapreduce(!=, +, seqa, seqb)/length(seqa)
+differences = sum([seqa[i] != seqb[i] for i=1:length(seqa)])
+x = differences/length(seqa)
