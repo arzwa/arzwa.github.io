@@ -4,7 +4,8 @@ function test_different_ps(x, y, n)
     for p=0.0:0.001:1.0
         Pn = Pmatrix(p)^n
         site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
-        push!(l, (p,sum(log.(site_probabilities))))
+        loglikelihood = sum(log.(site_probabilities))
+        push!(l, (p, loglikelihood))
     end
     return l
 end

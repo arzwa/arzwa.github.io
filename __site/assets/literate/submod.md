@@ -170,8 +170,8 @@ P(&A \rightarrow G \rightarrow G \rightarrow T) = P(X_0=A, X_1=G, X_2=G, X_3=T) 
 &= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_0=A,X_1=G) \\
 &= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_1=G|X_0=A) P(X_0=A)\\
 &= P(X_3=T|X_2=G)P(X_2=G|X_1=G)P(X_1=G|X_0=A)P(X_0=A) \\
-&= p \times (1-p) \times p \times 1 \\
-&= p^2(1-p)
+&= \frac{p}{3} \times (1-p) \times \frac{p}{3} \times 1 \\
+&= \Big(\frac{p}{3}\Big)^2(1-p)
 \end{align}
 
 Where I have written $X_n$ instead of $X(n)$ to avoid all those parentheses.
@@ -267,6 +267,8 @@ gives the probability distribution over states at the first time point.
 For instance, consider the transition probability matrix
 
 ```julia:ex4
+# Note: in julia one can define short functions using the notation
+# `f(x) = <expression in x>`, without using the `function` keyword
 Pmatrix(p) = [1-p p/3 p/3 p/3 ;
               p/3 1-p p/3 p/3 ;
               p/3 p/3 1-p p/3 ;
@@ -510,7 +512,8 @@ function test_different_ps(x, y, n)
     for p=0.0:0.001:1.0
         Pn = Pmatrix(p)^n
         site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
-        push!(l, (p,sum(log.(site_probabilities))))
+        loglikelihood = sum(log.(site_probabilities))
+        push!(l, (p, loglikelihood))
     end
     return l
 end
