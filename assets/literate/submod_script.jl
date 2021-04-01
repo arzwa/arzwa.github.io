@@ -15,6 +15,8 @@ end
 
 simulate('A', 10, 0.4)
 
+# Note: in julia one can define short functions using the notation
+# `f(x) = <expression in x>`, without using the `function` keyword
 Pmatrix(p) = [1-p p/3 p/3 p/3 ;
               p/3 1-p p/3 p/3 ;
               p/3 p/3 1-p p/3 ;
@@ -67,7 +69,8 @@ function test_different_ps(x, y, n)
     for p=0.0:0.001:1.0
         Pn = Pmatrix(p)^n
         site_probabilities = [Pn[j,i] for (i,j) in zip(x,y)]
-        push!(l, (p,sum(log.(site_probabilities))))
+        loglikelihood = sum(log.(site_probabilities))
+        push!(l, (p, loglikelihood))
     end
     return l
 end

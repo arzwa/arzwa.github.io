@@ -67,10 +67,10 @@ end</code></pre><pre><code class="plaintext">simulate (generic function with 1 m
 &#39;T&#39;, &#39;C&#39;, &#39;G&#39;&#93;</code>, that <code>setdiff</code> takes the set difference and that <code>rand</code> picks a random element from a collection. To be clear:</p>
 <pre><code class="language-julia">@show setdiff&#40;&quot;ATCG&quot;, &#39;A&#39;&#41;
 @show rand&#40;setdiff&#40;&quot;ATCG&quot;, &#39;A&#39;&#41;&#41;</code></pre><pre><code class="plaintext">setdiff("ATCG", 'A') = ['T', 'C', 'G']
-rand(setdiff("ATCG", 'A')) = 'G'
+rand(setdiff("ATCG", 'A')) = 'C'
 </code></pre>
 <p>Now we do a <em>simulation</em> of 10 time steps assuming an initial state <code>A</code> and with \(p\) &#40;the single parameter of the model&#41; set to \(0.4\):</p>
-<pre><code class="language-julia">simulate&#40;&#39;A&#39;, 10, 0.4&#41;</code></pre><pre><code class="plaintext">A --> G --> C --> T --> T --> T --> T --> T --> T --> T --> C</code></pre>
+<pre><code class="language-julia">simulate&#40;&#39;A&#39;, 10, 0.4&#41;</code></pre><pre><code class="plaintext">A --> A --> A --> T --> A --> A --> A --> A --> A --> C --> C</code></pre>
 <p>The model of sequence evolution we specified is a simple kind of <a href="https://en.wikipedia.org/wiki/Stochastic_process">stochastic process</a> belonging to the class of <strong>discrete-time Markov chains &#40;DTMC&#41;</strong>. A stochastic process can be thought of intuitively as something that evolves randomly in time. Here this &#39;something&#39; is the state of the nucleotide of interest, and we denote the state of the nucleotide at time point \(n\) by \(X(n)\), taking values in the state space \(\{A, T, C, G\}\).</p>
 <p>Note that the &#39;discrete-time&#39; label refers to the fact that the evolutionary process is assumed to proceed in discrete time steps which can be indexed by integers, i.e. \(n \in \mathbb{N}\) &#40;continuous-time models, where we consider \(X(t)\) with \(t \in \mathbb{R}^+\), will be discussed below&#41;. In the simulation function above, we effectively iterate through the time steps, at each time point flipping a biased coin which lands heads with probability \(p\) and tails with probability \(1-p\). If the virtual coin lands heads, the nucleotide substitutes, if it lands tails it stays put.</p>
 <p>A sequence \((X(1), X(2), X(3), \dots)\) is called a <em>realization</em> of the stochastic process. The simulation function above prints such a realization given the initial state <code>A</code>.</p>
@@ -88,8 +88,8 @@ P(&A \rightarrow G \rightarrow G \rightarrow T) = P(X_0=A, X_1=G, X_2=G, X_3=T) 
 &= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_0=A,X_1=G) \\
 &= P(X_3=T|X_0=A,X_1=G,X_2=G) P(X_2=G|X_0=A,X_1=G) P(X_1=G|X_0=A) P(X_0=A)\\
 &= P(X_3=T|X_2=G)P(X_2=G|X_1=G)P(X_1=G|X_0=A)P(X_0=A) \\
-&= p \times (1-p) \times p \times 1 \\
-&= p^2(1-p)
+&= \frac{p}{3} \times (1-p) \times \frac{p}{3} \times 1 \\
+&= \Big(\frac{p}{3}\Big)^2(1-p)
 \end{aligned}\]
 <p>Where I have written \(X_n\) instead of \(X(n)\) to avoid all those parentheses. While the equations are a bit convoluted, this is just a simple exercise in conditional probabilities &#40;see also note <sup id="fnref:pr"><a href="#fndef:pr" class="fnref">[1]</a></sup>&#41;.</p>
 <p>But <em>why is being able to compute such a probability interesting?</em> Consider a question of the sort:</p>
@@ -138,7 +138,9 @@ P(X_n=A |X_0=T) &= \sum_{x \in \mathcal{A}} p_{Ax} P(X_{n-1}=x|X_0=T) \\
 <p><strong>Exercise.</strong> Explain in words what the above equation means.</p>
 </blockquote>
 <p>For instance, consider the transition probability matrix</p>
-<pre><code class="language-julia">Pmatrix&#40;p&#41; &#61; &#91;1-p p/3 p/3 p/3 ;
+<pre><code class="language-julia"># Note: in julia one can define short functions using the notation
+# &#96;f&#40;x&#41; &#61; &lt;expression in x&gt;&#96;, without using the &#96;function&#96; keyword
+Pmatrix&#40;p&#41; &#61; &#91;1-p p/3 p/3 p/3 ;
               p/3 1-p p/3 p/3 ;
               p/3 p/3 1-p p/3 ;
               p/3 p/3 p/3 1-p &#93;
@@ -231,8 +233,8 @@ original &#61; &quot;ATCGGGCGGGATTATTACGG&quot;
 evolved  &#61; simulate&#40;original, Pmatrix&#40;0.05&#41;, 10&#41;
 diffs &#61; join&#40;&#91;original&#91;i&#93; &#61;&#61; evolved&#91;i&#93; ? &quot;|&quot; : &quot; &quot; for i&#61;1:length&#40;original&#41;&#93;&#41;
 println&#40;original, &quot;\n&quot;, diffs, &quot;\n&quot;, evolved&#41;</code></pre><pre><code class="plaintext">ATCGGGCGGGATTATTACGG
-||    |||      |  ||
-ATTTACCGGCGGGTCTGTGG
+| | ||| ||| ||   |  
+AACCGGCCGGACTACCGCAT
 </code></pre>
 <blockquote>
 <p><strong>Exercise</strong>. Try to understand the code above and explain in words how the simulation algorithm works.</p>
@@ -242,7 +244,7 @@ ATTTACCGGCGGGTCTGTGG
 y &#61; translate&#40;evolved&#41;;
 Pn &#61; Pmatrix&#40;0.05&#41;^10  # get the 10-step transition probabilities
 site_probabilities &#61; &#91;Pn&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;
-sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><code class="plaintext">3.310141574250685e-13</code></pre>
+sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><code class="plaintext">4.2022414057527e-11</code></pre>
 <p>If \(\ell_i\) denotes the probability that the nucleotide at position \(i\) in sequence \(x\) evolved into the nucleotide at position \(i\) in sequence \(y\) over 10 time steps, then the probability <code>sequence_probability</code> in the example above could be written formally as</p>
 \[P\big(\mathrm{seq}(10)=y|\mathrm{seq}(0)=x, p=0.05\big) = \ell_1 \ell_2 \dots \ell_n
     = \prod_{i=1}^n \ell_i\]
@@ -251,7 +253,7 @@ sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><co
 <p><strong>Exercise.</strong> Note that these probabilities are <em>very</em> small values. Is this surprising? Does this mean evolution is unlikely? Can you explain why &#40;not&#41;? &#40;Hint: how many possible DNA sequences are there of length 20?&#41;</p>
 </blockquote>
 <p>When working with small values in numerical applications, its almost always better to work on a log scale, i.e. the log probability of this particular evolutionary scenario under the substitution model is</p>
-<pre><code class="language-julia">sum&#40;log.&#40;site_probabilities&#41;&#41;</code></pre><pre><code class="plaintext">-28.736615248771365</code></pre>
+<pre><code class="language-julia">sum&#40;log.&#40;site_probabilities&#41;&#41;</code></pre><pre><code class="plaintext">-23.89281797195897</code></pre>
 <p>Of course you recall that \(\log ab = \log a + \log b\), so that multiplying a bunch of probabilities corresponds to summing them on a logarithmic scale.</p>
 <blockquote>
 <p><strong>Exercise.</strong> What is the probability that the sequence in the variable <code>x</code> in the code example above evolves into a sequence &quot;AAAAAAAAAAAAAAAAAAAA&quot; assuming \(p = 0.05\) and \(n=10\)? Compare this probability to the probability computed above for the evolution of <code>x</code> into <code>y</code>, explain why this probability is different.</p>
@@ -271,7 +273,7 @@ sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><co
 <h3 id="an_example_of_maximum_likelihood_estimation"><a href="#an_example_of_maximum_likelihood_estimation" class="header-anchor">An example of maximum likelihood estimation</a></h3>
 <p>If you&#39;re unsure what all this stuff has to do with statistics, consider the following scenario: you observed the two sequences above, i.e. &#40;in integer representation <code>A&#61;1, T&#61;2, C&#61;3, G&#61;4</code>&#41;:</p>
 <pre><code class="language-julia">println&#40;join&#40;x&#41;, &quot;\n&quot;, join&#40;y&#41;&#41;</code></pre><pre><code class="plaintext">12344434441221221344
-12221334434442324244
+11334433441321334312
 </code></pre>
 <p>This is the <strong>data</strong>. Now let&#39;s say we believe the simple DTMC model is a reasonable model for these sequences, and assume we know they are derived from a common ancestral sequence \(5\) time steps in the past.  You have no clue however about the \(p\) parameter of the model, and you would like to <em>infer this parameter from the observed data</em>.  One thing you could do is look for the value of \(p\) that makes the data <em>most likely</em>, i.e. results in the highest probability under the model. In other words, we could look for the value of \(p\) that makes \(P(\text{data}|p)\) attain a maximum. A naive approach do this is the following:</p>
 <pre><code class="language-julia">function test_different_ps&#40;x, y, n&#41;
@@ -279,7 +281,8 @@ sequence_probability &#61; prod&#40;site_probabilities&#41;</code></pre><pre><co
     for p&#61;0.0:0.001:1.0
         Pn &#61; Pmatrix&#40;p&#41;^n
         site_probabilities &#61; &#91;Pn&#91;j,i&#93; for &#40;i,j&#41; in zip&#40;x,y&#41;&#93;
-        push&#33;&#40;l, &#40;p,sum&#40;log.&#40;site_probabilities&#41;&#41;&#41;&#41;
+        loglikelihood &#61; sum&#40;log.&#40;site_probabilities&#41;&#41;
+        push&#33;&#40;l, &#40;p, loglikelihood&#41;&#41;
     end
     return l
 end
@@ -289,15 +292,13 @@ l &#61; test_different_ps&#40;x, y, 10&#41;;</code></pre>
 <pre><code class="language-julia">using Plots
 plot&#40;first.&#40;l&#41;, last.&#40;l&#41;,
     xlabel&#61;&quot;p&quot;, ylabel&#61;&quot;P&#40;data|p&#41;&quot;,
-    grid&#61;false, legend&#61;false, color&#61;:black&#41;</code></pre><pre><code class="plaintext">Your GR installation is incomplete. Rerun build step for GR package.
-Failed to precompile Plots [91a5bcdd-55d7-5caf-9e0b-520d859cae80] to /home/arzwa/.julia/compiled/v1.6/Plots/jl_J4iOfm.
-</code></pre>
+    grid&#61;false, legend&#61;false, color&#61;:black&#41;</code></pre>
 <p><img src="/assets/phylocourse/submod/lhood1.svg" alt="" /></p>
 <p>Incidentally, the value \(P(\text{data}|p)\) viewed as a function of \(p\) for a fixed data set is called the <strong>likelihood function</strong> of \(p\). The maximum likelihood estimate &#40;MLE&#41; using this naive brute force approach is</p>
 <pre><code class="language-julia">themax, index &#61; findmax&#40;last.&#40;l&#41;&#41;
 println&#40;&quot;Maximum likelihood value: P&#40;data|p&#61;p̂&#41; &#61; &#36;themax&quot;&#41;
-println&#40;&quot;ML estimate: ̂p &#61; &#36;&#40;l&#91;index&#93;&#41;&quot;&#41;</code></pre><pre><code class="plaintext">Maximum likelihood value: P(data|p=p̂) = -26.643637520304715
-ML estimate: ̂p = (0.111, -26.643637520304715)
+println&#40;&quot;ML estimate: ̂p &#61; &#36;&#40;l&#91;index&#93;&#41;&quot;&#41;</code></pre><pre><code class="plaintext">Maximum likelihood value: P(data|p=p̂) = -23.65037238805741
+ML estimate: ̂p = (0.066, -23.65037238805741)
 </code></pre>
 <p>If you understand this, you understand the essence of maximum likelihood estimation in statistics.</p>
 <blockquote>
@@ -326,16 +327,13 @@ function simulate&#40;site, λ, t&#41;
 end
 
 simulate&#40;&#39;A&#39;, 10., 1.&#41;</code></pre><pre><code class="plaintext">X(0.00) = A
-X(0.00) = C
-X(0.04) = T
-X(0.05) = G
-X(0.14) = A
-X(0.28) = C
-X(0.28) = A
-X(0.45) = T
-X(0.84) = A
-X(0.90) = C
-X(1.00) = C
+X(0.62) = T
+X(0.71) = A
+X(0.78) = G
+X(0.83) = T
+X(0.85) = C
+X(0.95) = A
+X(1.00) = A
 </code></pre>
 <blockquote>
 <p><strong>Exercise.</strong> Take some time to understand how the simulation works. Which property of the Poisson process are we using to drive the simulation? How many substitutions did you expect to occur during the simulation above?</p>
@@ -434,8 +432,7 @@ p &#61; heatmap&#40;0.1:0.02:2, 0.1:0.02:2, size&#61;&#40;400,350&#41;,
     fill&#61;true, xlabel&#61;&quot;\\lambda&quot;, ylabel&#61;&quot;t&quot;, title&#61;&quot;log-likelihood&quot;&#41;
 for a&#61;0.1:0.25:5
     plot&#33;&#40;p, x-&gt;a/x, ylim&#61;&#40;0.1,2&#41;, xlim&#61;&#40;0.1,2&#41;, legend&#61;false, color&#61;:black&#41;
-end</code></pre><pre><code class="plaintext">UndefVarError: heatmap not defined
-</code></pre>
+end</code></pre>
 <p><img src="/assets/phylocourse/submod/lhood2.svg" alt="" /></p>
 <p>One can clearly see a boomerang shaped area in the likelihood surface corresponding to parameter region with high likelihood.</p>
 <blockquote>
@@ -443,8 +440,7 @@ end</code></pre><pre><code class="plaintext">UndefVarError: heatmap not defined
 </blockquote>
 <p>We are unable to obtain a unique maximum likelihood estimate &#40;MLE&#41; for both \(t\) and \(\lambda\).  However, we could try to obtain an estimate of the product of \(\lambda\) and \(t\) &#40;i.e. the distance&#41;.</p>
 <pre><code class="language-julia">plot&#40;0:0.01:1, d-&gt;ctmc_probability&#40;seqa, seqb, d, 1/3&#41;,
-    color&#61;:black, legend&#61;false, xlabel&#61;&quot;distance&quot;, ylabel&#61;&quot;log-likelihood&quot;&#41;</code></pre><pre><code class="plaintext">UndefVarError: plot not defined
-</code></pre>
+    color&#61;:black, legend&#61;false, xlabel&#61;&quot;distance&quot;, ylabel&#61;&quot;log-likelihood&quot;&#41;</code></pre>
 <p><img src="/assets/phylocourse/submod/lhood3.svg" alt="" /></p>
 <p>What we&#39;ve done here is fix the <em>total</em> substitution rate for each state at \(1\) &#40;i.e. \(\lambda = 1/3\), giving a total substitution rate of \(3\lambda =
 1\)&#41; and then estimate the time \(t\). In other words, we are estimating time, but on a <em>different time scale</em>, namely a scale of expected number of substitutions per site &#40;i.e. one unit of this rescaled time corresponds to one expected substitution per site&#41;. This amounts to the same as estimating the product \(\lambda t\) or in other words the <strong>distance</strong>.</p>
@@ -459,8 +455,7 @@ distance_JC&#40;p&#41;</code></pre><pre><code class="plaintext">0.44083999867658
     color&#61;:black, legend&#61;false, xlabel&#61;&quot;distance&quot;, ylabel&#61;&quot;log-likelihood&quot;&#41;
 dist &#61; distance_JC&#40;p&#41;
 vline&#33;&#40;&#91;dist&#93;&#41;
-hline&#33;&#40;&#91;ctmc_probability&#40;seqa, seqb, dist, 1/3&#41;&#93;&#41;</code></pre><pre><code class="plaintext">UndefVarError: plot not defined
-</code></pre>
+hline&#33;&#40;&#91;ctmc_probability&#40;seqa, seqb, dist, 1/3&#41;&#93;&#41;</code></pre>
 <p><img src="/assets/phylocourse/submod/lhood4.svg" alt="" /></p>
 <p>Of course it worked. More on distances and distance-based phylogenetic inference in the <a href="../distance">next section</a>&#33;</p>
 <h2 id="exercises"><a href="#exercises" class="header-anchor">Exercises</a></h2>
