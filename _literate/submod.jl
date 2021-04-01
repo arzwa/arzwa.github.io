@@ -515,7 +515,7 @@ println("ML estimate: ̂p = $(l[index])")
 
 # If you managed to get through the above sections, now comes a serious
 # disappointment. DTMCs are generally *not* used in molecular phylogenetics.
-# However, there closely related continuous-time counterparts are. In this
+# However, their closely related continuous-time counterparts are. In this
 # section we will take a look at the **continuous-time Markov chain (CTMC)**
 # analog of the simple model considered above. As is often the case when going
 # from discrete to continuous things in mathematics, the former can be seen as
