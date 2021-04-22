@@ -5,40 +5,95 @@
 
 # Maximum likelihood based inference of phylogenies
 
-Maximum likelihood is a powerful approach in statistics in general, and phylogenetics in particular. Besides the fairly nice statistical properties of ML estimators, ML as a methodology has the advantage that it has widespread acceptance philosophically (the frequentist school of statistics praises the consistency etc. of ML estimators, while the Bayesians often regard ML a special case of Bayesian inference with some (hidden) prior assumptions). Another advantage is that ML estimates are invariant to transformations of the parameters, so we don't have to worry about what the 'natural' scale is for our parameters (e.g. a branch length can not be negative, so should we log transform it then?). In this section, we'll first explore a bit how ML works in the phylogenetics context, and do some exercises with a modern software for ML phylogeny inference.
+Maximum likelihood is a powerful approach in statistics in general, and
+phylogenetics in particular. Besides the fairly nice statistical properties
+of ML estimators, ML as a methodology has the advantage that it has
+widespread acceptance philosophically (the frequentist school of statistics
+praises the consistency etc. of ML estimators, while the Bayesians often
+regard ML a special case of Bayesian inference with some (hidden) prior
+assumptions). Another advantage is that ML estimates are invariant to
+transformations of the parameters, so we don't have to worry about what the
+'natural' scale is for our parameters (e.g. a branch length can not be
+negative, so should we log transform it then?). In this section, we'll first
+explore a bit how ML works in the phylogenetics context, and do some
+exercises with a modern software for ML phylogeny inference.
 
 ## ML on trees: substitution models (again)
 
 [Recall](../submod) that the principle of maximum likelihood states that
 
-> For a particular model with parameters $\theta$, our best estimate for the parameters based on the data $D$ is given by the parameter values $\hat{\theta}$ for which the probability of observing the data $D$ is maximized.
+> For a particular model with parameters $\theta$, our best estimate for the
+> parameters based on the data $D$ is given by the parameter values
+> $\hat{\theta}$ for which the probability of observing the data $D$ is
+> maximized.
 
-In mathematical notation $$\hat{\theta} = \mathrm{argmax}_{\theta}\ p(D|\theta)$$ which you can read as "the estimate $\hat{\theta}$ is found by maximizing $p(D|\theta)$ with respect to the parameters $\theta$. Incidentally $p(D|\theta)$ is called the **the likelihood**, as it indicates how probable it is to observe data for some value of $\theta$. When the likelihood is considered in this way (i.e. as a function of $\theta$ for *fixed* $D$), it is often writtin as the likelihood function $L(\theta;D)$ or $L(\theta|D)$ to stress the fact that $\theta$ is a variable but $D$ is not (it is fixed by our observation of it, i.e. the data).
+In mathematical notation
 
-We [already saw a bit](../submod) of how the ML principle can be used to estimate the evolutionary distance between two sequences. The important take home message here is that
+$$\hat{\theta} = \mathrm{argmax}_{\theta} p(D|\theta)$$
 
-> For a given substitution model, the likelihood of a multiple sequence alignment is fully specified by the tree topology $\Psi$ that describes the relationship between the sequences, the branch lengths $b$, and the parameters of the substitution model $\theta$.
+which you can read as "the estimate $\hat{\theta}$ is found by maximizing
+$p(D|\theta)$ with respect to the parameters $\theta$", where $p$ denotes a
+probability [mass](https://en.wikipedia.org/wiki/Probability_mass_function)
+or [density](https://en.wikipedia.org/wiki/Probability_density_function)
+function.  Incidentally $p(D|\theta)$ is called **the likelihood**, as it
+indicates how probable it is to observe data for some value of $\theta$. When
+the likelihood is considered in this way (i.e. as a function of $\theta$ for
+*fixed* $D$), it is often writtin as **the likelihood function**
+$L(\theta;D)$ or $L(\theta|D)$ to stress the fact that $\theta$ is a variable
+but $D$ is not (it is fixed by our observation of it, i.e. the data).
 
-What this means is that the quantity $p(\Psi, b, \theta |D)$ is a well defined thing. And *if we were able to compute this quantity* we could try to adopt the ML principle *to estimate* $\Psi, b$ and $\theta$ by searchin for those topologies and those parameter values that make $p(\Psi, b, \theta|D)$ maximal for the given data $D$.
+We [already saw a bit](../submod) of how the ML principle can be used to
+estimate the evolutionary distance between two sequences. The important take
+home message from there is that for a given substitution model, the
+likelihood of a multiple sequence alignment is fully specified by
 
-We know how to do this in the case where our alignment consists of two sequences. In that case, there is no tree topology, and what we're left with is the problem of estimating the distances (and parameters of the substitution model), which we already did [here](../submod) and [here](../distance). So the next question is *how to compute the likelihood of a larger alignment, where the sequences are related by a tree.*
+1. The tree topology $\Psi$ that describes the relationship between the sequences
+2. The branch lengths $b$
+3. The parameters of the substitution model $\theta$.
+
+What this means is that the quantity $L(\Psi, b, \theta |D)$ is a well
+defined thing. And *if we were able to compute this quantity* we could try to
+adopt the ML principle *to estimate* $\Psi, b$ and $\theta$ by searching for
+those topologies $\Psi$, branch lengths $b$ and parameter values $\theta$
+that make $L(\Psi, b, \theta|D)$ maximal for the given data $D$.
+
+We know how to do this in the case where our alignment consists of two
+sequences. In that case, there is no tree topology, and what we're left with
+is the problem of estimating the distances (and parameters of the
+substitution model), which we already did [here](../submod) and
+[here](../distance). So the next question is *how to compute the likelihood
+of a larger alignment, where the sequences are related by a tree.*
 
 ## Computing the likelihood on a tree
 
-Luckily, there exists an efficient algorithm to do just that: **Felsenstein's pruning algorithm**.[^pgm] More to be added soon (I'm very sorry).
+Luckily, there exists an efficient algorithm to do just that: **Felsenstein's
+pruning algorithm**.[^pgm] More to be added soon (I'm very sorry).
 
 ## Searching tree space
 
-So we know how to compute the likelihood given a tree $\Psi$, branch lengths $b$ and parameters $\theta$. Now we still have to maximize it with respect to the topologies and parameters of interest. This is a very tough **optimization poblem**. For numerical parameters (i.e. $b$ and $\theta$), we may use standard techniques from mathematical optimization to find the ML estimates. To find the tree topology that leads to the maximal likelihood value is however an untractable problem that requires a **heuristic** optimization. The basic approach is the following:
+So we know how to compute the likelihood given a tree $\Psi$, branch lengths
+$b$ and parameters $\theta$. Now we still have to maximize it with respect to
+the topologies and parameters of interest. This is a very tough
+**optimization poblem**. For numerical parameters on a fixed topology (i.e.
+$b$ and $\theta$), we may use standard techniques from mathematical
+optimization to find the ML estimates. To find the tree topology that leads
+to the maximal likelihood value is however an untractable problem that
+requires a **heuristic** optimization. The basic approach is the following:
 
 1. start with an initial tree topology $\Psi$
-2. set $l_{best}$ to the maximum likelihood value for $\Psi$
+2. set $L_{best}$ to the maximum likelihood value for $\Psi$, i.e. $L_{best}
+   \leftarrow \underset{b,\theta}{\mathrm{max}}\ L(\Psi,b,\theta|D)$
 3. make a random change to $\Psi$ to obtain $\Psi'$
-4. compute the maximum likelihood value $l'$ for $\Psi'$
-5. if $l' > l_{best}$, set $\Psi$ to $\Psi'$ and set $l_{best}$ to $l'$
-6. repeat from (3) until there is no improveent in $l_{best}$
+4. compute the maximum likelihood value $L'$ for $\Psi'$
+5. if $L' > L_{best}$, set $\Psi \leftarrow \Psi'$ and set $L_{best} \leftarrow L'$
+6. repeat from (3) until there is no improveent in $L_{best}$
 
-This is however a computationally very costly procedure when executed naively (note for instance that doing this as written above would involve a separate  optimization of the parameters $\theta$ and branch lengths $b$ for each topology we try out, so essentially a complete optimization problem in its own right at each iteration!), and that's where it is vital to have efficient software implementing clever heuristics such as RaxML, IQ-TREE and PhyML!
+This is however a computationally very costly procedure when executed naively
+(note for instance that doing this as written above would involve a separate
+optimization of the parameters $\theta$ and branch lengths $b$ for each
+topology we try out, so essentially a complete optimization problem in its
+own right at each iteration!), and that's where it is vital to have efficient
+software implementing clever heuristics such as RaxML, IQ-TREE and PhyML!
 
 # Exercises: ML tree inference with IQ-TREE
 For the exercises, we will use the computationally *very* efficient software IQ-TREE (Nguyen *et al.* 2015). This is a command line program, similar to the FastME or PHYLIP programs but not interactive. Please download IQ-TREE for your operating system at [http://www.iqtree.org/](http://www.iqtree.org/). To install on windows, you can follow the same [guidelines](/phylocourse/install-windows) as for FastME.

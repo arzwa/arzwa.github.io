@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
    <link rel="stylesheet" href="/libs/highlight/github.min.css">
    
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
-   <title>SARS-CoV-2 phylogenetics</title>  
+   <title>SARS-CoV-2 origins</title>  
 </head>
 <body>
   <header>
@@ -16,196 +17,32 @@
   </header>
 
 <!-- Content appended here -->
-<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#obtaining_data">Obtaining data</a><ol><li><a href="#viral_genomes">Viral genomes</a></li><li><a href="#gene_families">Gene families</a></li></ol></li><li><a href="#a_note_on_multiple_sequence_alignment">A note on multiple sequence alignment</a><ol><li><a href="#inferring_alignments">Inferring alignments</a></li><li><a href="#dna_protein_or_codon_alignments">DNA, protein or codon alignments?</a></li></ol></li><li><a href="#phylogenetic_inference">Phylogenetic inference</a></li></ol></div></p>
-<p>In this exercise, we will have a look at the phylogenetic position of the human coronavirus SARS-CoV-2 that is currently causing the outbreak of COVID-19. The goal of this exercise is to go through a complete workflow for phylogenetic analysis.</p>
-<p><strong>Disclaimer:</strong> I am in no way experienced with viral phylogenomics. I know nothing about the available data, little about viral evolutionary relationships, and barely anything about viral genomes. Also the data used below is in no way optimal for addressing questions about SARS-CoV-2 evolution, for which the <a href="https://www.gisaid.org/">GISAID</a> database is probably more appropriate &#40;but requires registration and prohibits secondary sharing of dt with unregistered individuals&#41;.</p>
-<h2 id="obtaining_data"><a href="#obtaining_data" class="header-anchor">Obtaining data</a></h2>
-<h3 id="viral_genomes"><a href="#viral_genomes" class="header-anchor">Viral genomes</a></h3>
-<p>As armchair biologists, we tend not to go look for our data out there in the wild &#40;especially during a pandemic&#41;, but download it from some database.  Here I describe how I got the data set we will be analyzing later. This is not really part of the practical, but rather then providing you a data set rightaway, it can be informative to see the typical annoying bits of bioinformatics that necessarily come first.</p>
-<p>To get the data, I first did a search in the NCBI &#39;Nucleotide&#39; database using the following search term:</p>
-<pre><code class="language-julia">&#40;&quot;Alphacoronavirus&quot;&#91;Organism&#93; OR &quot;Betacoronavirus&quot;&#91;Organism&#93; OR
- &quot;Gammacoronavirus&quot;&#91;Organism&#93;&#41; AND &#40;viruses&#91;filter&#93; AND refseq&#91;filter&#93;&#41;</code></pre>
-<p>I restrict the sequence data to the RefSeq database, which is a collection of non-redundant and well-annotated sequences. As I am no expert in viral phylogenomics, I considered this the best idea, since it would not be feasible for me to assess data quality and redundancy efficiently. This provided me with 44 corona virus genome sequences.</p>
-<p>I sent the results to a file, using the &#39;Complete record&#39; option and the GenBank format. Note that the reference sequence for nCov-2019 is the Wuhan isolate apparently, with the following <a href="https://www.ncbi.nlm.nih.gov/nuccore/NC_045512.2?report&#61;genbank&amp;to&#61;29903">genbank entry</a>.</p>
-<p>Now we could work with the entire genomes, aligning them and trying to do tree inference for the full viral genome alignments. Alternatively, we could analyze the different viral proteins separetely. Besides being computationally less involved, this has also the advantage of being somewhat clearer to work with. I wrote the following little script using Biopython to obtain the coding DNA sequences &#40;CDS&#41; and associated amino-acid &#40;AA&#41; sequences for each viral genome:</p>
-<pre><code class="language-py">from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-import os
-import sys
-
-if len&#40;sys.argv&#41; &#33;&#61; 3:
-	print&#40;&quot;usage: &#123;&#125; &#91;genbank file&#93; &#91;prefix&#93;&quot;.format&#40;sys.argv&#91;0&#93;&#41;&#41;
-    exit&#40;&#41;
-
-path_nt &#61; sys.argv&#91;2&#93; &#43; &quot;-nt&quot;
-path_aa &#61; sys.argv&#91;2&#93; &#43; &quot;-aa&quot;
-os.mkdir&#40;path_nt&#41;
-os.mkdir&#40;path_aa&#41;
-for rec in SeqIO.parse&#40;sys.argv&#91;1&#93;, &quot;genbank&quot;&#41;:
-    if rec.features:
-        gid &#61; rec.annotations&#91;&quot;organism&quot;&#93;.replace&#40;&quot; &quot;, &quot;_&quot;&#41;.replace&#40;&quot;/&quot;, &quot;_&quot;&#41;
-        recs &#61; &#91;SeqRecord&#40;
-            seq&#61;ft.location.extract&#40;rec&#41;.seq,
-            id&#61;ft.qualifiers&#91;&#39;protein_id&#39;&#93;&#91;0&#93;,
-            description&#61;&quot;&quot;&#41; for ft in rec.features if ft.type &#61;&#61; &quot;CDS&quot;&#93;
-        SeqIO.write&#40;recs, os.path.join&#40;path_nt, gid &#43; &quot;.fasta&quot;&#41;, &quot;fasta&quot;&#41;
-        trrec &#61; &#91;r.translate&#40;id&#61;r.id, description&#61;r.description&#41; for r in recs if len&#40;r.seq&#41;&#37;3&#61;&#61;0&#93;
-        SeqIO.write&#40;trrec, os.path.join&#40;path_aa, gid &#43; &quot;.fasta&quot;&#41;, &quot;fasta&quot;&#41;</code></pre>
-<p>The script above can be run as follows:</p>
-<pre><code class="language-julia">python3 getdata.py sequence.gb genomes</code></pre>
-<p>Which gives us two directories, one with all CDS sequences for each genome and one with all associated amino-acid sequences.</p>
-<pre><code class="language-julia">tree genomes-aa
-
-genomes-aa
-├── Bat_coronavirus_1A.fasta
-├── Bat_coronavirus_CDPHE15_USA_2006.fasta
-├── Bat_Hp-betacoronavirus_Zhejiang2013.fasta
-├── Beluga_whale_coronavirus_SW1.fasta
-├── Betacoronavirus_England_1.fasta
-├── Betacoronavirus_Erinaceus_VMC_DEU_2012.fasta
-├── Betacoronavirus_HKU24.fasta
-├── Bovine_coronavirus.fasta
-├── BtMr-AlphaCoV_SAX2011.fasta
-├── BtNv-AlphaCoV_SC2013.fasta
-├── BtRf-AlphaCoV_HuB2013.fasta
-├── BtRf-AlphaCoV_YN2012.fasta
-├── Camel_alphacoronavirus.fasta
-├── Coronavirus_AcCoV-JC34.fasta
-├── Feline_infectious_peritonitis_virus.fasta
-├── Ferret_coronavirus.fasta
-├── Human_coronavirus_229E.fasta
-├── Human_coronavirus_HKU1.fasta
-├── Human_coronavirus_NL63.fasta
-├── Human_coronavirus_OC43.fasta
-├── Infectious_bronchitis_virus.fasta
-├── Lucheng_Rn_rat_coronavirus.fasta
-├── Middle_East_respiratory_syndrome-related_coronavirus.fasta
-├── Miniopterus_bat_coronavirus_HKU8.fasta
-├── Mink_coronavirus_strain_WD1127.fasta
-├── Murine_hepatitis_virus.fasta
-├── Murine_hepatitis_virus_strain_JHM.fasta
-├── NL63-related_bat_coronavirus.fasta
-├── Pipistrellus_bat_coronavirus_HKU5.fasta
-├── Porcine_epidemic_diarrhea_virus.fasta
-├── Rabbit_coronavirus_HKU14.fasta
-├── Rat_coronavirus_Parker.fasta
-├── Rhinolophus_bat_coronavirus_HKU2.fasta
-├── Rousettus_bat_coronavirus.fasta
-├── Rousettus_bat_coronavirus_HKU10.fasta
-├── Rousettus_bat_coronavirus_HKU9.fasta
-├── Scotophilus_bat_coronavirus_512.fasta
-├── Severe_acute_respiratory_syndrome_coronavirus_2.fasta
-├── Severe_acute_respiratory_syndrome-related_coronavirus.fasta
-├── Swine_enteric_coronavirus.fasta
-├── Transmissible_gastroenteritis_virus.fasta
-├── Turkey_coronavirus.fasta
-├── Tylonycteris_bat_coronavirus_HKU4.fasta
-└── Wencheng_Sm_shrew_coronavirus.fasta</code></pre>
-<p>The genomes seem to have between 5 and 14 genes, as can be quickly inspected using <code>grep -c &#39;&gt;&#39; genomes-aa/* | cut -d&#39;:&#39; -f2 | sort | uniq</code>.</p>
-<h3 id="gene_families"><a href="#gene_families" class="header-anchor">Gene families</a></h3>
-<p>With these viral genomes nicely in their respective files, we do not have our gene families of interest yet. Since these are RefSeq records, we could probably get gene families &#40;e.g. the S-protein&#41; for each genome directly by looking at the gene names, but this is tricky &#40;what if the names are not consistent for instance?&#41;. I&#39;d rather take a more general approach. We&#39;ll make a blast database for our genomes, and fish out sequences using a bait gene of interest &#40;for instance the S-protein from SARS-CoV-2&#41;.</p>
-<p>Well, actually, I&#39;ll use <a href="https://github.com/bbuchfink/diamond">diamond</a> instead of blast, which is way faster. First I make a diamond database:</p>
-<pre><code class="language-julia">cat genomes-aa/* &gt; aa.fa
-diamond makedb --in aa.fa --db aa</code></pre>
-<p>Now we fish for the S-protein &#40;spike glycoprotein&#41;. This is the sequence of the Wuhan isolate reference genome of SARS-Cov-2 &#40;which you can easily parse out the genbank entry linked to above&#41;:</p>
-<pre><code class="language-julia">&gt;spike-SARS-CoV-2
-MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFS
-NVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIV
-NNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLE
-GKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQT
-LLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETK
-CTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISN
-CVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIAD
-YNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPC
-NGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVN
-FNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITP
-GTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSY
-ECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTI
-SVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQE
-VFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDC
-LGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAM
-QMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALN
-TLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRA
-SANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPA
-ICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDP
-LQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDL
-QELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDD
-SEPVLKGVKLHYT</code></pre>
-<p>Run diamond using the above protein as query:</p>
-<pre><code class="language-julia">diamond blastp --db aa.dmnd -q spike-sarscov2.fasta &gt; spike.hits</code></pre>
-<p>Now we obtain the relevant sequences using the following script &#40;I saved it as <code>gethits.py</code>&#41;</p>
-<pre><code class="language-julia">import sys
-
-if __name__ &#61;&#61; &quot;__main__&quot;:
-    if len&#40;sys.argv&#41; &#33;&#61; 3:
-        print&#40;&quot;usage: &#123;&#125; &lt;hits&gt; &lt;fastadir&gt;&quot;.format&#40;sys.argv&#91;0&#93;&#41;&#41;
-        exit&#40;&#41;
-    from Bio import SeqIO
-    import pandas as pd
-    import os
-    import logging
-    df &#61; pd.read_csv&#40;sys.argv&#91;1&#93;, sep&#61;&quot;\t&quot;, header&#61;None&#41;
-    seqs &#61; &#123;&#125;
-    for f in os.listdir&#40;sys.argv&#91;2&#93;&#41;:
-        for seq in SeqIO.parse&#40;os.path.join&#40;sys.argv&#91;2&#93;, f&#41;, &quot;fasta&quot;&#41;:
-            if seq.id in list&#40;df&#91;1&#93;&#41;:
-                if seq&#91;-1&#93; &#61;&#61; &quot;*&quot;: seq &#61; seq&#91;0:-1&#93;
-                newid &#61; &quot;&#123;&#125;__&#123;&#125;&quot;.format&#40;f.split&#40;&quot;.&quot;&#41;&#91;0&#93;, seq.id&#41;
-                if newid in seqs: logging.warning&#40;&quot;duplicate&#33;&quot;&#41;
-                seqs&#91;newid&#93; &#61; seq        
-    if len&#40;seqs&#41; &lt; len&#40;df.index&#41;:
-        logging.warning&#40;&quot;Found &#123;&#125;/&#123;&#125; sequences&quot;.format&#40;
-			len&#40;seqs&#41;, len&#40;df.index&#41;&#41;&#41;
-    for &#40;k,v&#41; in seqs.items&#40;&#41;:
-        print&#40;&quot;&gt;&#123;&#125;&quot;.format&#40;k&#41;&#41;
-        print&#40;v.seq&#41;</code></pre>
-<p>Use it as follows:</p>
-<pre><code class="language-julia">python3 gethits.py ./spike.hits ./genomes-aa &gt; spike.aa.fasta</code></pre>
-<p>and to get the CDS sequences:</p>
-<pre><code class="language-julia">python3 gethits.py ./spike.hits ./genomes-nt &gt; spike.nt.fasta</code></pre>
-<p>Clearly, you can use this approach to get other genes from the viral genome database we assembled. Now we can do phylogenetics using the <code>spike.aa.fasta</code> and/or <code>spike.nt.fasta</code> files.</p>
-<h2 id="a_note_on_multiple_sequence_alignment"><a href="#a_note_on_multiple_sequence_alignment" class="header-anchor">A note on multiple sequence alignment</a></h2>
-<h3 id="inferring_alignments"><a href="#inferring_alignments" class="header-anchor">Inferring alignments</a></h3>
-<p>In order to do phylogenetic inference, we need to have a hypothesis of homology, that is to say, we need to know which characters in a bunch of sequences trace back to a common ancestral character. Sadly, this is not given, and we have to infer this from the data. This is of course the problem of multiple sequence alignment &#40;MSA&#41;.</p>
-<p>In practice, inferring a MSA couldn&#39;t be easier:</p>
-<pre><code class="language-julia">mafft spike.aa.fasta &gt; spike.aa.msa</code></pre>
-<p>And we can have a look at this alignment using for instance the <a href="https://github.com/arvestad/alv"><code>alv</code></a> program. For some other helpful tools related to alignment, see also the <a href="../hiv">HIV exercise</a>. Here&#39;s a little piece of the output of <code>alv spike.aa.msa</code>:</p>
-<pre><code class="language-julia">Human_coronavirus_NL63__YP_003767.1                                  --IISVVFVVLLSLLVFCCLSTGC-CGCCNCLTSSMRGCCDC-----
-Coronavirus_AcCoV-JC34__YP_009380521.1                               --AIFLVLVLFSFMLLWCCCATGC-CGCCGMLGSACNGCCTK-----
-Murine_hepatitis_virus__NP_045300.1                                  --LIGLAGVAVCVLLFFICCCTGCGSCCFK----KCGNCCDE-----
-Rat_coronavirus_Parker__YP_003029848.1                               --LIGLAGVAVCVLLFFICCCTGCGSCCFK----KCGNCCDE-----
-Infectious_bronchitis_virus__NP_040831.1                             --AIAFATIIFILILGWVFFMTGC-CGC----------CCGCFGIMP
-Pipistrellus_bat_coronavirus_HKU5__YP_001039962.1                    GFIAGLVALALCVFFIL--CCTGCGTSCLGKL--KCNRCCDS-----
-Severe_acute_respiratory_syndrome_coronavirus_2__YP_009724390.1      GFIAGLIAIVMVTIMLC--CMTSC-CSCLKGC-CSCGSCC-K-----
-Rousettus_bat_coronavirus__YP_009273005.1                            GMIAGLVGLVLAVVLLL--CMTNC-CSCARGV-CSCKSC--A-----
-Betacoronavirus_Erinaceus_VMC_DEU_2012__YP_009513010.1               GFIAGLVALALCLFFIL--CCTGCGTSCLGKI--NCTRCCDK-----
-Severe_acute_respiratory_syndrome-related_coronavirus__NP_828851.1   GFIAGLIAIVMVTILLC--CMTSC-CSCLKGA-CSCGSCC-K-----
-Human_coronavirus_HKU1__YP_173238.1                                  --LISFSFIIFLVLLFFICCCTGCGSACFS----KCHNCCDE-----
-Lucheng_Rn_rat_coronavirus__YP_009336484.1                           --AIFLVLVLFSFLMLWCCCATGC-CGCCGLCGAACNGCCTK-----
-Betacoronavirus_England_1__YP_007188579.1                            GFIAGLVALALCVFFIL--CCTGCGTNCMGKL--KCNRCCDR-----
-Bovine_coronavirus__NP_150077.1                                      --LIGFAGVAMLVLLFFICCCTGCGTSCFK----KCGGCCDD-----
-Bat_Hp-betacoronavirus_Zhejiang2013__YP_009072440.1                  GFIAGLIAIVMATIMLC--CMTSC-CSCFKGL-CACKRCCDS-----
-Rabbit_coronavirus_HKU14__YP_005454245.1                             --LIGLAGVAVLVLLFFICCCTGCGTSCFK----KCGGCCDD-----
-Middle_East_respiratory_syndrome-related_coronavirus__YP_009047204.1 GFIAGLVALALCVFFIL--CCTGCGTNCMGKL--KCNRCCDR-----
-Human_coronavirus_OC43__YP_009555241.1                               --LICLAGVAMLVLLFFICCCTGCGTSCFK----KCGGCCDD-----
-Turkey_coronavirus__YP_001941166.1                                   --AIGFACLIFILILGWVFFMTGC-CGC----------CCGCFGIIP
-Rousettus_bat_coronavirus_HKU9__YP_001039971.1                       AMIAGIVGLVLAVIMLM--CMTNC-CSCFKGM-CDCRRCCGS-----
-Tylonycteris_bat_coronavirus_HKU4__YP_001039953.1                    GFIAGLVALLLCVFFLL--CCTGCGTSCLGKM--KCKNCCDS-----
-Human_coronavirus_229E__NP_073551.1                                  --CISVVLIFVVSMLLLCCCSTGC-CGFFSCFASSIRGCCE------
-Murine_hepatitis_virus_strain_JHM__YP_209233.1                       --LIGLAGVAVCVLLFFICCCTGCGSCCFR----KCGSCCDE-----
-BtMr-AlphaCoV_SAX2011__YP_009199609.1                                --IIVLVLILFTCLMLFCCCSTGC-CGIFSCMASSCGACCDI-----
-Betacoronavirus_HKU24__YP_009113025.1                                --LIGLAGVAVLVLLFFVCCCTGCGSSCFK----KCGSCCDD-----</code></pre>
-<p>This however hides the crucial fact that <em>multiple sequence alignment is one of the most important open problems in statistical phylogenetics</em>. Since every inference is associated with uncertainty, ideally we&#39;d like to obtain an idea of the uncertainty in our inferred MSA, and take this uncertainty into account in our phylogenetic analyses. In a Bayesian framework this is possible by jointly inferring the alignment and phylogeny under a model of sequence evolution that includes insertions and deletions &#40;the TKF or Thorne - Kishino - Felsenstein model for instance&#41;, which is what the program <a href="http://bali-phy.org/">BAli-Phy</a> does. However this is computationally very, very expensive.</p>
-<p>In short: the main message is that it is important to keep in mind that in all the following statistical phylogenetic analyses, we <em>are making the terrible assumption that the MSA is known without error.</em></p>
-<h3 id="dna_protein_or_codon_alignments"><a href="#dna_protein_or_codon_alignments" class="header-anchor">DNA, protein or codon alignments?</a></h3>
-<h2 id="phylogenetic_inference"><a href="#phylogenetic_inference" class="header-anchor">Phylogenetic inference</a></h2>
-<p>Some of the data obtained above is available <a href="/assets/phylocourse/ncov.zip">here</a>. Investigate the phylogeny of SARS-Cov-2&#33;</p>
+<div class="franklin-content"><p><a href="/phylocourse/">back</a></p>
+<h1 id="sars-cov-2_origins"><a href="#sars-cov-2_origins" class="header-anchor">SARS-CoV-2 origins</a></h1>
+<p>In this exercise we will take a look at the origins of SARS-CoV-2 – the virus causing Covid-19 – by means of phylogenetic analysis. As is well-known, SARS-CoV-2 is a <a href="https://en.wikipedia.org/wiki/Zoonosis">zoonotic</a> pathogen, meaning it jumped from some other species, which may act as a <a href="https://en.wikipedia.org/wiki/Natural_reservoir">reservoir</a>, to a human host. Many important viral pathogens are zoonotic &#40;e.g. SARS, MERS, Ebola, HIV, ...&#41; and there is an obvious interest in identifying potentially zoonotic lineages and their reservoirs.</p>
+<p>SARS-CoV-2 is a member of the Sarbecovirus clade within Coronaviridae. It was early on found to be relatively closely related to a sarbecovirus from Horseshoe bats, RaTG13, and later also viral isolates from pangolins were suggested as potential close relatives. Sarbecoviruses are, unlike many other RNA viruses, undergoing quite a lot of recombination, which makes phylogenetic inference challenging. <a href="https://www.nature.com/articles/s41564-020-0771-4">Boni <em>et al.</em></a> identified non-recombining regions &#40;NRR&#41; and conducted phylogenetic analyses using those. </p>
+<p>We will use the data from Boni <em>et al.</em>, which can be obtained from <a href="https://github.com/plemey/SARSCoV2origins">this Github repository</a>. </p>
+<ol>
+<li><p>Infer a tree using maximum likelihood inference for the &#39;sarbecovirus&#39; data set &#40;either their NRR1, NRR2 or NRA3 data sets&#41;. Which model assumptions will you use? </p>
+</li>
+<li><p>Assess the tree you found, what is your hypothesis on the zoonotic origins of SARS-CoV-2?</p>
+</li>
+<li><p>Why is recombination a problem for standard phylogenetic inference? Which assumption&#40;s&#41; can it possibly violate?</p>
+</li>
+<li><p>Why haven&#39;t we cared much about recombination in previous exercises? Should we have?</p>
+</li>
+</ol>
 <div class="page-foot">
   <div class="copyright">
-    &copy; Arthur Zwaenepoel. Last modified: March 31, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+    &copy; Arthur Zwaenepoel. Last modified: April 21, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
     
     
         <script src="/libs/highlight/highlight.pack.js"></script>
