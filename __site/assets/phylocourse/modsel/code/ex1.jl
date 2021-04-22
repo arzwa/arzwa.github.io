@@ -1,3 +1,3 @@
 # This file was generated, do not modify it. # hide
-lrt(ℓ₁, ℓ₀) = 2(ℓ₁ - ℓ₀)
+lrt(l₁, l₀) = 2(l₁ - l₀)
 lrt(-2738.879,-2740.380)

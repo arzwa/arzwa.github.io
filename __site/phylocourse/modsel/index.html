@@ -9,7 +9,7 @@
    
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
-   <title>Model selection for maximum likelihood based phylogenetic inference</title>  
+   <title>Model selection</title>  
 </head>
 <body>
   <header>
@@ -17,14 +17,40 @@
   </header>
 
 <!-- Content appended here -->
-<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#model_selection_for_maximum_likelihood_based_phylogenetic_inference">Model selection for maximum likelihood based phylogenetic inference</a><ol><li><a href="#model_selection_for_substitution_models_nested_models">Model selection for substitution models: nested models</a><ol><li><a href="#example">Example</a></li></ol></li><li><a href="#model_selection_for_substitution_models_the_general_case">Model selection for substitution models: the general case</a></li><li><a href="#partition_models">Partition models</a></li></ol></li></ol></div></p>
-<h1 id="model_selection_for_maximum_likelihood_based_phylogenetic_inference"><a href="#model_selection_for_maximum_likelihood_based_phylogenetic_inference" class="header-anchor">Model selection for maximum likelihood based phylogenetic inference</a></h1>
-<p>Whereas maximum likelihood &#40;ML&#41; allows us to infer a phylogenetic tree and the parameters of the substitution model, we still need to decide ourselves, often rather arbitrarily, which substitution model we are using. This is quite problematic, because there are a very large number of possible models one could choose from. Consider for instance the following graph representation showing some of the more commonly used models and their relationships:</p>
+<div class="franklin-content"><p><a href="/phylocourse/">back</a> <div class="franklin-toc"><ol><li><a href="#a_recap_of_the_statistical_approach_to_phylogenetic_inference">A recap of the statistical approach to phylogenetic inference</a></li><li><a href="#model_selection_in_ml_based_phylogenetic_inference">Model selection in ML based phylogenetic inference</a><ol><li><a href="#model_selection_for_substitution_models_nested_models">Model selection for substitution models: nested models</a><ol><li><a href="#example">Example</a></li></ol></li><li><a href="#model_selection_for_substitution_models_the_general_case">Model selection for substitution models: the general case</a><ol><li><a href="#the_akaike_information_criterion_aic">The <strong>Akaike information criterion &#40;AIC&#41;</strong></a></li><li><a href="#the_bayesian_information_criterion_bic">The <strong>Bayesian information criterion &#40;BIC&#41;</strong></a></li></ol></li><li><a href="#partition_models">Partition models</a></li><li><a href="#caveat">Caveat</a></li></ol></li></ol></div></p>
+<h1 id="a_recap_of_the_statistical_approach_to_phylogenetic_inference"><a href="#a_recap_of_the_statistical_approach_to_phylogenetic_inference" class="header-anchor">A recap of the statistical approach to phylogenetic inference</a></h1>
+<p>By now we have some idea of what a statistical approach to phylogenetic inference boils down to. The situation we are dealing with is the following:</p>
+<ol>
+<li><p>We have different biological entities which are evolutionarily related &#40;genes, species, sites, ...&#41;.</p>
+</li>
+<li><p>For each of these entities we observe a state of some <strong>homologous character</strong> &#40;e.g. a DNA sequence&#41;, this is the <strong>data</strong>.</p>
+</li>
+<li><p>We devise some <strong>probabilistic model of evolution</strong> for the data &#40;e.g. a Markov model of nucleotide substitution&#41;.</p>
+</li>
+<li><p>We <strong>confront the model with the data</strong> &#40;e.g. using ML or Bayesian inference&#41;, obtaining estimates of model parameters.</p>
+</li>
+</ol>
+<p>This is what we&#39;ve dealt with so far – there is however one important step missing: testing the <strong>adequacy of our models</strong>. This is of course a crucial aspect, statistical inference is only as good as far as its assumptions are acceptable. So we should add a fifth point to our list</p>
+<ol start="5">
+<li><p>We assess the adequacy of the model and if necessary adopt a different one.</p>
+</li>
+</ol>
+<p>We therefore need a way to assess the <strong>fit of our models to the data</strong>. There are two rather different strategies we may follow here:</p>
+<ol>
+<li><p>We can quantify the <strong>relative</strong> fit of a bunch of <strong>candidate models</strong>. In other words we may look for a ranking of a bunch of candidate models &#40;JC, JC&#43;G, K2P, F81, F81&#43;G, ...&#41; in terms of how well they fit the data.</p>
+</li>
+<li><p>We can assess the fit of a model by quantifying how well the model with estimated parameters can predict the data.</p>
+</li>
+</ol>
+<p>In the first case, where we only assess relative fit, we are in fact doing <strong>model selection</strong>, and not <em>really</em> testing the adequacy of our models &#40;i.e. the best model in a set of candidate models can still be a model with a lousy fit to the data&#41;. We won&#39;t deal with the second strategy here, which is less widely adopted in phylogenetics, especially when based on maximum-likelihood. This is emphatically not to say it is less important &#40;it is arguably more so&#41;. In Bayesian statistical inference the second strategy is nicely covered by what is referred to as &#39;posterior predictive simulation&#39;.</p>
+<h1 id="model_selection_in_ml_based_phylogenetic_inference"><a href="#model_selection_in_ml_based_phylogenetic_inference" class="header-anchor">Model selection in ML based phylogenetic inference</a></h1>
+<p>Whereas maximum likelihood &#40;ML&#41; allows us to infer a phylogenetic tree and the parameters of the substitution model, we still need to decide ourselves, often rather arbitrarily, which substitution model we are using. This is quite problematic, because even if we confine ourselves to the universe of simple Markov models of sequence evolution as we have discussed them before, there are a very large number of possible models one could choose from. Consider for instance the following graph representation showing some of the more commonly used models and their relationships:</p>
 <p><img src="/assets/phylocourse/img/models.png" alt="" /></p>
-<p>Of course, this problem is only natural, after all, when we – the scientists – are modeling something we have to decide on our modeling assumptions&#33;  Nevertheless, given a candidate set of substitution models, one could reason that we simply extend the ML principle, and choose the model which gives the highest likelihood.</p>
-<p>This is however problematic, since more complicated models will always result in a higher likelihood, so the ML principle when applied to models will always result in the selection of the biggest, most complicated and most flexible model. Again, this is a general issue in statistics, known as <strong>overfitting</strong>. The key issue is that we actually want to know whether some complex model fits the data <em>significantly</em> better than a more simpler model. As an example of overfitting consider the following hypothetical regression example:<sup id="fnref:figoverfit"><a href="#fndef:figoverfit" class="fnref">[1]</a></sup></p>
+<p>Of course, this problem is only natural, after all, when we – the scientists – are modeling something we have to decide on our modeling assumptions&#33; Nevertheless, given a candidate set of substitution models, one could reason that we simply extend the ML principle, and choose the model which gives the highest likelihood.</p>
+<p>This is however problematic, since more <em>complicated</em> models &#40;i.e. involving <em>more parameters</em>&#41; will always result in a higher likelihood, so the ML principle when applied to models will always result in the selection of the biggest, most complicated and most flexible model. Again, this is a general issue in statistics, known as <strong>overfitting</strong>. The key issue is that we actually want to know whether some complex model fits the data <em>significantly</em> better than a simpler model.  As an example of overfitting consider the following hypothetical regression example:<sup id="fnref:figoverfit"><a href="#fndef:figoverfit" class="fnref">[1]</a></sup></p>
 <p><img src="/assets/phylocourse/img/overfitting.png" alt="" /></p>
-<p>The first model fits a flat line \(y = a\), i.e. a constant &#40;or intercept if you will&#41;, to the data and involves a single parameter. This model is clearly underfitting as it does not capture any trend in the data. The second model is a linear model \(y = a + bx\) and involves two parameters &#40;\(a\) and \(b\)&#41;. The third model fits a quadratic function and involves three parameters \(y = a + bx +cx^2\). The second and third model both look fairly reasonable for the amount of data we have. The fourth model is an exceedingly complex fit &#40;it isn&#39;t even a proper function of \(x\)&#33;&#41; and is clearly overfitting the data. Now we wish to find a quantitative criterion for assessing this fitting trade-off and preferably one that involves the likelihood, because that is something we can compute in a phylogenetics context.</p>
+<p>The first model fits a flat line \(y = a\), i.e. a constant &#40;or intercept if you will&#41;, to the data and involves a single parameter. This model is clearly underfitting as it does not capture any trend in the data. The second model is a linear model \(y = a + bx\) and involves two parameters &#40;\(a\) and \(b\)&#41;. The third model fits a quadratic function and involves three parameters \(y = a +
+bx +cx^2\). The second and third model both look fairly reasonable for the amount of data we have. The fourth model is an exceedingly complex fit &#40;it isn&#39;t even a proper function of \(x\)&#33;&#41; and is clearly overfitting the data. Now we wish to find a quantitative criterion for assessing this fitting trade-off and preferably one that involves the likelihood, because that is something we can compute in a phylogenetics context.</p>
 <p>Luckily, since this is a common &#40;but challenging nevertheless&#41; problem in statistics, there exist devices that can be used to select models of varying complexity<sup id="fnref:mlbayes"><a href="#fndef:mlbayes" class="fnref">[2]</a></sup>. The three main methods that are used for model selection in a ML setting are:</p>
 <ol>
 <li><p>The likelihood ratio test &#40;LRT&#41;</p>
@@ -55,7 +81,7 @@
 <p>Specifically \(l_1\) is the likelihood for the more parameter-rich model &#40;e.g. K2P&#41; and \(l_0\) is the likelihood for the other model &#40;e.g. JC&#41;. The likelihood ratio measures how much the more complex model fits the data better than the simpler model. If the test statistic is bigger than the critical value &#40;at the desired significance level&#41; of the corresponding \(\chi^2\) distribution, then this indicates that the more complex model provides a <em>statistically significant better fit</em> to the sequence data. If not, than we may conclude that the difference in the likelihoods is not statistically significant, indicating that the simpler model does about an equally good job at explaining the data.<sup id="fnref:nhst"><a href="#fndef:nhst" class="fnref">[4]</a></sup></p>
 <h3 id="example"><a href="#example" class="header-anchor">Example</a></h3>
 <p>I randomly simulated a sequence alignment from the JC model. Using the IQ-Tree program &#40;see <a href="../mliqtree">the exercises on ML inference</a>&#41; I get a maximum log-likelihood value of -2740.380 for the JC model. For the K2P model, the likelihood value obtained is -2738.879.</p>
-<pre><code class="language-julia">lrt&#40;ℓ₁, ℓ₀&#41; &#61; 2&#40;ℓ₁ - ℓ₀&#41;
+<pre><code class="language-julia">lrt&#40;l₁, l₀&#41; &#61; 2&#40;l₁ - l₀&#41;
 lrt&#40;-2738.879,-2740.380&#41;</code></pre><pre><code class="plaintext">3.0020000000004075</code></pre>
 <p>The LRT is about 3.0. The critical value at the 0.05 level for the \(\chi^2\) distribution with one degree of freedom is</p>
 <pre><code class="language-julia">using Distributions
@@ -66,17 +92,14 @@ quantile&#40;Chisq&#40;1&#41;, 0.95&#41;</code></pre><pre><code class="plaintext
 </blockquote>
 <h2 id="model_selection_for_substitution_models_the_general_case"><a href="#model_selection_for_substitution_models_the_general_case" class="header-anchor">Model selection for substitution models: the general case</a></h2>
 <p>When models are not nested, other tools &#40;derived from information theory&#41; can be used to perform model selection, albeit not in a null hypothesis significance testing kind of approach. These involve <strong>information criteria</strong> which are designed to indicate the <em>relative</em> gain/loss of statistical fit when deciding between different models. We won&#39;t go in any depth here, but we note down the formulae for two such information criteria:</p>
-<ol>
-<li><p>The <strong>Akaike information criterion &#40;AIC&#41;</strong> for a given model is given by </p>
-</li>
-</ol>
+<h3 id="the_akaike_information_criterion_aic"><a href="#the_akaike_information_criterion_aic" class="header-anchor">The <strong>Akaike information criterion &#40;AIC&#41;</strong></a></h3>
+<p>The AIC for a given model is given by </p>
 \[AIC = 2k - 2l_{max}\]
 <p>where \(k\) is the number of estimated parameters in the model and \(l_{max}\) is the maximum log-likelihood value obtained for the model. <strong>The lower the AIC value, the lower the estimated loss of information when representing the true data generating process by the model</strong> &#40;which is obviously a caricature of reality&#41;. In other words, the ower the AIC value, the better the fit. Given the AIC values of two models \(AIC_0\) and \(AIC_1\), where \(AIC_0 > AIC_1\), we can compute the probability that model 0 provides at least as good a fit as model 1 can be estimated as \(e^{(AIC_1 - AIC_0)/2}\). We see that the AIC involves a term of \(2k\) penalizing the likelihood value for the number of parameters in the model.</p>
-<ol start="2">
-<li><p>The <strong>Bayesian information criterion &#40;BIC&#41;</strong> &#40;which has not much to do with Bayesian inference or Bayesian statistics in general&#41; is very similar and can be computed as </p>
-</li>
-</ol>
-\[BIC = \log(n)k -2l_{max}\]
+<h3 id="the_bayesian_information_criterion_bic"><a href="#the_bayesian_information_criterion_bic" class="header-anchor">The <strong>Bayesian information criterion &#40;BIC&#41;</strong></a></h3>
+<p>The BIC &#40;which has not much to do with Bayesian inference or Bayesian statistics in general&#41; is very similar and can be computed as </p>
+\[BIC =
+\log(n)k -2l_{max}\]
 <p>where \(n\) is the number of data points&#41;. It cannot exactly be interpreted in the same way, but still we are interested in the model that minimizes the BIC value.</p>
 <blockquote>
 <p>Compute the likelihood values for the JC, K2P, F81, HKY85 and GTR models for the 18S rRNA data using a fixed tree topology &#40;use <code>iqtree -t &lt;treefile&gt; -s &lt;sequence-file&gt; -n 1 -m &lt;model&gt;</code>, which will only optimize the parameters and branch lengths for the initial topology in <code>treefile</code>&#41;<sup id="fnref:treefix"><a href="#fndef:treefix" class="fnref">[5]</a></sup>. Compute the AIC values for each model and rank them. Which model provides the best fit according to the AIC?</p>
@@ -86,6 +109,8 @@ quantile&#40;Chisq&#40;1&#41;, 0.95&#41;</code></pre><pre><code class="plaintext
 </blockquote>
 <h2 id="partition_models"><a href="#partition_models" class="header-anchor">Partition models</a></h2>
 <p>Model selection does not have to be restricted to the substitution model. We may wish to use different substitution models for different sites of the alignment &#40;for instance the codon positions&#41;, or we may wish to analyze a concatenated alignment of multiple genes, but might want to have a different substitution model for each gene. These are called partitions of the data. Partitioning the data in such ways also increases the complexity of the statistical model and may lead again to overfitting, so here we may also wish to perform model selection. We can do this using the same techniques as outlined above.</p>
+<h2 id="caveat"><a href="#caveat" class="header-anchor">Caveat</a></h2>
+<p>As stressed in the introduction of this section, model selection approaches do not tell you anything about how well a model fits the data in &#39;absolute&#39; terms, it can only rank a set of candidate models, the best of which may still be a terrible model of the actual situation. More direct assemment of model fit can be performed using methods that evaluate the predictive performance of a model &#40;such as cross-validation or Bayesian posterior prediction&#41;.</p>
 <p><hr /> <table class="fndef" id="fndef:figoverfit">
     <tr>
         <td class="fndef-backref"><a href="#fnref:figoverfit">[1]</a></td>
@@ -120,7 +145,7 @@ quantile&#40;Chisq&#40;1&#41;, 0.95&#41;</code></pre><pre><code class="plaintext
 
 <div class="page-foot">
   <div class="copyright">
-    &copy; Arthur Zwaenepoel. Last modified: March 31, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+    &copy; Arthur Zwaenepoel. Last modified: April 21, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->

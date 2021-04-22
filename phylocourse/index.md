@@ -7,6 +7,10 @@ biological audience.
 
 1. [Substitution models and distances](submod)
 2. [Distance-based phylogeny inference](distance)
+3. [Phylogeny inference using maximum likelihood](mliqtree)
+4. [Model selection for ML phylogeny inference](modsel)
+4. [Florida dentist scandal](hiv)
+5. [SARS-CoV-2 origins](cov)
 
 Most phylogenetics software tools are distributed as **command-line
 applications**.  Some extra guidance on how to install and run command-line
