@@ -17,6 +17,10 @@ should be able to install it via Homebrew. Linux users should have no
 difficulty building from source as indicated in the
 [README](https://github.com/NBISweden/MrBayes).
 
+The [manual for
+MrBayes](https://github.com/NBISweden/MrBayes/blob/develop/doc/manual/Manual_MrBayes_v3.2.pdf)
+provides very helpful information.
+
 You will need a file in the `nexus` format to use MrBayes. Tip, if you
 have python installed, then the Biopython library provides convenient
 alignment format conversion tools:
