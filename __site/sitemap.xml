@@ -3,7 +3,7 @@
 
 <url>
     <loc>phylocourse/cov/index.html</loc>
-    <lastmod>2021-03-31</lastmod>
+    <lastmod>2021-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
@@ -39,7 +39,7 @@
 </url>
 <url>
     <loc>phylocourse/modsel/index.html</loc>
-    <lastmod>2021-03-31</lastmod>
+    <lastmod>2021-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
@@ -68,6 +68,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>phylocourse/bayes/index.html</loc>
+    <lastmod>2021-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>posts/2021-01-01-fgm/index.html</loc>
     <lastmod>2021-03-31</lastmod>
     <changefreq>monthly</changefreq>
@@ -81,6 +87,12 @@
 </url>
 <url>
     <loc>phylocourse/mliqtree/index.html</loc>
+    <lastmod>2021-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>phylocourse/_cov/index.html</loc>
     <lastmod>2021-03-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -105,7 +117,7 @@
 </url>
 <url>
     <loc>phylocourse/index.html</loc>
-    <lastmod>2021-03-31</lastmod>
+    <lastmod>2021-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
