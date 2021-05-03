@@ -7,8 +7,8 @@
 
 # >**Note** that there are some blocks with `julia` code included below. This
 # >is just for illustrating things in a way such that those who are interested
-# >in that can actually see how these illustrations (numerical or visual) were
-# >actually generated. Don't let them scare you.
+# >can see how these illustrations (numerical or visual) were actually generated. 
+# >Don't let them scare you.
 
 # Distance-based phylogenetic methods proceed by computing a **pairwise
 # distance matrix** for an input alignment based on a [substitution
@@ -146,8 +146,8 @@ d = -0.75 * log(1. - 4x/3)
 # There are two ways to run FastME. There is an interactive mode (inherited
 # from the influential [PHYLIP software
 # package](http://evolution.genetics.washington.edu/phylip.html)) and a command
-# line mode. Personally, I find the command line mode much more convenient.
-# First get a look at the help message
+# line mode. Here I will use the command line mode, but feel free to use the
+# interactive mode.  First get a look at the help message
 # ```
 # fastme -help
 # ```
@@ -164,6 +164,7 @@ d = -0.75 * log(1. - 4x/3)
 # Try to run this command and see whether you manage to make it work. The above
 # command should generate a distance matrix. Take a look at the file
 # `18SrRNA_20.phy_fastme_stat.txt`, is everything as expected?
+
 # Let's make a heatmap to visualize the distance matrix:
 
 using Plots
@@ -183,8 +184,25 @@ savefig("_assets/phylocourse/distance/hm1.svg") # hide
 
 # ![](/assets/phylocourse/distance/hm1.svg)
 
+# Something similar can be done in any other programming language. For instance in `R` 
+# the following should work:
+# ```R
+# X = read.table("./18SrRNA_20_JCmatrix.txt", skip=1)
+# taxa = c("taxon", as.character(X$V1))  # set column names
+# names(X) = taxa
+# X = as.matrix(X[,2:ncol(X)])  # remove the row names, and convert to a numeric matrix
+# heatmap(X)
+# ```
+
 # >**Question**: does this distance matrix make sense to you? Can you spot
 # > clades of more closely related species already?
+#
+# > **Question**: consider the portion of the matrix corresponding to the
+# > animals  (human, *Xenopus*, *Artemia* and *Anemonia*), write down the 
+# > associated part of the distance matrix. Confirm that the values are 
+# > [proper distances](https://en.wikipedia.org/wiki/Metric_(mathematics)).
+# > make a sketch of what you think the phylogeny will look like for these
+# > four species based on a quick look at the matrix.
 
 # ## Clustering methods
 
@@ -197,7 +215,8 @@ savefig("_assets/phylocourse/distance/hm1.svg") # hide
 # computing for most programming languages (here I'll use the `Clustering.jl`
 # package for the julia progamming language, note that average linkage
 # clustering as it is usually implemented is identical to what is called the
-# WPGMA method in phylogenetics).
+# WPGMA method in phylogenetics (see p.16 & 17 in prof. Van de Peer's course
+# notes).
 
 using Clustering, StatsPlots
 hcl = hclust(matrix, linkage=:average)
@@ -213,6 +232,16 @@ savefig("_assets/phylocourse/distance/wpgma.svg") # hide
 
 # ![](/assets/phylocourse/distance/wpgma.svg)
 
+# **Note**, in `R` you can use the following to perform WPGMA clustering (see
+# note above on how to load the distance matrix in R):
+#
+# ```R
+# D = dist(X)  # convert to a 'distance matrix' object for hclust
+# hc = hclust(D, method='average')  # average linkage clustering = UPGMA by default in R
+# tree = as.dendrogram(hc)
+# plot(tree)
+# ```
+
 # >**Question**: how can you see in one glance that this is an ultrametric tree?
 
 # >**Question**: based on your knowledge of the tree of life, can you identify
@@ -224,39 +253,13 @@ savefig("_assets/phylocourse/distance/wpgma.svg") # hide
 # >**Question**: How do you interpret the branch lengths, what is the
 # >associated length 'unit'?
 
-# Now let's infer a tree using $\Gamma$  **distributed rates across sites**
-# (i.e. $\Gamma$ or 'Gamma' distances), still using the Jukes-Cantor
-# substitution model.
-
-# ```
-# fastme -i 18SrRNA_20.phy -O 18SrRNA_20_JCGamma_matrix.txt -dJC69 -g
-# ```
-
-matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
-hcl = hclust(matrix, linkage=:average)
-
-plot(
-    plot(hcl, xticks=false),
-    heatmap(matrix[hcl.order,hcl.order], colorbar=false,
-        yticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xrotation=45),
-    layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
-
-savefig("_assets/phylocourse/distance/wpgma2.svg") # hide
-
-# ![](/assets/phylocourse/distance/wpgma2.svg)
-
-# >**Question**: did the topology change? Did the branch lengths change? Why?
-# >What default paremeter settings does FastME use when dealing with Gamma
-# >distributed rates across sites?
-
 # ## Neighbor-joining
 
 # Neighbor-joining (NJ) is another method for distance-based phylogenetics. It
 # is also a clustering method, but one that does not produce ultrametric trees.
-# To run tree inference with NJ for an input alignment or distance matrix, run
-# `fastme` with the `-o <output_file>` and `-m NJ` options. For instance
+# NJ and its variants are implemented in FastME. To run tree inference with NJ
+# for an input alignment or distance matrix, run `fastme` with the `-o
+# <output_file>` and `-m NJ` options. For instance
 
 # ```
 # fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -m NJ
@@ -277,18 +280,21 @@ savefig("_assets/phylocourse/distance/wpgma2.svg") # hide
 # >**Question**: Does the NJ tree make more sense than the WPGMA tree? What do
 # >you think is causing this?
 
-# Now infer a tree using $\Gamma$ distances
+# ## Rate heterogeneity across sites: 'Gamma distances'
 
-# ```
-# fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -g -m NJ
-# ```
-
-# >**Question**: What (if anything) is changing? Experiment with the $\alpha$
-# >parameter of the Gamma distribution by using for instance `-g0.5` in the
-# >FastME command. What happens? How does the inference for different values of
-# >$\alpha$ relate to the inference without Gamma distances? (FYI: below you can
-# >see a graph of the Gamma distribution for different values of $\alpha$ to
-# >help you interpret the results.)
+# The assumption that all sites in the alignment evolve at the same rate is
+# often problematic (just think of the active site of an enzyme vs. some region
+# with a purely structural function for instance). Accounting for heterogenity
+# in substitution rates across sites can be done by assuming some distribution
+# over *relative rates* across the alignment. In distance estimation, people
+# often use a Gamma distribution to model rate differences across sites. 
+#
+# The Gamma distribution is fixed to a mean value of 1, so that the average
+# relative rate across the alignment is 1 (this is of course exactly what we
+# mean by modeling *relative* rates). After fixing the mean to 1, there is
+# a single free parameter left to specify the shape of the Gamma distribution,
+# denoted $\alpha$. Here is a plot of the Gamma distribution for different
+# values of $\alpha$
 
 using Distributions
 p = plot(title="The Gamma distribution with mean 1")
@@ -298,6 +304,23 @@ end
 savefig(p, "_assets/phylocourse/distance/gamma.svg") # hide
 
 # ![](/assets/phylocourse/distance/gamma.svg)
+#
+# >**Question:** interpret the Gamma distribution as a model for rate
+# > heterogeneity using the plot above. To what assumption on the rates
+# > across sites does a large value of $\alpha$ correspond? To what
+# > assumption does a small value of $\alpha$ correspond?
+
+# We can infer a tree using $\Gamma$ distances nd the JC model using FastME:
+
+# ```
+# fastme -i 18SrRNA_20.phy -o 18SrRNA_20_JC.nwk -dJC69 -g -m NJ
+# ```
+
+# >**Question**: What (if anything) is changing? What is the default $\alpha$ 
+# >used in FastME? Experiment with the $\alpha$
+# >parameter of the Gamma distribution by using for instance `-g0.5` in the
+# >FastME command. What happens?
+
 #
 # >**Exercise**: Perform phylogenetic analysis using distance based methods for
 # >the second data set with more species. Perform an analysis using the JC

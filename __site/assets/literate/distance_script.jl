@@ -37,19 +37,6 @@ plot(
 
 savefig("_assets/phylocourse/distance/wpgma.svg") # hide
 
-matrix, taxa, ntaxa = readmatrix("_assets/phylocourse/distance/18SrRNA_20_JCGamma_matrix.txt")
-hcl = hclust(matrix, linkage=:average)
-
-plot(
-    plot(hcl, xticks=false),
-    heatmap(matrix[hcl.order,hcl.order], colorbar=false,
-        yticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xticks=(1:ntaxa, [taxa[i] for i in hcl.order]),
-        xrotation=45),
-    layout=grid(2, 1, heights=[0.2,0.8]), size=(600,750))
-
-savefig("_assets/phylocourse/distance/wpgma2.svg") # hide
-
 using Distributions
 p = plot(title="The Gamma distribution with mean 1")
 for α in [0.1, 0.25, 0.5, 1.0, 5.0, 10., 100.]
