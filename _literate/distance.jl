@@ -44,7 +44,7 @@ d = -0.75 * log(1. - 4x/3)
 # available for more complicated substitution models. For more details, see the
 # [notes on substitution models](../submod).
 
-# > **Question**. The proportion of different sites in a pair of sequence $x$
+# > **Question (optional)**. The proportion of different sites in a pair of sequence $x$
 # > is a **summary statistic** of the data, we reduce the data to a single number
 # > $x$. For the Jukes - Cantor model the likelihood $P(\text{sequence pair}|\mathrm{model})$ 
 # > only depends on the summary statistic $x$. Why will
@@ -322,14 +322,7 @@ savefig(p, "_assets/phylocourse/distance/gamma.svg") # hide
 # >FastME command. What happens?
 
 #
-# >**Exercise**: Perform phylogenetic analysis using distance based methods for
-# >the second data set with more species. Perform an analysis using the JC
-# >model, and the JC+Γ model, and vary the shape of the Gamma distribution in
-# >the latter case. Record the differences in the phylogenetic trees you
-# >inferred and note them down (we will compare them later with
-# >maximum-likelihood results).
-
-# >**Question**. Why, in fact, assume a Gamma distribution for rates across sites?
+# >**Question (extra)**. Why, in fact, assume a Gamma distribution for rates across sites?
 # >Could we use other distributions (not in FastME, but in general)? Give a couple
 # >suggestions and think about the pros and cons.
 

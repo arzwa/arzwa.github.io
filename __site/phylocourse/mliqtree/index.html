@@ -18,45 +18,45 @@
 
 <!-- Content appended here -->
 <div class="franklin-content"><p><a href="/phylocourse/">back</a></p>
-<div class="franklin-toc"><ol><li><a href="#maximum_likelihood_based_inference_of_phylogenies">Maximum likelihood based inference of phylogenies</a><ol><li><a href="#ml_on_trees_substitution_models_again">ML on trees: substitution models &#40;again&#41;</a></li><li><a href="#computing_the_likelihood_on_a_tree">Computing the likelihood on a tree</a></li><li><a href="#searching_tree_space">Searching tree space</a></li></ol></li><li><a href="#exercises_ml_tree_inference_with_iq-tree">Exercises: ML tree inference with IQ-TREE</a><ol><li><a href="#basic_tree_inference">Basic tree inference</a><ol><li><a href="#the_jukes-cantor_model">The Jukes-Cantor model</a></li><li><a href="#gamma_distributed_rates_across_sites">Gamma distributed rates across sites</a></li></ol></li><li><a href="#the_bootstrap">The bootstrap</a></li><li><a href="#the_k2p_model">The K2P model</a></li><li><a href="#the_f81_model">The F81 model</a></li></ol></li></ol></div>
+<div class="franklin-toc"><ol><li><a href="#maximum_likelihood_based_inference_of_phylogenies">Maximum likelihood based inference of phylogenies</a><ol><li><a href="#from_distances_to_ml_on_trees">From distances to ML on trees</a></li><li><a href="#searching_tree_space">Searching tree space</a></li></ol></li><li><a href="#exercises_ml_tree_inference_with_iq-tree">Exercises: ML tree inference with IQ-TREE</a><ol><li><a href="#basic_tree_inference">Basic tree inference</a><ol><li><a href="#the_jukes-cantor_model">The Jukes-Cantor model</a></li><li><a href="#gamma_distributed_rates_across_sites">Gamma distributed rates across sites</a></li></ol></li><li><a href="#some_other_common_substitution_models">Some other common substitution models</a></li><li><a href="#the_bootstrap">The bootstrap</a></li></ol></li></ol></div>
 <h1 id="maximum_likelihood_based_inference_of_phylogenies"><a href="#maximum_likelihood_based_inference_of_phylogenies" class="header-anchor">Maximum likelihood based inference of phylogenies</a></h1>
 <p>Maximum likelihood is a powerful approach in statistics in general, and phylogenetics in particular. Besides the fairly nice statistical properties of ML estimators, ML as a methodology has the advantage that it has widespread acceptance philosophically &#40;the frequentist school of statistics praises the consistency etc. of ML estimators, while the Bayesians often regard ML a special case of Bayesian inference with some &#40;hidden&#41; prior assumptions&#41;. Another advantage is that ML estimates are invariant to transformations of the parameters, so we don&#39;t have to worry about what the &#39;natural&#39; scale is for our parameters &#40;e.g. a branch length can not be negative, so should we log transform it then?&#41;. In this section, we&#39;ll first explore a bit how ML works in the phylogenetics context, and do some exercises with a modern software for ML phylogeny inference.</p>
-<h2 id="ml_on_trees_substitution_models_again"><a href="#ml_on_trees_substitution_models_again" class="header-anchor">ML on trees: substitution models &#40;again&#41;</a></h2>
+<h2 id="from_distances_to_ml_on_trees"><a href="#from_distances_to_ml_on_trees" class="header-anchor">From distances to ML on trees</a></h2>
 <p><a href="../submod">Recall</a> that the principle of maximum likelihood states that</p>
 <blockquote>
 <p>For a particular model with parameters \(\theta\), our best estimate for the parameters based on the data \(D\) is given by the parameter values \(\hat{\theta}\) for which the probability of observing the data \(D\) is maximized.</p>
 </blockquote>
 <p>In mathematical notation</p>
 \[\hat{\theta} = \mathrm{argmax}_{\theta} p(D|\theta)\]
-<p>which you can read as &quot;the estimate \(\hat{\theta}\) is found by maximizing \(p(D|\theta)\) with respect to the parameters \(\theta\)&quot;, where \(p\) denotes a probability <a href="https://en.wikipedia.org/wiki/Probability_mass_function">mass</a> or <a href="https://en.wikipedia.org/wiki/Probability_density_function">density</a> function.  Incidentally \(p(D|\theta)\) is called <strong>the likelihood</strong>, as it indicates how probable it is to observe data for some value of \(\theta\). When the likelihood is considered in this way &#40;i.e. as a function of \(\theta\) for <em>fixed</em> \(D\)&#41;, it is often writtin as <strong>the likelihood function</strong> \(L(\theta;D)\) or \(L(\theta|D)\) to stress the fact that \(\theta\) is a variable but \(D\) is not &#40;it is fixed by our observation of it, i.e. the data&#41;.</p>
-<p>We <a href="../submod">already saw a bit</a> of how the ML principle can be used to estimate the evolutionary distance between two sequences. The important take home message from there is that for a given substitution model, the likelihood of a multiple sequence alignment is fully specified by</p>
+<p>which you can read as &quot;the estimate \(\hat{\theta}\) is found by maximizing \(p(D|\theta)\) with respect to the parameters \(\theta\)&quot;, where \(p\) denotes a probability <a href="https://en.wikipedia.org/wiki/Probability_mass_function">mass</a> or <a href="https://en.wikipedia.org/wiki/Probability_density_function">density</a> function.  Incidentally \(p(D|\theta)\) is called <strong>the likelihood</strong>, as it indicates how probable it is to observe the data \(D\) for some value of \(\theta\). When the likelihood is considered in this way &#40;i.e. as a function of \(\theta\) for <em>fixed</em> \(D\)&#41;, it is often written as <strong>the likelihood function</strong> \(\ell(\theta;D)\) or \(\ell(\theta|D)\) to stress the fact that \(\theta\) is a variable but \(D\) is not &#40;it is fixed by our observation of it, i.e. the data&#41;.</p>
+<p>We <a href="../submod">already saw a bit</a> of how the ML principle can be used to estimate the evolutionary distance between two sequences. The basic principle can however be generalized to multiple sequences related by a tree topology. Instead of estimating pairwise distances and model parameters by maximum likelihood and then combining these distances in a tree using some <em>ad hoc</em> clustering approach, we can estimate <em>directly</em> the tree topology, branch lengths &#40;distances&#41; and model parameters. In other words given</p>
 <ol>
+<li><p>The parameters of the substitution model \(\theta\).</p>
+</li>
 <li><p>The tree topology \(\Psi\) that describes the relationship between the sequences</p>
 </li>
 <li><p>The branch lengths \(b\)</p>
 </li>
-<li><p>The parameters of the substitution model \(\theta\).</p>
-</li>
 </ol>
-<p>What this means is that the quantity \(L(\Psi, b, \theta |D)\) is a well defined thing. And <em>if we were able to compute this quantity</em> we could try to adopt the ML principle <em>to estimate</em> \(\Psi, b\) and \(\theta\) by searching for those topologies \(\Psi\), branch lengths \(b\) and parameter values \(\theta\) that make \(L(\Psi, b, \theta|D)\) maximal for the given data \(D\).</p>
-<p>We know how to do this in the case where our alignment consists of two sequences. In that case, there is no tree topology, and what we&#39;re left with is the problem of estimating the distances &#40;and parameters of the substitution model&#41;, which we already did <a href="../submod">here</a> and <a href="../distance">here</a>. So the next question is <em>how to compute the likelihood of a larger alignment, where the sequences are related by a tree.</em></p>
-<h2 id="computing_the_likelihood_on_a_tree"><a href="#computing_the_likelihood_on_a_tree" class="header-anchor">Computing the likelihood on a tree</a></h2>
-<p>Luckily, there exists an efficient algorithm to do just that: <strong>Felsenstein&#39;s pruning algorithm</strong>.<sup id="fnref:pgm"><a href="#fndef:pgm" class="fnref">[1]</a></sup> More to be added soon &#40;I&#39;m very sorry&#41;.</p>
+<p>we can compute the likelihood \(p(D|\Psi,b,\theta) = \ell(\Psi, b, \theta|D)\). Somewhat more graphically:</p>
+<p><img src="/assets/phylocourse/img/l.png" alt="" /></p>
+<p><strong>What this means is</strong> that the quantity \(p(D|\Psi,b,\theta)\) is a well defined thing. And <em>if we were indeed able to compute this quantity</em> &#40;i.e. if there is an <em>algorithm</em> to compute it&#41; we could try to adopt the ML principle <em>to estimate</em> \(\Psi, b\) and \(\theta\) by searching for those topologies \(\Psi\), branch lengths \(b\) and parameter values \(\theta\) that make \(p(D|\Psi,
+b, \theta)\) maximal for the given data \(D\). Luckily, there exists an algorithm to do just that: <strong>Felsenstein&#39;s pruning algorithm</strong>.<sup id="fnref:pgm"><a href="#fndef:pgm" class="fnref">[1]</a></sup> I won&#39;t delve into that further here, but it effectively boils down to a trick which enables us to sum the probabilities over all possible evolutionary histories &#40;all possible ancestral sequences&#41; in an efficient way.</p>
 <h2 id="searching_tree_space"><a href="#searching_tree_space" class="header-anchor">Searching tree space</a></h2>
-<p>So we know how to compute the likelihood given a tree \(\Psi\), branch lengths \(b\) and parameters \(\theta\). Now we still have to maximize it with respect to the topologies and parameters of interest. This is a very tough <strong>optimization poblem</strong>. For numerical parameters on a fixed topology &#40;i.e. \(b\) and \(\theta\)&#41;, we may use standard techniques from mathematical optimization to find the ML estimates. To find the tree topology that leads to the maximal likelihood value is however an untractable problem that requires a <strong>heuristic</strong> optimization. The basic approach is the following:</p>
+<p>So we know how to compute the likelihood given a tree \(\Psi\), branch lengths \(b\) and parameters \(\theta\). Now we still have to maximize it with respect to the topologies and parameters of interest. This is a very tough <strong>optimization poblem</strong>. For numerical parameters on a fixed topology &#40;i.e. \(b\) and \(\theta\)&#41;, we may use standard techniques from mathematical optimization to find the ML estimates. To find the tree topology that leads to the maximal likelihood value is however an untractable problem that requires a <strong>heuristic</strong> optimization. &#40;Note that because of issues with <a href="https://en.wikipedia.org/wiki/Arithmetic_underflow">underflow</a>, one usually works with log-likelihood values instead of likelihood values, which is usually denoted by \(L\)&#41;. The basic approach for heuristic tree search is the following:</p>
 <ol>
 <li><p>start with an initial tree topology \(\Psi\)</p>
 </li>
-<li><p>set \(L_{best}\) to the maximum likelihood value for \(\Psi\), i.e. \(L_{best}
+<li><p>set \(L_{best}\) to the maximum log-likelihood value for \(\Psi\), i.e. \(L_{best}
    \leftarrow \underset{b,\theta}{\mathrm{max}}\ L(\Psi,b,\theta|D)\)</p>
 </li>
 <li><p>make a random change to \(\Psi\) to obtain \(\Psi'\)</p>
 </li>
-<li><p>compute the maximum likelihood value \(L'\) for \(\Psi'\)</p>
+<li><p>compute the maximum log-likelihood value \(L'\) for \(\Psi'\)</p>
 </li>
 <li><p>if \(L' > L_{best}\), set \(\Psi \leftarrow \Psi'\) and set \(L_{best} \leftarrow L'\)</p>
 </li>
-<li><p>repeat from &#40;3&#41; until there is no improveent in \(L_{best}\)</p>
+<li><p>repeat from &#40;3&#41; until there is no improvement in \(L_{best}\)</p>
 </li>
 </ol>
 <p>This is however a computationally very costly procedure when executed naively &#40;note for instance that doing this as written above would involve a separate optimization of the parameters \(\theta\) and branch lengths \(b\) for each topology we try out, so essentially a complete optimization problem in its own right at each iteration&#33;&#41;, and that&#39;s where it is vital to have efficient software implementing clever heuristics such as RaxML, IQ-TREE and PhyML&#33;</p>
@@ -68,51 +68,56 @@
 </blockquote>
 <h2 id="basic_tree_inference"><a href="#basic_tree_inference" class="header-anchor">Basic tree inference</a></h2>
 <h3 id="the_jukes-cantor_model"><a href="#the_jukes-cantor_model" class="header-anchor">The Jukes-Cantor model</a></h3>
-<p>Let us first reconsider the 45 species 18S rRNA data set. Remember that we had some problematic clades in our distance-based phylogenies, where we found different topologies depending on whether we used distances computed with the Gamma model of rate heterogeneity across sites or not and depending on the \(\alpha\) parameter we chose. Let&#39;s see what we get when using ML.</p>
+<p>Let us first reconsider the <a href="/assets/phylocourse/data/18SrRNA_45.phy">45 species 18S rRNA data set</a>. Remember that we had some problematic clades in our distance-based phylogenies, where we found different topologies depending on whether we used distances computed with the Gamma model of rate heterogeneity across sites or not and depending on the \(\alpha\) parameter we chose. Let&#39;s see what we get when using ML.</p>
 <p>Put the <code>18SrRNA_45.phy</code> file in the directory with the IQ-TREE executable. Fire up IQ-TREE and run the following command:</p>
 <pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m JC -pre JC</code></pre>
-<p>The <code>-s</code> option is used for specifying the input multiple sequence alignment file, the <code>-m</code> option is used for setting the substitution model &#40;here Jukes &amp; Cantor&#41; and the <code>-pre</code> option sets a prefix for the output file names. Note that IQ-TREE generates three output files: a <code>.log</code>, <code>.treefile</code> and <code>.iqtree</code> file. Most interesting stuff is in the <code>.iqtree</code> file. The tree &#40;which can be loaded FigTree or <a href="https://icytree.org/">icytree</a> for example&#41; is in the <code>.treefile</code>. Note that likelihoods are always shown as <em>log</em>-likelihoods to prevent numerical inaccuracies.</p>
+<p>The <code>-s</code> option is used for specifying the input multiple sequence alignment file, the <code>-m</code> option is used for setting the substitution model &#40;here Jukes &amp; Cantor&#41; and the <code>-pre</code> option sets a prefix for the output file names. Note that IQ-TREE generates three output files: a <code>.log</code>, <code>.treefile</code> and <code>.iqtree</code> file. <strong>Most interesting stuff is in the <code>.iqtree</code> file</strong>. The tree &#40;which can be loaded FigTree or <a href="https://icytree.org/">icytree</a> for example&#41; is in the <code>.treefile</code>.</p>
 <blockquote>
 <ul>
-<li><p>Examine the stuff IQ-TREE prints to the screen, can you figure out the different steps IQ-TREE uses to find the ML tree?</p>
+<li><p>Examine the stuff IQ-TREE prints to the screen, can you figure out &#40;roughly&#41; the different steps IQ-TREE uses to find the ML tree?</p>
 </li>
-<li><p>What is the log-likelihood associated with the ML tree?</p>
+<li><p>Open the <code>.iqtree</code> file. What is the log-likelihood associated with the ML tree?</p>
 </li>
-<li><p>Do you think it is a problem that the likelihood is such an absurdly small number?</p>
+<li><p>Do you think it is a problem that the likelihood is such an inconceivably small number?</p>
 </li>
-<li><p>How does the phylogeny compare with the distance based phylogeny under the JC model? Can you explain why?</p>
+<li><p>How many parameters did we have to estimate?</p>
 </li>
 </ul>
 </blockquote>
 <h3 id="gamma_distributed_rates_across_sites"><a href="#gamma_distributed_rates_across_sites" class="header-anchor">Gamma distributed rates across sites</a></h3>
-<p>Now let&#39;s compare this with the JC&#43;Gamma model.</p>
+<p>Now let&#39;s compare this with the JC&#43;Gamma model. Note that we cannot use the complete Gamma model as in the distance based methods &#40;for computational reasons&#41;, and that we use a <strong>discrete approximation</strong> to the Gamma distribution, by chopping up the Gamma distribution into \(K\) pieces of equal total probability, which we can think of as \(K\) rate classes. If for instance \(K=3\), it means we cut the Gamma distribution in five pieces, each of which accounts for 33&#37; of the total probability distribution, like in the plot below</p>
+<pre><code class="language-julia">α &#61; 1.0
+K &#61; 3
+d &#61; Gamma&#40;α, 1/α&#41;  # the Gamma distribution object
+q &#61; quantile&#40;d, 1/K:1/K:1&#41;  # the discretization points &#40;defining the classes&#41;
+m &#61; quantile&#40;d, 1/2K:1/K:1-1/2K&#41;  # the medians in each class
+@show round.&#40;m, digits&#61;2&#41;
+plot&#40;d, grid&#61;false, legend&#61;false, size&#61;&#40;500,200&#41;, xlim&#61;&#40;0,5&#41;, xlabel&#61;&quot;relative rate&quot;, ylabel&#61;&quot;probability density&quot;, guidefont&#61;8&#41;
+vline&#33;&#40;q, color&#61;:black&#41;
+vline&#33;&#40;m, linestyle&#61;:dot&#41;</code></pre><pre><code class="plaintext">round.(m, digits = 2) = [0.18, 0.69, 1.79]
+</code></pre>
+<p><img src="/assets/phylocourse/mliqtree/gamma.svg" alt="" /></p>
+<p>In this plot the black lines divide the Gamma distribution with \(\alpha = 1\) into \(K=3\) pieces of equal probability, the green dotted lines mark the median value in each piece. This median value will be the representative of our three rate classes: so we have &#40;in this example&#41; a slow rate class with relative substitution rate 0.18, a medium rate class with relative rate 0.69 and a fast rate class with relative rate 1.79.  So what we effectively do is approximate the continuous gamma model, where the relative substitution rate for each site is distributed according to a Gamma distribution, by a model where each site comes from one of \(K\) rate classes, each with probability \(1/K\), where the rate classes are determined by a discretization of the Gamma distribution.</p>
 <pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m JC&#43;G  -pre JCG</code></pre>
+<p>Again, look at the <code>.iqtree</code> output file</p>
 <blockquote>
 <ul>
 <li><p>What is the MLE for the \(\alpha\) parameter of the Gamma distribution?</p>
 </li>
-<li><p>Does the topology differ between the ML tree found with JC and JC&#43;G?</p>
+<li><p>How many rate classes does IQ-TREE use by default?</p>
+</li>
+<li><p>What are the relative rates for each rate class for the estimated Gamma distribution?</p>
+</li>
+<li><p>Is the implied Gamma distribution more asymmetric or less asymmetric then an Exponential distribution?</p>
+</li>
+<li><p>Does the tree topology differ between the ML tree found with JC and JC&#43;G?</p>
 </li>
 </ul>
 </blockquote>
-<h2 id="the_bootstrap"><a href="#the_bootstrap" class="header-anchor">The bootstrap</a></h2>
-<p>Since different methods gave different results for some clades, it would definitely be worthwhile to try to get an idea of how well the different clades in the tree are supported by the data. As you saw in the course, the most commonly used approach to evaluate the statistical support of a phylogenetic tree in ML or distance based phylogenetics is the bootstrap. We will use the &quot;ultrafast bootstrap&quot; as implemented in IQ-TREE &#40;which is not exactly the same as Felsenstein&#39;s original nonparametric bootstrapping approach<sup id="fnref:ultrafast"><a href="#fndef:ultrafast" class="fnref">[3]</a></sup>&#41;.  Run IQ-TREE with 1000 ultrafast bootstrap replicates:</p>
-<pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m JC   -bb 1000 -pre JC_BSV
-iqtree -s 18SrRNA_45.phy -m JC&#43;G -bb 1000 -pre JCG_BSV</code></pre>
-<blockquote>
-<ul>
-<li><p>Are there any nodes for which you find low support?</p>
-</li>
-<li><p>Are the clades which were problematic in the distance-based analyses well-supported in the ML trees?</p>
-</li>
-</ul>
-</blockquote>
-<blockquote>
-<p><strong>Extra:</strong> Using the <code>-wbt</code> option when doing bootstrapping with IQ-TREE will write the bootstrap trees to a file &#40;with <code>ufboot</code> extension&#41;. You can explore the different bootstrap trees by loading that file in FigTree and using the <code>next</code> and <code>previous</code> controls. Alternatively you can try out the software <a href="https://www.cs.auckland.ac.nz/~remco/DensiTree/">DensiTree</a> to visualize sets of tree topologies for the same taxa.</p>
-</blockquote>
-<p>Now let us have a look at some other substitution models.</p>
-<h2 id="the_k2p_model"><a href="#the_k2p_model" class="header-anchor">The K2P model</a></h2>
+<h2 id="some_other_common_substitution_models"><a href="#some_other_common_substitution_models" class="header-anchor">Some other common substitution models</a></h2>
+<p>Now let us have a look at some other substitution models, consider for instance Kimura&#39;s two-parameter &#40;K2P&#41; model. Run</p>
 <pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m K2P -pre K2P</code></pre>
+<p>and take a look at the <code>.iqtree</code> file</p>
 <blockquote>
 <ul>
 <li><p>What is the difference between the K2P and JC model?</p>
@@ -121,33 +126,45 @@ iqtree -s 18SrRNA_45.phy -m JC&#43;G -bb 1000 -pre JCG_BSV</code></pre>
 </li>
 <li><p>What are the ML estimate&#40;s&#41; of the&#40;se&#41; parameter&#40;s&#41;</p>
 </li>
-</ul>
-</blockquote>
-<h2 id="the_f81_model"><a href="#the_f81_model" class="header-anchor">The F81 model</a></h2>
-<pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m F81 -pre F81</code></pre>
-<blockquote>
-<ul>
-<li><p>What is the difference between the F81 model and the JC model?</p>
+<li><p><strong>Extra:</strong> Consider the F81, HKY and GTR models. Look again at the <code>.iqtree</code> output files. How do these models relate to the JC and K2P model? How do they relate to each other?</p>
 </li>
 </ul>
 </blockquote>
-<p>Now we&#39;ve performed phylogeny inference under a bunch of different substitution models, but how can we know which model we should use? This problem is for instance similar to a well-studied issue in typical statistics courses: we fitted a linear regression with a bunch of parameters, how can we know which parameters are meaningful to include? This is a problem of <strong>model selection</strong>, which will be discussed in the <a href="../modsel">next section</a>.</p>
+<p>Now we&#39;ve performed phylogeny inference under a bunch of different substitution models, but how can we know which model we should use? This problem is for instance similar to a well-studied issue in typical statistics courses: we fitted a linear regression with a bunch of parameters, how can we know which parameters are meaningful to include? This is a problem of <strong>model selection</strong>, which is the subject of the <a href="../modsel">next section</a>.</p>
+<h2 id="the_bootstrap"><a href="#the_bootstrap" class="header-anchor">The bootstrap</a></h2>
+<p>Since different methods gave different results for some clades, it would definitely be worthwhile to try to get an idea of how well the different clades in the tree are supported by the data. As you saw in the course, the most commonly used approach to evaluate the statistical support of a phylogenetic tree in ML or distance based phylogenetics is by &#39;bootstrapping&#39;. We will use the &quot;ultrafast bootstrap&quot; as implemented in IQ-TREE &#40;which is not exactly the same as Felsenstein&#39;s original nonparametric bootstrapping approach<sup id="fnref:ultrafast"><a href="#fndef:ultrafast" class="fnref">[3]</a></sup>&#41;.  Run IQ-TREE with 1000 ultrafast bootstrap replicates:</p>
+<pre><code class="language-bash">iqtree -s 18SrRNA_45.phy -m JC&#43;G -bb 1000 -wbtl -pre JCG_BSV</code></pre>
+<p>Open the <code>.treefile</code> in FigTree or <a href="https://icytree.org/">icytree</a>, and display the bootstrap support values along the internal nodes &#40;In FigTree select the <code>Node labels</code> checkbox and find the right field to display, in IcyTree you need to check <code>Style &gt; Internal Node Text &gt; Label</code>&#41;.</p>
+<blockquote>
+<ul>
+<li><p>Are there any nodes for which you find low support?</p>
+</li>
+<li><p>Are the clades which were problematic in the distance-based analyses well-supported in the ML trees?</p>
+</li>
+<li><p>What does the <code>-wbtl</code> option do?</p>
+</li>
+<li><p>Interpret how a bootstrap support value is obtained in terms of the <code>.ufboot</code> file</p>
+</li>
+<li><p>Extra: Download the <a href="https://www.cs.auckland.ac.nz/~remco/DensiTree/">DensiTree</a> program and open the ufboot file with it &#40;Download the <code>DensiTree.jar</code> file, put it in some directory, open a terminal/command prompt and go to the directory with the jar file, then run <code>java -jar DensiTree.jar &lt;path to your ufboot file here&gt;</code>. What is displayed? Interpret what you see.</p>
+</li>
+</ul>
+</blockquote>
 <p><hr /> <table class="fndef" id="fndef:pgm">
     <tr>
         <td class="fndef-backref"><a href="#fnref:pgm">[1]</a></td>
-        <td class="fndef-content">For the machine learning/AI aficionados, this algorithm is essentially the same as what is reffered to by &#39;variable elimination&#39; in the probabilistic graphical modeling literature.</td>
-    </tr>
-</table>
- <table class="fndef" id="fndef:ultrafast">
-    <tr>
-        <td class="fndef-backref"><a href="#fnref:ultrafast">[3]</a></td>
-        <td class="fndef-content">The ultrafast bootstrap of Minh <em>et al.</em> &#40;2013&#41; is for instance not only much faster, but also less biased. It is well known that Felsenstein&#39;s nonparametric bootstrap tends to be conservative &#40;i.e. bootstrap support values tend to be underestimated relatively to the true statistical support of a clade&#41;, the ultrafast bootstrap is less so, and can be more easily interpreted as they tend to more closely resemble probabilities.</td>
+        <td class="fndef-content">For the machine learning/AI aficionados, this algorithm is essentially the same as what is referred to by <a href="https://en.wikipedia.org/wiki/Variable_elimination">&#39;variable elimination&#39;</a> in the probabilistic graphical modeling literature.</td>
     </tr>
 </table>
  <table class="fndef" id="fndef:dir">
     <tr>
         <td class="fndef-backref"><a href="#fnref:dir">[2]</a></td>
         <td class="fndef-content">I sometimes notice that Windows users that are not particular computophiles are not familiar with the word <em>directory</em>, but generally employ the term <em>folder</em>. This seems to be related to some <a href="9https://en.wikipedia.org/wiki/Directory_&#37;28computing&#37;29#Folder_metaphor">philosophy that originated within Microsoft Windows</a> where &quot;There is a difference between a directory, which is a file system concept, and the graphical user interface metaphor that is used to represent it &#40;a folder&#41;.&quot;</td>
+    </tr>
+</table>
+ <table class="fndef" id="fndef:ultrafast">
+    <tr>
+        <td class="fndef-backref"><a href="#fnref:ultrafast">[3]</a></td>
+        <td class="fndef-content">The ultrafast bootstrap of Minh <em>et al.</em> &#40;2013&#41; is for instance not only much faster, but also less biased. It is well known that Felsenstein&#39;s nonparametric bootstrap tends to be conservative &#40;i.e. bootstrap support values tend to be underestimated relatively to the true statistical support of a clade&#41;, the ultrafast bootstrap is less so, and can be more easily interpreted as they tend to more closely resemble probabilities.</td>
     </tr>
 </table>
 </p>

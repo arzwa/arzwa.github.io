@@ -40,7 +40,7 @@ x &#61; num_differences/length&#40;seqa&#41;</code></pre><pre><code class="plain
 <pre><code class="language-julia">d &#61; -0.75 * log&#40;1. - 4x/3&#41;</code></pre><pre><code class="plaintext">0.49747066305769816</code></pre>
 <p>This distance is correctly interpreted as <strong>an estimate of the expected number of substitutions per site</strong> separating the two sequences. Note that the distance is a product of two other evolutionary variables: the <strong>substitution rate</strong> and the <strong>divergence time</strong>. If we have \(n\) sequences, we can apply the distance formula to obtain an \(n \times n\)  <strong>distance matrix</strong>. Note however that such simple distance formulae are generally not available for more complicated substitution models. For more details, see the <a href="../submod">notes on substitution models</a>.</p>
 <blockquote>
-<p><strong>Question</strong>. The proportion of different sites in a pair of sequence \(x\) is a <strong>summary statistic</strong> of the data, we reduce the data to a single number \(x\). For the Jukes - Cantor model the likelihood \(P(\text{sequence pair}|\mathrm{model})\) only depends on the summary statistic \(x\). Why will such a summary statistic not work for more complicated substitution models, for instance where transitions and transversions have different rates? If we cannot use a formula based on some summary statistic, how can we estimate a distance?</p>
+<p><strong>Question &#40;optional&#41;</strong>. The proportion of different sites in a pair of sequence \(x\) is a <strong>summary statistic</strong> of the data, we reduce the data to a single number \(x\). For the Jukes - Cantor model the likelihood \(P(\text{sequence pair}|\mathrm{model})\) only depends on the summary statistic \(x\). Why will such a summary statistic not work for more complicated substitution models, for instance where transitions and transversions have different rates? If we cannot use a formula based on some summary statistic, how can we estimate a distance?</p>
 </blockquote>
 <p>After computing the distance matrix, a tree is inferred by using some sort of clustering algorithm or least-squares estimation step. Distance-based phylogenetic inference is thus essentially a two-step process:</p>
 <ol>
@@ -160,10 +160,7 @@ end</code></pre>
 <p><strong>Question</strong>: What &#40;if anything&#41; is changing? What is the default \(\alpha\) used in FastME? Experiment with the \(\alpha\) parameter of the Gamma distribution by using for instance <code>-g0.5</code> in the FastME command. What happens?</p>
 </blockquote>
 <blockquote>
-<p><strong>Exercise</strong>: Perform phylogenetic analysis using distance based methods for the second data set with more species. Perform an analysis using the JC model, and the JC&#43;Γ model, and vary the shape of the Gamma distribution in the latter case. Record the differences in the phylogenetic trees you inferred and note them down &#40;we will compare them later with maximum-likelihood results&#41;.</p>
-</blockquote>
-<blockquote>
-<p><strong>Question</strong>. Why, in fact, assume a Gamma distribution for rates across sites? Could we use other distributions &#40;not in FastME, but in general&#41;? Give a couple suggestions and think about the pros and cons.</p>
+<p><strong>Question &#40;extra&#41;</strong>. Why, in fact, assume a Gamma distribution for rates across sites? Could we use other distributions &#40;not in FastME, but in general&#41;? Give a couple suggestions and think about the pros and cons.</p>
 </blockquote>
 <blockquote>
 <p><strong>Optional</strong>: Explore some of the other substitution models available in FastME.</p>
