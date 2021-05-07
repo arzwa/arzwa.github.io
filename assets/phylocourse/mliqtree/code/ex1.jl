@@ -1,5 +1,4 @@
-# This file was generated, do not modify it.
-
+# This file was generated, do not modify it. # hide
 using Distributions, Plots, StatsPlots # hide
 α = 1.0
 K = 3
@@ -12,4 +11,3 @@ vline!(q, color=:black)
 vline!(m, linestyle=:dot)
 
 savefig("_assets/phylocourse/mliqtree/gamma.svg") # hide
-
