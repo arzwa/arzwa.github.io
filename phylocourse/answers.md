@@ -1,4 +1,13 @@
+[back](../)
+
 \toc
+
+These are some suggested answers to the questions in the exercises in sections
+2 and 3 of the pratical courses. The focus is on questions concerning the
+interpretation of methods, models and parameters. Most of the questions
+concerning interpretation and comparisons of trees have been omitted here.
+Please direct any questions about the questions/answers to the dicussion 
+forum on the UFora website.
 
 # Distance methods
 
@@ -166,6 +175,10 @@ model is well-approximated by a model with a single substitution rate for all
 sites (i.e. the normal JC model).
 
 # Maximum likelihood phylogeny inference
+
+**Note:** most of the results below are for the 45 species 18SrRNA data set.
+If you used the HIV or any other data set your results will of course differ,
+but the interpretations remain the same.
 
 ## Analysis under the Jukes & Cantor model
 
