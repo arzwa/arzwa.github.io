@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="/libs/katex/katex.min.css">
      
-  
+   <link rel="stylesheet" href="/libs/highlight/github.min.css">
+   
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/basic.css">
    <title>Distance methods</title>  
@@ -16,7 +17,8 @@
   </header>
 
 <!-- Content appended here -->
-<div class="franklin-content"><h1 id="distance_methods"><a href="#distance_methods" class="header-anchor">Distance methods</a></h1>
+<div class="franklin-content"><div class="franklin-toc"><ol><li><a href="#distance_methods">Distance methods</a><ol><li><a href="#distance_matrix">Distance matrix</a></li><li><a href="#clustering_methods">Clustering methods</a></li><li><a href="#neighbor-joining">Neighbor-joining</a></li><li><a href="#gamma_distances">Gamma distances</a></li></ol></li><li><a href="#maximum_likelihood_phylogeny_inference">Maximum likelihood phylogeny inference</a><ol><li><a href="#analysis_under_the_jukes_cantor_model">Analysis under the Jukes &amp; Cantor model</a></li><li><a href="#gamma_distributed_rates">Gamma distributed rates</a></li><li><a href="#other_common_substitution_models">Other common substitution models</a></li><li><a href="#the_bootstrap">The bootstrap</a></li></ol></li></ol></div>
+<h1 id="distance_methods"><a href="#distance_methods" class="header-anchor">Distance methods</a></h1>
 <h2 id="distance_matrix"><a href="#distance_matrix" class="header-anchor">Distance matrix</a></h2>
 <blockquote>
 <p>Question: does this distance matrix make sense to you? Can you spot clades of more closely related species already?</p>
@@ -70,9 +72,108 @@
 <p>Question: What &#40;if anything&#41; is changing? What is the default \(\alpha\) used in FastME? Experiment with the \(\alpha\) parameter of the Gamma distribution by using for instance -g0.5 in the FastME command. What happens?</p>
 </blockquote>
 <p>The branch lengths change considerably, both relative to each other as well as in overall length. Assuming highly asymmetric distributions of the substitution rate across sites &#40;e.g. \(\alpha\) &#61; 0.2, fig. 4&#41; leads to higher distance estimates overall and more outspoken differences between different branches. This is due to the combination of both allowing different substitution rates across branches and across sites, leading to multiplicative effects &#40;in contrast with the clustering methods, where we saw not much change in the relative branch lengths when using \(\Gamma\) heterogeneity&#41;. Using more symmetric distributions &#40;e.g. \(\alpha\) &#61; 10 fig. 5&#41; leads to a result that is indistinguishable from the result without \(\Gamma\) distances. This is because the different rates across sites are all very close to the mean rate, so the model is well-approximated by a model with a single substitution rate for all sites &#40;i.e. the normal JC model&#41;.</p>
+<h1 id="maximum_likelihood_phylogeny_inference"><a href="#maximum_likelihood_phylogeny_inference" class="header-anchor">Maximum likelihood phylogeny inference</a></h1>
+<h2 id="analysis_under_the_jukes_cantor_model"><a href="#analysis_under_the_jukes_cantor_model" class="header-anchor">Analysis under the Jukes &amp; Cantor model</a></h2>
+<blockquote>
+<p>Examine the stuff IQ-TREE prints to the screen, can you figure out &#40;roughly&#41; the different steps IQ-TREE uses to find the ML tree?</p>
+</blockquote>
+<p>Here I’ll highlight some parts of the output. A first informative bit is</p>
+<pre><code class="language-md">Alignment has 45 sequences with 1626 columns, 1110 distinct patterns
+934 parsimony-informative, 232 singleton sites, 460 constant sites</code></pre>
+<p>This shows some features of the data. We have 1626 columns, i.e. data points &#40;recall that we assume independent evolution across sites, so each column of an alignment is a data point from a statistical point of view&#41;. There are 1110 unique columns &#40;or ‘site patterns’ as they tend to be called in phylogenetics&#41;. Note that the likelihood will be the same for identical columns in the alignment, so the program will not compute the log-likelihood for 1626 sites separately, but run the basic likelihood algorithm for the 1110 unique patterns everytime the likelihood &#40;i.e. \(P(\text{data}|\text{tree,parameters})\)&#41; is calculated, saving time. 934 sites are ‘parsimony informative’ which means that for those sites, some topologies would have a higher parsimony score than others.</p>
+<p>Next IQ-TREE performs a compositional heterogeneity test. This is a crude statistical test to assess whether nucleotide composition is similar or not across sequences.  For a ‘tree of life’ scale data set like the one here, you’ll see the sequences have quite different base compositions. More info can be found <a href="http://www.iqtree.org/doc/Frequently-Asked-Questions#what-is-the-purpose-of-composition-test">here</a>.</p>
+<p>Then the IQ-TREE algorithm starts.</p>
+<ul>
+<li><p>First a maximum parsimony tree is inferred to use as an initial tree for the ML search.</p>
+</li>
+<li><p>Next, initial model parameters are estimated by doing ML estimation on the initial parsimony tree.</p>
+</li>
+<li><p>Then pairwise distances are estimated using the model with the initial parameter estimates.  </p>
+</li>
+<li><p>Then a Neighbor-joining tree is inferred based on the distance matrix &#40;using the BIONJ algorithm&#41;, and the loglikelihood is computed for the resulting &#40;BIO&#41;NJ tree. This tree is our next ‘initial’ tree.  </p>
+</li>
+</ul>
+<p>IQ-TREE will then generate a candidate tree set based on the initial tree, compute 1the likelihoods, and then proceed with the best scoring trees.  For these trees it will then try to perform random topological rearrangements etc. to search for the best tree &#40;the one with the highest likelihood&#41;.  After that a smaller candidate set is obtained, and IQ-TREE will do a more thorough optimization of the model parameters, branch lengths and topology to arrive at a final tree estimate. For the final tree, it will then do a final maximum likelihood estimation step of the model parameters.</p>
+<blockquote>
+<p>Open the <code>.iqtree</code> file. What is the log-likelihood associated with the ML tree?</p>
+</blockquote>
+<p>Check the line with: </p>
+<pre><code class="language-md">BEST SCORE FOUND : -31599.974</code></pre>
+<blockquote>
+<p>Do you think it is a problem that the likelihood is such an inconceivably small number?</p>
+</blockquote>
+<p>No, this is perfectly expected. Recall that the likelihood L is defined as the probability of the data given the tree topology, model parameters and branch lengths, i.e. </p>
+\[\ell(X|\Psi,b,\theta) = P(X|\Psi,b,\theta)\]
+<p>where \(X\) denotes the data, \(\Psi\) the topology, \(b\) the branch lengths &#40;i.e. \(\Psi\) and \(b\) together define the <em>phylogenetic tree</em>&#41; and \(\theta\) denotes the parameters of the substitution model.  The likelihood of \(e^{−31600}\) is thus the probability that if you randomly simulate the evolution of a 1626 site long-sequence from the Jukes-Cantor with the inferred ML parameters along the inferred ML tree, you will obtain the exact data set you have used as input. Of course this probability really is ridiculously small. &#40;Back of the envelope: note that the log-likelihood per site is about -19, which you can compare to the log-likelihood of observing a random 45 character string &#40;one nucleotide for each species&#41; for a four-letter alphabet under a uniform distribution, which is \(\log(1/4^{45}) \approx −62\)&#41;.</p>
+<blockquote>
+<p>How many parameters did we have to estimate?</p>
+</blockquote>
+<p>Check the line:</p>
+<pre><code class="language-md">Number of free parameters &#40;#branches &#43; #model parameters&#41;: 87</code></pre>
+<h2 id="gamma_distributed_rates"><a href="#gamma_distributed_rates" class="header-anchor">Gamma distributed rates</a></h2>
+<blockquote>
+<ul>
+<li><p>What is the MLE for the \(\alpha\) parameter of the Gamma distribution?</p>
+</li>
+<li><p>How many rate classes does IQ-TREE use by default? </p>
+</li>
+<li><p>What are the relative rates for each rate class for the estimated Gamma distribution? </p>
+</li>
+<li><p>Is the implied Gamma distribution more asymmetric or less asymmetric then an Exponential distribution?</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="language-md">Model of rate heterogeneity: Gamma with 4 categories
+Gamma shape alpha: 0.46
+
+ Category  Relative_rate  Proportion
+  1         0.02623        0.25
+  2         0.225          0.25
+  3         0.7888         0.25
+  4         2.96           0.25
+Relative rates are computed as MEAN of the portion of the Gamma distribution falling in the category.</code></pre>
+<p>The ML estimate is \(\alpha = 0.46\). Note that we approximate the Gamma distribution of rates across sites by fitting a discretized Gamma model with 4 classes. The relative rates associated with the different categories are shown in the .iqtree output. &#40;see the plots and explanation in the exercises for more explanation on the discretization&#41;. Clearly, IQ-TREE uses four rate classes by  default. The relative rates are listed in the table. The distribution is more asymmetric than an Exponential distribution &#40;\(\alpha < 1\), see plots on the exercises page for distance methods&#41;.</p>
+<h2 id="other_common_substitution_models"><a href="#other_common_substitution_models" class="header-anchor">Other common substitution models</a></h2>
+<blockquote>
+<p>What is the difference between the K2P and JC model? </p>
+</blockquote>
+<p>The K2P model allows for unequal substitution rates for transitions &#40;pyrimidine to pyrimidine, purine to purine&#41; vs.  tranversions &#40;pyrimidine to purine and vice versa&#41;. </p>
+<blockquote>
+<p>How many more parameters does the K2P model have compared to the JC model? </p>
+</blockquote>
+<p>The K2P has one additional parameter, the ratio of the substitution rate for transitions to the substitution rate for transversions. This is confirmed by the IQ-TREE output: <code>Number of free parameters &#40;#branches &#43; #model parameters&#41;: 88</code></p>
+<blockquote>
+<p>What are the ML estimate&#40;s&#41; of the&#40;se&#41; parameter&#40;s&#41;?</p>
+</blockquote>
+<p>We find in the <code>.iqtree</code> file:</p>
+<pre><code class="language-md">Rate parameter R:
+
+  A-C: 1.0000
+  A-G: 2.3152
+  A-T: 1.0000
+  C-G: 1.0000
+  C-T: 2.3152
+  G-T: 1.0000</code></pre>
+<p>IQ-TREE sets the rate of transversions to 1 and estimates the ratio of transition rate to the transversion rate &#40;this parameter is often denoted \(\kappa\)&#41;. Here we estimated \(\hat{\kappa} = 2.3152\), so given that a substitution occurs, it is 2.3152 as likely that it will be a transition compared to a transversion.</p>
+<blockquote>
+<p>Extra: Consider the F81, HKY and GTR models. Look again at the .iqtree output files. How do these models relate to the JC and K2P model? How do they relate to each other? </p>
+</blockquote>
+<p>Briefly: the F81 model allows for unequal equilibrium frequencies &#40;K2P and JC assume the equilibrium frequencies – i.e. the base frequencies when the evolutionary process assumed by the model is run for a long time – to be all 0.25&#41; but assumes equal substitution rates for all substitution types. The HKY model allows for both unequal base frequencies and a different rate for transitions compared to transversions, so it can be seen as a combination of F81 and K2P &#40;if you set the equilibrium frequencies in HKY to 0.25 you get K2P, if you set \(\kappa\) to one, you get F81&#41;. The GTR model allows for unequal equilibrium base frequences and allows all types of substitions to occur at different rates &#40;but assumes symmetry, i.e. the rate of <code>A -&gt; T</code> is the same as <code>T -&gt; A</code>&#41;. It has all other substitution models we discussed as a special case.</p>
+<h2 id="the_bootstrap"><a href="#the_bootstrap" class="header-anchor">The bootstrap</a></h2>
+<blockquote>
+<p>What does the <code>-wbtl</code> option do? </p>
+</blockquote>
+<p>This option writes the inferred trees for the bootstrap replicates to a file with extension <code>.ufboot</code>.</p>
+<blockquote>
+<p>Interpret how a bootstrap support value is obtained in terms of the <code>.ufboot</code> file </p>
+</blockquote>
+<p>In the <code>.ufboot</code> file each line is a tree topology obtained for a bootstrapped alignment &#40;see the course on what that means&#41;. A bootstrap support value for a particular clade will be the proportion of bootstrap trees &#40;which are written in that file&#41; which contain that clade. </p>
+<p>Note that I say clade and not subtree.  The support value should be interpreted as the support for a bipartition &#40;or <em>split</em>&#41;, not a subtree. To make this clear consider the tree for the 18SrRNA data set with 20 species:</p>
+<p><img src="/assets/phylocourse/mliqtree/20species-boot.svg" alt="" /></p>
+<p>Take for instance the bootstrap support value of 85 for the clade of green plants. What this indicates is that in the 1000 bootstrap replicates we found that 85&#37; of the <em>unrooted</em> trees contain a clade which consists of the green plants, or in other words, 85&#37; of the trees contain a bipartition &#40;i.e. we can cut the unrooted tree in two trees&#41; such that one of the resulting subtrees consists of the green plants and the other of all the rest. Importantly, this does not mean that 85&#37; of the bootstrap replicates contain the exact <em>subtree</em> we see in this figure, the branching patterns within the subtrees defined by the bipartition may differ.</p>
 <div class="page-foot">
   <div class="copyright">
-    &copy; Arthur Zwaenepoel. Last modified: May 07, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+    &copy; Arthur Zwaenepoel. Last modified: May 13, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
@@ -82,6 +183,10 @@
 <script>renderMathInElement(document.body)</script>
 
     
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
     
   </body>
 </html>
