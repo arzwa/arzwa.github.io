@@ -1,3 +1,4 @@
+@def title = "Answers to questions"
 [back](../)
 
 \toc
