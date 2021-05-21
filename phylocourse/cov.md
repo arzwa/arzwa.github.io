@@ -35,4 +35,4 @@ Github repository](https://github.com/plemey/SARSCoV2origins).
 4. Why haven't we cared much about recombination in previous exercises? Should
    we have?
 
-[^1]: I believe it is currently not possible to rule out either hypothesis, although much of the scientific establishment does seem to rule out the lab-origin theory. See for instance [this article](https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/) for some of the reasons why the matter is complicated (politically, scientifically, biologically).
+[^1]: I believe it is currently not possible to rule out either hypothesis, although much of the scientific community does seem to rule out the lab-origin theory. See for instance [this article](https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/) for some of the reasons why the matter is complicated (politically, scientifically, biologically).

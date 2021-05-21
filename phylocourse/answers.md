@@ -105,6 +105,8 @@ have different branch lengths (e.g. Zea and Oryza or Homo and Xenopus), which
 can never be the case in an utrametric tree (see the trees for the clustering
 methods if you are not convinced).
 
+![Unrooted NJ tree (JC69 model) for the 18S rRNA data set.](/assets/phylocourse/distance/fig1.png)
+
 >Question: Neighbor-joining infers an unrooted tree, can you see how
 >the fact that the tree is unrooted is represented in FigTree? Where
 >should you root this tree (based on your knowledge of the tree of life)?
@@ -124,6 +126,9 @@ ancestor of *Palmaria* and *Zea*). See fig. 3. Note that when you root the tree 
 FigTree, FigTree assumes you want to put the root in the middle of the branch
 (i.e. the total distance between the two clades stemming from the root is divided
 into two equal length daughter branches).
+
+![Unrooted NJ tree (JC69 model) for the 18S rRNA data set.](/assets/phylocourse/distance/fig2.png)
+![Rooted NJ tree (JC69 model) for the 18S rRNA data set.](/assets/phylocourse/distance/fig3.png)
 
 >Question: Does the NJ tree make more sense than the WPGMA tree? What do you think is causing this?
 
@@ -174,6 +179,9 @@ indistinguishable from the result without $\Gamma$ distances. This is because
 the different rates across sites are all very close to the mean rate, so the
 model is well-approximated by a model with a single substitution rate for all
 sites (i.e. the normal JC model).
+
+![NJ tree for the 18S rRNA data set using JC+Γ with α = 0.2.](/assets/phylocourse/distance/fig4.png)
+![NJ tree for the 18S rRNA data set using JC+Γ with α = 10.](/assets/phylocourse/distance/fig5.png)
 
 # Maximum likelihood phylogeny inference
 
