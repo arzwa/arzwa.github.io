@@ -55,11 +55,13 @@
 <p>Question: How can you see at one glance that this is not an ultrametric tree? What does this mean in terms of assumptions on the substitution rate?</p>
 </blockquote>
 <p>A rooted non-ultrametric tree would be easy to spot because the distances from root to tips would not be equal. However we have an unrooted tree &#40;see fig. 1&#41; in this case. It is not possible to root this tree such that the root-to-tip distances are identical across the tree however, so it cannot be ultrametric. An easy way to see this is that two leaves that have a direct common ancestor have different branch lengths &#40;e.g. Zea and Oryza or Homo and Xenopus&#41;, which can never be the case in an utrametric tree &#40;see the trees for the clustering methods if you are not convinced&#41;.</p>
+<p><img src="/assets/phylocourse/distance/fig1.png" alt="Unrooted NJ tree &#40;JC69 model&#41; for the 18S rRNA data set." /></p>
 <blockquote>
 <p>Question: Neighbor-joining infers an unrooted tree, can you see how the fact that the tree is unrooted is represented in FigTree? Where should you root this tree &#40;based on your knowledge of the tree of life&#41;? Select the branch where you think the root should be &#40;click on it&#41; and hit the reroot button in figtree to root the tree.</p>
 </blockquote>
 <p>An unrooted tree is usually represented by a polytomous root &#40;i.e. a trifurcating root node, see fig. 2&#41;. It is important to not interpret this as a true polytomy in the tree &#40;i.e. where an ancestral lineage would have split into tree distinct lineages at the same time&#41;.</p>
 <p>The current consensus view is that the Archaeplastida and Ophistokonta both form monophyletic groups, so we should put the root in the branch connecting the last common ancestor of the Ophistokonta &#40;e.g. last common ancestor of <em>Homo</em> and <em>Saccharomyces</em>&#41; and the last common ancestor of Archaeplastida &#40;e.g. last common ancestor of <em>Palmaria</em> and <em>Zea</em>&#41;. See fig. 3. Note that when you root the tree in FigTree, FigTree assumes you want to put the root in the middle of the branch &#40;i.e. the total distance between the two clades stemming from the root is divided into two equal length daughter branches&#41;.</p>
+<p><img src="/assets/phylocourse/distance/fig2.png" alt="Unrooted NJ tree &#40;JC69 model&#41; for the 18S rRNA data set." /> <img src="/assets/phylocourse/distance/fig3.png" alt="Rooted NJ tree &#40;JC69 model&#41; for the 18S rRNA data set." /></p>
 <blockquote>
 <p>Question: Does the NJ tree make more sense than the WPGMA tree? What do you think is causing this?</p>
 </blockquote>
@@ -74,6 +76,7 @@
 <p>Question: What &#40;if anything&#41; is changing? What is the default \(\alpha\) used in FastME? Experiment with the \(\alpha\) parameter of the Gamma distribution by using for instance -g0.5 in the FastME command. What happens?</p>
 </blockquote>
 <p>The branch lengths change considerably, both relative to each other as well as in overall length. Assuming highly asymmetric distributions of the substitution rate across sites &#40;e.g. \(\alpha\) &#61; 0.2, fig. 4&#41; leads to higher distance estimates overall and more outspoken differences between different branches. This is due to the combination of both allowing different substitution rates across branches and across sites, leading to multiplicative effects &#40;in contrast with the clustering methods, where we saw not much change in the relative branch lengths when using \(\Gamma\) heterogeneity&#41;. Using more symmetric distributions &#40;e.g. \(\alpha\) &#61; 10 fig. 5&#41; leads to a result that is indistinguishable from the result without \(\Gamma\) distances. This is because the different rates across sites are all very close to the mean rate, so the model is well-approximated by a model with a single substitution rate for all sites &#40;i.e. the normal JC model&#41;.</p>
+<p><img src="/assets/phylocourse/distance/fig4.png" alt="NJ tree for the 18S rRNA data set using JC&#43;Γ with α &#61; 0.2." /> <img src="/assets/phylocourse/distance/fig5.png" alt="NJ tree for the 18S rRNA data set using JC&#43;Γ with α &#61; 10." /></p>
 <h1 id="maximum_likelihood_phylogeny_inference"><a href="#maximum_likelihood_phylogeny_inference" class="header-anchor">Maximum likelihood phylogeny inference</a></h1>
 <p><strong>Note:</strong> most of the results below are for the 45 species 18SrRNA data set. If you used the HIV or any other data set your results will of course differ, but the interpretations remain the same.</p>
 <h2 id="analysis_under_the_jukes_cantor_model"><a href="#analysis_under_the_jukes_cantor_model" class="header-anchor">Analysis under the Jukes &amp; Cantor model</a></h2>
@@ -176,7 +179,7 @@ Relative rates are computed as MEAN of the portion of the Gamma distribution fal
 <p>Take for instance the bootstrap support value of 85 for the clade of green plants. What this indicates is that in the 1000 bootstrap replicates we found that 85&#37; of the <em>unrooted</em> trees contain a clade which consists of the green plants, or in other words, 85&#37; of the trees contain a bipartition &#40;i.e. we can cut the unrooted tree in two trees&#41; such that one of the resulting subtrees consists of the green plants and the other of all the rest. Importantly, this does not mean that 85&#37; of the bootstrap replicates contain the exact <em>subtree</em> we see in this figure, the branching patterns within the subtrees defined by the bipartition may differ.</p>
 <div class="page-foot">
   <div class="copyright">
-    &copy; Arthur Zwaenepoel. Last modified: May 13, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+    &copy; Arthur Zwaenepoel. Last modified: May 21, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
   </div>
 </div>
 </div><!-- CONTENT ENDS HERE -->
