@@ -2,15 +2,18 @@
 @def hasmath = true
 @def hascode = true
 
-**Arthur Zwaenepoel**  (Gent °1995). I am currently a PhD student in the group
-of professor Yves Van de Peer, conducting research on the evolutionary
-importance of polyploidy. In practice I have mainly worked on statistical
-phylogenetic methods for the inference of genome duplications from comparative
-genomic data and modeling of gene family evolution, where I have come to prefer
-a Bayesian approach towards statistics.  More broadly, my main research
-interests are (theoretical) evolutionary genetics and probabilistic modeling in
-biology. I also take a strong interest in philosophy and mathematics, but claim
-little expertise there. I enjoy music, literature, computer programming,
+**Arthur Zwaenepoel**  (Gent °1995). I am currently a PhD student in
+the group of professor Yves Van de Peer, conducting research on
+Bayesian statistical methods for the study of genome evolution and the
+evolutionary importance of polyploidy. 
+More broadly, I would summarize my research interests as evolutionary
+genetics, probabilistic modeling in biology, Bayesian statistics and
+theoretical biology. 
+I also take a strong interest in philosophy and mathematics, and think
+a lot about the relationships among the natural sciences, the role of
+mathematics and formalization in science, the place science and
+scientists take up in society, etc.
+I enjoy music, literature, computer programming, skateboarding,
 playing music, long(ish)-distance running and traveling by bicycle.
 
 [papers](#papers) | [code](#code) | [notes](#notes) | [photos](/pages/photos) | [other](#other) | [phylogenetics-course](/phylocourse)
