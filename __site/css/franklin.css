@@ -6,7 +6,7 @@
 html {
     /*font-family: Fira code, Arial, sans-serif;
 	/*font-family: Tahoma, Geneva, sans-serif;*/
-    background-color: #fffff8;
+    background-color: #fdf6e3;
     font-family: 'Roboto', sans-serif;
     text-align: justify;
 	line-height: 200%;
@@ -148,7 +148,7 @@ html {
         margin: 10px 0; }
 
 .franklin-content a {
-    color: green;
+    color: #859900;
     text-decoration: none; }
 
 .franklin-content a:hover {

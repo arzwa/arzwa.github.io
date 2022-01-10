@@ -100,7 +100,7 @@ daily's 'Best New Ambient Music'
 [here](https://daily.bandcamp.com/best-ambient/best-new-ambient-june-2018). Also see [vuilbak recordlabel](https://www.vuilbak.in), also
 [here](https://vuilbak.github.io/).
 
-A particularly nice [picture of my cat and me](/assets/img/ikenrik.jpg).
+A particularly nice [picture of my cat and me](/assets/img/ikenrik.jpg). A [picture of a bunch of books and me](/assets/img/boeken.jpg).
 
 [discogs](https://www.discogs.com/user/dingelam),
 [bandcamp](https://bandcamp.com/bruinebeer)
@@ -111,8 +111,9 @@ Other biographic trivia:
 - Fairly experienced cook
 - No driver's license, strongly opposed to all cars
 - Favorite programming language: `julia`
-- Favorite software tools: `pandoc`, `vim`, `cmus`
-- Favorite authors (literature): W. F. Hermans, Hugo Claus, Vladimir Nabokov, Milan Kundera
+- Favorite software tools: `pandoc`, `vim`, `cmus`, `vimwiki`
+- Favorite (literary) authors: W. F. Hermans, Hugo Claus, Michel
+  Houellebecq, Imre Kertesz, Vladimir Nabokov, Milan Kundera
 - Cat person, dogs are OK
 
 
