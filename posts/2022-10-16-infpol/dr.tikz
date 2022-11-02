@@ -1,0 +1,22 @@
+\documentclass[tikz]{standalone}
+\begin{document}
+\begin{tikzpicture}
+\node (n1) at (0, 5) [] {$A\ B\ C\ D$};
+\node (n2) at (0, 4) [] {$A\underline{A}\ \underline{B}\overline{B}\ CC\ \overline{D}D$};
+\node (n3) at (0, 3) [] {$AB\ AD | CC\ BD$};
+\node (n4) at (-2, 2) [] {$AB\ AD$};
+\node (n5) at ( 2, 2) [] {$CC\ BD$};
+\node (n6) at (-3, 1) [] {$AA$};
+\node (n7) at (-1, 1) [] {$BD$};
+\node (n8) at ( 3, 1) [] {$CB$};
+\node (n9) at ( 1, 1) [] {$CD$};
+\draw[->] (n1) -- (n2) node [right,midway] {\small replication};
+\draw[->] (n2) -- (n3) node [right,midway] {\small recombination};
+\draw[->] (n3) -- (n4);
+\draw[->] (n3) -- (n5) node [right,midway] {\small \ \ meiosis I};
+\draw[->] (n5) -- (n8) node [right,midway] {\small \ \ meiosis II};
+\draw[->] (n5) -- (n9);
+\draw[->] (n4) -- (n6);
+\draw[->] (n4) -- (n7);
+\end{tikzpicture}
+\end{document}
