@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>bb - Asexual FTNS</title>
+        <link rel="stylesheet" href="../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../"><i>bb</i></a>
+            </div>
+            <nav>
+                <a href="../">home</a>
+                <a href="../about.html">about</a>
+                <a href="../other.html">other</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <article>
+    <section class="header">
+        Posted on November  9, 2021
+        
+    </section>
+    <section>
+        <p>We derive a form of the fundamental theorem of natural selection (FTNS) for
+asexual organisms. Fisher’s FTNS, which is not <em>that</em> fundamental, says that,
+for a population consisting of <span class="math inline">\(n\)</span> types with constant relative fitnesses and
+no mutation, (1) mean fitness is non-decreasing and (2) increases at a rate
+proportional to the genetic variance in fitness (is this in fact what
+<em>Fisher</em>’s version says?). We will here further assume generations are
+non-overlapping and that there is asexual reproduction.</p>
+<p>We refer to the expected number of offspring individuals of an individual of
+type <span class="math inline">\(i\)</span> as the <em>fitness</em> of type <span class="math inline">\(i\)</span>. Let the fitnesses for the <span class="math inline">\(n\)</span> types be
+<span class="math inline">\(w_1, w_2, \dots, w_n\)</span> and let <span class="math inline">\(n_1(t), \dots, n_i(t)\)</span> be the number of
+individuals of each type in generation <span class="math inline">\(t\)</span>, with <span class="math inline">\(N(t) = \sum_i n_i(t)\)</span> the
+total population size. The type frequencies are denoted by <span class="math inline">\(p_i = n_i / N\)</span>.
+Note that types could be alleles in haploids, genotypes in diploids and
+polyploids, or something else, the only assumption at present being that there
+is no recombination or mutation, so that types are faithfully inherited. Our
+goal is to find a solution for the change in mean fitness over time when
+fitnesses are constant. We will have three steps:</p>
+<ol type="1">
+<li><p>We first find a recursion for the (geno)type frequencies. We have
+<span class="math display">\[\Delta p_i = p_i' - p_i 
+= \frac{w_i n_i}{\sum_j n_j w_j} - p_i 
+= \frac{p_i (w_i - \bar{w})}{\bar{w}}\]</span>
+Where <span class="math inline">\(\bar{w} = \mathbb{E}[w] = \sum_j w_j p_j\)</span> is the mean fitness. This
+also holds when fitnesses are time-dependent (in which case we would
+write <span class="math inline">\(w_i(t)\)</span>).</p></li>
+<li><p>Now we find a recursion for mean fitness, we have
+<span class="math display">\[\Delta \bar{w} = \bar{w^\prime} - \bar{w} = \sum_i (w_i'p_i' - w_i p_i)\]</span>
+The goal now is to partition the change in mean fitness in a part due
+to evolutionary change, and a part due to changes in fitness over
+time. We can accomplish this by noting that
+<span class="math display">\[
+\begin{align*}
+\Delta \bar{w} &amp;= \sum_i ((w_i + \Delta w_i)p_i' - w_ip_i) \\
+&amp;= \sum_i \Delta w_i p_i' + \sum_i \Delta p_i w_i \\
+&amp;= \mathbb{E}[\Delta w] + \sum_i \Delta p_i w_i
+\end{align*}
+\]</span>
+This shows that the change in mean fitness is equal to the mean of the
+fitness changes and a component from evolutionary change (i.e. change
+in genotype frequencies).</p></li>
+<li><p>We now plug our result from (1) in (2) to find
+<span class="math display">\[
+\begin{align*}
+\Delta \bar{w} &amp;= 
+\mathbb{E}[\Delta w] + \frac{1}{\bar{w}}\sum_i p_i w_i (w_i - \bar{w}) \\
+&amp;= \mathbb{E}[\Delta w] + \frac{1}{\bar{w}}(\sum_i w_i^2 p_i -
+\bar{w}\sum_i w_i p_i) \\
+&amp;= \mathbb{E}[\Delta w] + \frac{\mathbb{V}(w)}{\bar{w}}
+\end{align*}
+\]</span>
+Which is our desired result. Since the variance <span class="math inline">\(\mathbb{V}(w)\)</span> is
+non-negative, we have that, when relative fitnesses are constant so
+that <span class="math inline">\(\mathbb{E}[\Delta w] = 0\)</span>, mean fitness is non-decreasing. Furthermore,
+mean fitness increases at a rate proportional to the genetic variance
+in fitness.</p></li>
+</ol>
+<p><strong>Some additional remarks.</strong>
+We note that in the above, genotype frequencies <span class="math inline">\(p_i\)</span> and changes
+therein only depend on ratio’s of fitnesses of the form <span class="math inline">\(w_i/\bar{w}\)</span>,
+and not on absolute fitnesses, so we can always scale fitnesses when
+dealing with genotype frequencies (and not absolute numbers of each
+type in the population).
+We can decompose (absolute) fitness in a viability and fertility
+component. Viability <span class="math inline">\(v_i\)</span> will be the probability that an individual
+of genotype <span class="math inline">\(i\)</span> reaches reproductive age. Fertility <span class="math inline">\(f_i\)</span> will be the
+expected number of offspring from a type <span class="math inline">\(i\)</span> adult. We then have <span class="math inline">\(w_i = v_i f_i\)</span>, i.e. formally fitness (the expected contribution of an
+individual of type <span class="math inline">\(i\)</span> to the next generation) is given by the law of
+total expectation as
+<span class="math display">\[\mathbb{E}[\text{#offspring}_i]=\mathbb{E}[\mathbb{E}[\text{#offspring}_i|\text{survival}_i]]
+= f_i v_i\]</span>
+Assume that <span class="math inline">\(w_1 &gt; w_i\)</span> for <span class="math inline">\(i &gt; 1\)</span>. We then always have <span class="math inline">\(\bar{w} \le w_1\)</span> and it can be seen that, when we assume constant fitnesses
+<span class="math display">\[
+\begin{align*}
+p_1 &amp;\rightarrow 1 \\
+\bar{w} &amp;\rightarrow w_1 \\
+\mathbb{V}(w) &amp;\rightarrow 0 
+\end{align*}
+\]</span>
+During evolution, the quantity <span class="math inline">\((w_1 - \bar{w})/w_1 = 1 - \bar{w}/w_1\)</span>
+is minimized. This quantity is the <em>relative reproductive excess</em> of
+genotype 1. With pure viability selection (i.e. all <span class="math inline">\(f_i = f\)</span>),
+<span class="math inline">\(\bar{w}/w_1\)</span> can be interpreted as the relative survival probability
+of a random individual compared to the most fit genotype, and
+the reproductive excess <span class="math inline">\(1-\bar{w}/w_1\)</span> can be interpreted as the
+relative amount of selective mortality in the population compared to
+the most fit genotype. This quantity is known as the <em>genetic load</em>.</p>
+<hr />
+<p>Acknowledgement: the treatment here closely follows Nagylaki (1992)</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site generated using 
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+            <br><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons License" style="border-width:0;opacity:0.5;width:80px;" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></a>
+        </footer>
+    </body>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+</html>

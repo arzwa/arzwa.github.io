@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>bb - The infinitesimal model for autotetraploids</title>
+        <link rel="stylesheet" href="../../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../../"><i>bb</i></a>
+            </div>
+            <nav>
+                <a href="../../">home</a>
+                <a href="../../about.html">about</a>
+                <a href="../../other.html">other</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <article>
+    <section class="header">
+        Posted on October 16, 2022
+        
+            by Arthur Zwaenepoel
+        
+    </section>
+    <section>
+        <p>Here I’ll describe how one can adapt the infinitesimal model of quantitative
+genetics to autotetraploid populations. I was interested in this mainly for the
+purpose of studying the evolution of <em>mixed-ploidy</em> populations, but these
+results may be interesting for their own sake.</p>
+<h1 id="the-infinitesimal-for-autotetraploid-populations">The infinitesimal for autotetraploid populations</h1>
+<p>In its purely phenotypic formulation, the infinitesimal model assumes that
+offspring trait values <span class="math inline">\(Z\)</span> of a parental pair with trait values <span class="math inline">\(z_i\)</span> and <span class="math inline">\(z_j\)</span>
+are normally distributed:
+<span class="math display">\[ Z_{ij} \sim \mathcal{N}\Big(\frac{z_i + z_j}{2}, V_{i,j}\Big) \]</span>
+where <span class="math inline">\(V_{ij}\)</span> is called the <em>segregation variance</em> and is determined by the
+hereditary process. At the genotypic side, the basic infinitesimal model can be
+derived as the limit of a model where a quantitative trait is controlled by <span class="math inline">\(n\)</span>
+unlinked Mendelian loci with additive effect <span class="math inline">\(a\)</span>, as <span class="math inline">\(n\rightarrow \infty\)</span> and
+<span class="math inline">\(a\downarrow 0\)</span>.</p>
+<p>A slightly different, and perhaps more insightful, way to specify the same
+model is to write <span class="math inline">\(Z_{ij} = X_i + X_j\)</span>, where <span class="math inline">\(X_i\)</span> is the contribution of
+parent <span class="math inline">\(i\)</span> to the genotypic value of the offspring and <span class="math inline">\(X_j\)</span> the same for <span class="math inline">\(j\)</span>.
+That is, <span class="math inline">\(X_i\)</span> is the genotypic value of a gamete from <span class="math inline">\(i\)</span>. For gametes
+produced by a typical meiotic division, we assume <span class="math inline">\(X_i \sim \mathcal{N}(z_i/2, V_i)\)</span>,
+where <span class="math inline">\(V_i\)</span> is the contribution to the segregation variance from <span class="math inline">\(i\)</span>.
+Alternatively, we can call <span class="math inline">\(V_i\)</span> the <em>gametic variance</em> for individual <span class="math inline">\(i\)</span>.
+Segregation occurs independently in both parents, contributing additively to
+the segregation variance <span class="math inline">\(V_{ij} = V_i + V_j\)</span>.
+When considered as the limit of a large number of unlinked additive Mendelian
+loci of small effect, we can partition the segregation variance in
+contributions from each locus (assuming linkage equilibrium)
+<span class="math display">\[V_0 = \sum_{k=1}^n v_{0,k}\]</span>
+Where <span class="math inline">\(v_{0,k}\)</span> is the contribution to the segregation variance of the <span class="math inline">\(k\)</span>th
+locus. Considering this viewpoint explicitly often helps me in deriving
+properties of the infinitesimal model.</p>
+<p>If we assume a population consisting of unrelated individuals with genetic
+variance <span class="math inline">\(V\)</span> and segregation variance <span class="math inline">\(V_0\)</span> for all parental pairs, we find
+that under random mating the variance in the offspring generation is
+<span class="math display">\[\begin{align*}
+V' &amp;= \mathbb{E}[\mathrm{var}[Z_{ij}|Z_i, Z_j]] + \mathrm{var}[\mathbb{E}[Z_{ij}|Z_i,Z_j]] \\
+   &amp;= \mathbb{E}[V_{ij}] + \mathrm{var}\bigg(\frac{Z_i + Z_j}{2}\bigg) \\
+   &amp;= V_0 + \frac{V}{2}
+\end{align*}\]</span>
+So that at equilibrium (<span class="math inline">\(V' = V\)</span>), the trait distribution for the population
+will be Gaussian with variance <span class="math inline">\(2V_0\)</span>.</p>
+<h2 id="inbreeding-and-the-evolution-of-the-segregation-variance">Inbreeding and the evolution of the segregation variance</h2>
+<p>Importantly, <span class="math inline">\(V_{ij}\)</span> is not a function of <span class="math inline">\(z_i\)</span> or <span class="math inline">\(z_j\)</span> (although they may
+be correlated), but nevertheless evolves over time.
+For a finite population, inbreeding will lead to an increase in homozygosity
+and cause the segregation variance to decrease over time.
+Indeed, from the viewpoint of the Mendelian limit, it is clear that in the
+extreme case where an idividual is completely homozygous for all loci affecting
+some trait, Mendelian segregation does not generate any variance, and all
+gametes of such an individual have, barring mutation, the same genotypic value.
+Importantly, while the basic phenotypic model (where offspring traits are
+distributed according to a Gaussian around the midparent value) holds for
+arbitrary ploidy levels, genetic drift – and consequently, the evolution of
+the segregation variance in finite populations – will differ for different
+ploidy levels.</p>
+<p>The infinitesimal model for finite populations of haploid and diploid
+individuals is described in detail in <span class="citation" data-cites="barton2017">@barton2017</span>.
+We shall use a slightly different notation here.
+Let <span class="math inline">\(F_i\)</span> be the inbreeding coefficient of individual <span class="math inline">\(i\)</span>, i.e. the probability
+that two <em>distinct</em> genes sampled from individual <span class="math inline">\(i\)</span> are identical by descent
+(IBD).
+Let, furthermore, <span class="math inline">\(\Phi_{ij}\)</span> be the coancestry coefficient of individuals <span class="math inline">\(i\)</span>
+and <span class="math inline">\(j\)</span>, or the probability that two genes sampled independently from
+individuals <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are IBD.
+Note that for any ploidy level <span class="math inline">\(m\)</span>, we have the relationship
+<span class="math display">\[\Phi_{ii} = \frac{1}{m}(1+(m-1)F_i)\]</span></p>
+<p>In <strong>haploids</strong>, the situation is somewhat different from other ploidy levels,
+owing due to the absence of reduced gametes in sexual reproduction.
+While we have no notion of homozygosity for an individual haploid individual,
+whenever a pair of alleles at some locus in a mating pair of individuals is
+IBD, Mendelian segregation during meiosis after syngamy will fail to
+contribute to the segregation variance.
+For a haploid parental pair <span class="math inline">\((i,j)\)</span>, the segregation variance is reduced to
+<span class="math display">\[V_{ij} = V_0(1-\Phi_{ij})\]</span>
+Now, for diploids and higher ploidy levels, the situation is different, since
+Mendelian segregation happens in the generation of gametes through meiosis.
+Segregation hence happens independently in the generation of the two gametes,
+and the variance is reduced to the degree that each parent is inbred.
+For <strong>diploids</strong>, we can again easily find the resulting segregation variance
+<span class="math display">\[\begin{equation}
+    V_{ij} = V_i + V_j = \frac{V_0}{2}(1-F_i) + \frac{V_0}{2}(1-F_j) = 
+        V_0 \Big(1 - \frac{F_i + F_j}{2}\Big)
+    \label{eq:dipvar}
+\end{equation}\]</span></p>
+<p>In <strong>higher ploidy levels</strong>, the situation gets somewhat more complicated, as there
+are different degrees of homozygosity.
+For instance, the different possible states of homozygosity at a single locus in a
+tetraploid can be symbolically represented as <span class="math inline">\(abcd\)</span>, <span class="math inline">\(aabc\)</span>, <span class="math inline">\(aabb\)</span>, <span class="math inline">\(aaab\)</span>
+and <span class="math inline">\(aaaa\)</span>, and in general, the number of homoygosity states grows according to
+the <a href="https://en.wikipedia.org/wiki/Partition_function_(number_theory)_">partition
+function</a>
+(<span class="math inline">\(1, 2, 3, 5, 11, 15, 22, \dots\)</span>).
+Considering <strong>tetraploids</strong>, if we represent the probability of being in these five
+increasingly homozygous states as <span class="math inline">\(\delta_1, \dots, \delta_5\)</span>, we find that the
+segregation variance is reduced by a factor
+<span class="math display">\[\phi = \delta_1 + \Big(1 - \frac1 6\Big) \delta_2 + \Big(1 - \frac1
+        3\Big)\delta_3 + \Big(1 - \frac1 2\Big) \delta_4\]</span>
+But note that the inbreeding coefficient in tetraploids is related to
+the homozygosity coefficients as
+<span class="math display">\[F_i = \frac1 6 \delta_2 + \frac1 3 \delta_3 + \frac1 2 \delta_4 +
+        \delta_5 = 1 - \phi\]</span>
+So that the reduced segregation variance is, as in diploids, given by
+<span class="math inline">\(V_0(1- \frac{F_i + F_j}{2})\)</span>.
+This is an important result, showing that we need not track the array
+<span class="math inline">\((\delta_1, \delta_2, \delta_3, \delta_4)\)</span> of homozygosity coefficients to
+compute the segregation variance contributed by a tetraploid individual, but
+only require its inbreeding coefficient <span class="math inline">\(F\)</span>, which has the same definition as
+in the diploid case.</p>
+<p>When simulating the infinitesimal model, we shall hence need a way to
+efficiently track the inbreeding and coancestry coefficients during the
+simulation.
+After sketching a little toy-pedigree, we find that the recursion for the
+inbreeding coefficients is
+<span class="math display">\[\begin{align*}
+    F_i &amp;= \Phi_{kl}&amp; \text{diploids} \\  
+    F_i &amp;= \frac1 6 (F_k + F_l + 4\Phi_{kl}) &amp; \text{tetraploids} 
+\end{align*}\]</span>
+where <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> are the parents of <span class="math inline">\(i\)</span> (note that <span class="math inline">\(k = l\)</span> is possible).
+The general formula for <span class="math inline">\(m\)</span>-ploids, with <span class="math inline">\(m\)</span> even, appears to be
+<span class="math display">\[F_i = \binom{m}{2}^{-1} \Big[\binom{m/2}{2}(F_k + F_l) + \Big(\frac m
+        2\Big)^2 \Phi_{kl} \Big]\]</span>
+The recursion for the coancestry coefficients in <span class="math inline">\(m\)</span>-ploids is given by
+<span class="math display">\[\begin{align*}
+    \Phi_{ii} &amp;= \frac1 m \big(1 + (m-1)F_i\big) \\
+    \Phi_{ij} &amp;= \sum_k \sum_l P_{ik}P_{jl} \Phi_{kl} &amp; i \ne j
+\end{align*}\]</span>
+where the sums are over individuals in the parental population, and where
+<span class="math inline">\(P_{ik} \in \{0, 1/2, 1\}\)</span> is the probability that a gene copy in <span class="math inline">\(i\)</span> is
+derived from parent <span class="math inline">\(k\)</span>.
+As suggested in <span class="citation" data-cites="barton2017">@barton2017</span>, when dealing with discrete generations, <span class="math inline">\(P_{ik}\)</span>
+values can be conveniently represented in a <span class="math inline">\(N(t) \times N(t-1)\)</span> matrix, where
+<span class="math inline">\(N(t)\)</span> is the population size in generation <span class="math inline">\(t\)</span>, so that <span class="math inline">\(\Phi(t) = P \Phi(t-1) P^T\)</span>, where <span class="math inline">\(\Phi(t)\)</span> is the matrix of coancestry coefficients in generation
+<span class="math inline">\(t\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h2 id="double-reduction-in-autotetraploids">Double reduction in autotetraploids</h2>
+<p>When an autotetraploid forms tetravalents during prophase I, a form of internal
+inbreeding may occur as a result of the phenomenon called double reduction.
+Double reduction happens when, as a result of recombination, replicated copies
+on sister chromatids move to the same pole during anaphase I.
+Schematically, an example of double reduction for a genotype <span class="math inline">\(ABCD\)</span> could look
+like:</p>
+<center>
+<img src="dr.svg" style="width:70.0%" />
+</center>
+<p>Where we have two recombination events involving the locus (denoted by the
+bars). One of the four generated gametes is <span class="math inline">\(AA\)</span>, which is not possible in the
+case of bivalent meiosis, because in anaphase I paired chromosomes (involved in
+cross-overs) are separated in that case.
+The frequency of double reduction at a locus in the presence of multivalent
+formation is hence determined by the frequency at which that locus is involved
+in a cross-over, and should therefore be in part determined by the distance of
+the locus to the centromere.
+In the context of the infinitesimal model however, we may consider the
+probability of double reduction a parameter, <span class="math inline">\(\alpha\)</span>.</p>
+<p>Clearly, in the presence of double reduction, such an <span class="math inline">\(ABCD\)</span> genotype would
+generate 10 distinct gametes:
+<span class="math display">\[\begin{matrix}
+        AA &amp; \cdot &amp; \cdot &amp; \cdot \\
+        AB &amp; BB    &amp; \cdot &amp; \cdot \\
+        AC &amp; BC    &amp; CC    &amp; \cdot \\
+        AD &amp; BD    &amp; CD    &amp; DD
+    \end{matrix}\]</span>
+where each of the gametes on the diagonal is produced with probability <span class="math inline">\(\alpha/4\)</span>
+and the other six ‘normal’ gametes with probability <span class="math inline">\((1-\alpha)/6\)</span> each.
+For a random genotype <span class="math inline">\(X_1X_2X_3X_4\)</span>, we can find the expected segregation
+variance contributed by a locus when double reduction happens as follows.
+Let <span class="math inline">\(Y\)</span> be the genotypic value of a gamete formed by double reduction, let
+<span class="math inline">\(G\)</span> be the genotype, and let <span class="math inline">\(X\)</span> denote a randomly sampled gene copy from the
+base population. We have <span class="math inline">\(\mathrm{var}[X] = v_0/2\)</span>
+<span class="math display">\[\begin{align*}
+    \mathbb{E}[\mathrm{var}[Y|G]] &amp;= \mathrm{var}[Y] - \mathrm{var}_G[\mathbb{E}[Y|G]] \\
+        &amp;= \mathrm{var}[2X] - \mathrm{var}\Big[\frac1 4 (2X_1 + 2X_2 + 2X_3 + 2X_4)\Big] \\
+        &amp;= 2v_0 - \frac1 2v_0  \\
+        &amp;= \frac3 2 v_0
+\end{align*}\]</span>
+Summing across independent loci, we find that segregation variance in the
+presence of double reduction is increased by a factor <span class="math inline">\((1+2\alpha)\)</span>:
+<span class="math display">\[\begin{equation}
+    (1-\alpha) \frac{V_0}{2} + \alpha \frac{3}{2}V_0 = (1+2\alpha)\frac{V_0}{2}
+\end{equation}\]</span></p>
+<p>While double reduction increases the segregation variance in any given cross,
+in the long term it causes a decrease in the segregation variance through its
+effect on the rate of inbreeding.
+Indeed, double reduction leads to a kind of ‘internal inbreeding’ <span class="citation" data-cites="lw1">[@lw1]</span>,
+accelerating the decay of heterozygosity.
+While double reduction does not affect the recursions for the coancestry
+coefficients (due to the symmetry of the phenomenon), it does affect the
+inbreeding coefficient, let <span class="math inline">\(F^\ast_k = F_k(1-\alpha) + \alpha\)</span> be the
+probability that a sampled gamete from tetraploid individual <span class="math inline">\(k\)</span> contains IBD
+genes at a locus, the previous recursive relation for the inbreeding
+coefficient in tetraploids becomes:
+<span class="math display">\[\begin{align*}
+F_i &amp;= \frac{1}{6}F^\ast_k + \frac{1}{6}F^\ast_l + \frac{2}{3}\Phi_{kl} \\  
+    &amp;= \frac{1}{6} \bigg(2\alpha + (1-\alpha)(F_k + F_l) + 4\Phi_{kl} \bigg)
+\end{align*}\]</span>
+In the following figure, simulations for a Wright-Fisher population model with a
+quantitative trait following the infinitesimal model are shown for diploids and
+autotetraploids, with and without double reduction.</p>
+<center>
+<figure>
+<img src="124.svg" style="width:70.0%" alt="Decline of the phenotypic variance (V_z, here equal to the additive genetic variance) in Wright-Fisher populations (N=200) simulated according to the infinitesimal model for different ploidy levels. The solid and dashed black lines show the (approximate for tetraploids) expected exponential decline of the variance for diploids and tetraploids respectively, given by V_z(0)e^{-t/(mN)}, where m is the ploidy level." />
+<figcaption aria-hidden="true">Decline of the phenotypic variance (<span class="math inline">\(V_z\)</span>, here equal to the additive genetic
+variance) in Wright-Fisher populations (<span class="math inline">\(N=200\)</span>) simulated according to the
+infinitesimal model for different ploidy levels.
+The solid and dashed black lines show the (approximate for tetraploids)
+expected exponential decline of the variance for diploids and tetraploids
+respectively, given by <span class="math inline">\(V_z(0)e^{-t/(mN)}\)</span>, where <span class="math inline">\(m\)</span> is the ploidy
+level.</figcaption>
+</figure>
+</center>
+<p>The conflicting effects of double reduction on genotypic variance are clearly
+observed here, with a short term increase relative to <span class="math inline">\(\alpha= 0\)</span>, yet a faster
+erosion of the variance in the long term.</p>
+<p>In a later post I’ll describe how we can use these results in models for
+mixed-ploidy populations. For that, we need to take a closer look at how
+unreduced gametes are formed.</p>
+<h2 id="references">References</h2>
+<p>[Still figuring out how to do this with hakyll]</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Note that there appears to be an error in <span class="citation" data-cites="barton2017">@barton2017</span>. They gave for diploids<br />
+<span class="math display">\[F_{i,j}' = \sum_k \sum_l P_{i,k} P_{j,l} F_{k,l} \qquad \text{if } k \ne l\]</span>
+<span class="math display">\[F_{i,j}' = \sum_k \sum_l P_{i,k} P_{j,l} \frac{1}{2}(1 + F_{k,k}) \qquad \text{if } k = l\]</span>
+However, this appears to be wrong.
+Consider an individual <span class="math inline">\(i\)</span> which is an offspring from <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span>,
+with <span class="math inline">\(k \ne l\)</span>. There will be a term <span class="math inline">\(P_{i,k}^2 \frac{1}{2}(1 + F_{k,k}) = \frac{1}{8}(1+F_{k,k})\)</span> as well as a term <span class="math inline">\(P_{i,l}^2(1+F_{l,l})\)</span> in the
+sum for <span class="math inline">\(F_{i,i}\)</span>, both of which are spurious since <span class="math inline">\(F_{i,i}\)</span> is the probability
+that two distinct genes are IBD, and the probability that two <em>distinct</em> genes
+come from parent <span class="math inline">\(k\)</span> is not <span class="math inline">\(P_{i,k}^2\)</span> but 0.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site generated using 
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+            <br><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons License" style="border-width:0;opacity:0.5;width:80px;" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></a>
+        </footer>
+    </body>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+</html>
