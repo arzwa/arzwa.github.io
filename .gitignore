@@ -2,8 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=haskell,julia,vim
 
 drafts/
-_*/
-_*
+_cache/
 
 
 ### Haskell ###
