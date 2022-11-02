@@ -17,5 +17,5 @@ jobs:
       with:
         ACCESS_TOKEN: ${{ secrets.FRANKLIN }}
         BRANCH: gh-pages
-        FOLDER: __site
+        FOLDER: _site
 
