@@ -20,15 +20,20 @@ daily's 'Best New Ambient Music'
 
 Other **biographic trivia**:
 
-- Vegetarian, quasi-vegan
-- Fairly experienced cook
-- No driver's license, strongly opposed to all cars
+- Vegetarian, preferably vegan, I enjoy cooking
+- No driver's license, strongly opposed to all cars, I prefer cycling
 - Cat person. Dogs are OK, but for unclear reasons they tend not to like me
 - *Favorite programming language*: Julia; interested in Haskell
 - *Favorite software tools*: pandoc, vim, cmus, vimwiki
-- *Favorite authors*: W. F. Hermans, Hugo Claus, Michel Houellebecq, Imre
-  Kertesz, Vladimir Nabokov, Milan Kundera, John Steinbeck, Kant, Bachelard,
-  Canguilhem, Deleuze
+- *Favorite literary authors*: W. F. Hermans, Hugo Claus, Gerard Reve, Michel
+  Houellebecq, Imre Kertesz, Vladimir Nabokov, Milan Kundera, John Steinbeck,
+  Patricia de Martelaere, ...
+- *Favorite other authors*: Kant, Bachelard, Canguilhem, Deleuze, Stengers,
+  Robert Rosen, Robert Ashley, John Cage, Raymond Smullyan, Paul Halmos,
+  Bartosz Milewski ...
+- *Favorite* doesn't mean I read everything, or even much, but rather reflects
+  the tendency to talk enthusiastically about something in pub conversation. I
+  am prone to calling some $x$ I happen to like a lot 'the best $x$ ever'.
   
 Some things on the internet I often find myself **recommending**:
 
@@ -50,6 +55,8 @@ Some things on the internet I often find myself **recommending**:
 - Gilles Deleuze's
   [Abécédaire](https://www.youtube.com/watch?v=SlNYVnCUvVg&list=PLiR8NqajHNPbaX2rBoA2z6IPGpU0IPlS2)
 - Joe Felsenstein's [free popgen book](https://evolution.gs.washington.edu/pgbook/)
+- Probably the most significant thing in Ghent: [the Logos robot
+  orchestra](https://www.logosfoundation.org/)
 - [Low-tech magazine](https://solar.lowtechmagazine.com/)
 - [Retsen Detsen](https://www.youtube.com/watch?v=VlFucdXTxhM), soms ook in
   Trefpunt
