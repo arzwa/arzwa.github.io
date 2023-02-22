@@ -21,19 +21,22 @@ daily's 'Best New Ambient Music'
 Other **biographic trivia**:
 
 - Vegetarian, preferably vegan, I enjoy cooking
-- No driver's license, strongly opposed to all cars, I prefer cycling
+- No driver's license, strongly opposed to all cars. I like cycling, trains are
+  nice too.
 - Cat person. Dogs are OK, but for unclear reasons they tend not to like me
 - *Favorite programming language*: Julia; interested in Haskell
 - *Favorite software tools*: pandoc, vim, cmus, vimwiki
 - *Favorite literary authors*: W. F. Hermans, Hugo Claus, Gerard Reve, Michel
-  Houellebecq, Imre Kertesz, Vladimir Nabokov, Milan Kundera, John Steinbeck,
-  Patricia de Martelaere, ...
+  Houellebecq, Céline, Imre Kertesz, Vladimir Nabokov, Milan Kundera, John
+  Steinbeck, Patricia de Martelaere, ...
 - *Favorite other authors*: Kant, Bachelard, Canguilhem, Deleuze, Stengers,
-  Robert Rosen, Robert Ashley, John Cage, Raymond Smullyan, Paul Halmos,
-  Bartosz Milewski ...
-- *Favorite* doesn't mean I read everything, or even much, but rather reflects
-  the tendency to talk enthusiastically about something in pub conversation. I
-  am prone to calling some $x$ I happen to like a lot 'the best $x$ ever'.
+  Robert Rosen, Robert Ashley, John Cage, Edwin Jaynes, J. B. S. Haldane,
+  Harold Jeffreys, Bruno de Finetti, Raymond Smullyan, Paul Halmos, F. W.
+  Lawvere, Bartosz Milewski ...
+- *Favorite* doesn't mean I read everything, or even much, let alone
+  understand, but rather reflects the tendency to talk enthusiastically about
+  something in pub conversation. I am prone to calling some $x$ I happen to
+  like a lot 'the best $x$ ever'.
   
 Some things on the internet I often find myself **recommending**:
 
