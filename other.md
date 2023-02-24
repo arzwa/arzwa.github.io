@@ -2,13 +2,12 @@
 title: other
 ---
 
-**Science** related: 
+**Research** related: 
 
-- [scholar (publications)](https://scholar.google.com/citations?user=8VSQd34AAAAJ&hl=en&oi=ao)
-- [github (software)](https://github.com/arzwa)
 - [my PhD thesis](pdfs/doc.pdf)
 - [my CV (October 2022)](pdfs/cv.pdf)
-
+- [github (software)](https://github.com/arzwa)
+- [publications](https://scholar.google.com/citations?user=8VSQd34AAAAJ&hl=en&oi=ao)
 
 **Music** related: 
 
