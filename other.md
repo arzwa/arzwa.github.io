@@ -67,3 +67,11 @@ Some things on the internet I often find myself **recommending**:
 **Note**: this site does not determine the displayed font, using the default
 serif font in your browser. Depending on the weather, I like to view it with
 'Century Schoolbook L' or 'Fira Code'.
+
+This site was generated using [Hakyll](http://jaspervdj.be/hakyll) and the
+source can be found on my [Github
+page](https://github.com/arzwa/arzwa.github.io).
+The material on it is, for what it's worth, licensed as Attribution-ShareAlike
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"> <img
+alt="Creative Commons License" style="border-width:0;opacity:0.5;width:80px;"
+src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></a>.
