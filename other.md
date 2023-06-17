@@ -62,7 +62,7 @@ Some things on the internet I often find myself **recommending**:
 - [Low-tech magazine](https://solar.lowtechmagazine.com/)
 - [Retsen Detsen](https://www.youtube.com/watch?v=VlFucdXTxhM), soms ook in
   Trefpunt
-- [Bike repair in Ghent](https://bergduivel.github.io/balhoofdenmannetje/balhoofd_en_mannetje.html)
+- [Bike repair in Ghent](http://balhoofdenmannetje.be/)
 
 **Note**: this site does not determine the displayed font, using the default
 serif font in your browser. Depending on the weather, I like to view it with
