@@ -13,4 +13,4 @@ in November 2022.
 I retain strong interests in Bayesian statistics, philosophy, programming,
 theoretical biology *etc.*
 
-![](img/drobak1b.jpg){width=100%}
+![](img/drobak2.jpg){width=100%}

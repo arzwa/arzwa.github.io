@@ -120,6 +120,18 @@ the most fit genotype. This quantity is known as the <em>genetic load</em>.</p>
         </main>
 
     </body>
-        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-        </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+    <script type="text/javascript">
+        window.onload = function() {
+          var path = '/img/';
+          var imgs = ['auv1b.jpg', 'auv2.jpg', 'auv3.jpg', 'auv5.jpg',
+                      'couvin.jpg', 'drobak2.jpg', 'drobak3.jpg/',
+                      'duffel.jpg', 'kiprik.jpg', 'volksgarten.jpg'];
+          var i = Math.floor(Math.random()*imgs.length);
+          var elem = document.createElement("img");
+          elem.setAttribute("src", path + imgs[i]);
+          document.getElementById("el").appendChild(elem);
+        }
+    </script>
 </html>
